@@ -64,8 +64,8 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Ncw-tf-az6" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="NtM-2f-7ER"/>
-                            <constraint firstItem="Ncw-tf-az6" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="jMN-vq-fYP"/>
+                            <constraint firstItem="Ncw-tf-az6" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="Dgs-RQ-MKp"/>
+                            <constraint firstItem="Ncw-tf-az6" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="jKH-FW-I2g"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -84,24 +84,47 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="u3L-wf-Xdp">
-                                <rect key="frame" x="40" y="95" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="shB-77-g2N">
-                                <rect key="frame" x="125" y="308" width="71" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Play Again"/>
-                                <connections>
-                                    <action selector="onPlayAgain:" destination="53w-lU-Adh" eventType="touchUpInside" id="wVr-wf-9qd"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="48" translatesAutoresizingMaskIntoConstraints="NO" id="hCf-2L-exw">
+                                <rect key="frame" x="0.0" y="120" width="320" height="260"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="u3L-wf-Xdp">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="128"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="320" id="rUh-hw-Pp9"/>
+                                            <constraint firstAttribute="height" constant="128" id="wcv-mT-xNG"/>
+                                        </constraints>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="W9X-G3-NNN">
+                                        <rect key="frame" x="0.0" y="176" width="320" height="84"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rock crushes Scissors. You Loose!!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QLM-HH-iYz">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="shB-77-g2N">
+                                                <rect key="frame" x="0.0" y="54" width="320" height="30"/>
+                                                <state key="normal" title="Play Again"/>
+                                                <connections>
+                                                    <action selector="onPlayAgain:" destination="53w-lU-Adh" eventType="touchUpInside" id="wVr-wf-9qd"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="hCf-2L-exw" firstAttribute="centerX" secondItem="moW-bp-X3b" secondAttribute="centerX" id="VJJ-ma-7Kw"/>
+                            <constraint firstItem="hCf-2L-exw" firstAttribute="centerY" secondItem="moW-bp-X3b" secondAttribute="centerY" id="uAy-oO-m5O"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="moW-bp-X3b"/>
                     </view>
                     <connections>
                         <outlet property="imageView" destination="u3L-wf-Xdp" id="PxX-Ze-3eZ"/>
+                        <outlet property="winnerLabel" destination="QLM-HH-iYz" id="MEG-Nv-9WG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XxC-en-epQ" userLabel="First Responder" sceneMemberID="firstResponder"/>

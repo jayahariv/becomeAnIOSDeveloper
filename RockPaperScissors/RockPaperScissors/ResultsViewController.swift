@@ -12,37 +12,23 @@ class ResultsViewController: UIViewController {
     var computerValue: HomeViewController.PlayState!
     var userValue: HomeViewController.PlayState!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var winnerLabel: UILabel!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        switch computerValue {
-        case .rock:
-            switch userValue {
-            case .rock:
-                imageView.image = UIImage(named: "itsATie")
-            case .scissors:
-                imageView.image = UIImage(named: "RockCrushesScissors")
-            default:
-                imageView.image = UIImage(named: "PaperCoversRock")
-            }
-        case .scissors:
-            switch userValue {
-            case .rock:
-                imageView.image = UIImage(named: "RockCrushesScissors")
-            case .scissors:
-                imageView.image = UIImage(named: "itsATie")
-            default:
-                imageView.image = UIImage(named: "ScissorsCutPaper")
-            }
-        default:
-            switch userValue {
-            case .rock:
-                imageView.image = UIImage(named: "PaperCoversRock")
-            case .scissors:
-                imageView.image = UIImage(named: "ScissorsCutPaper")
-            default:
-                imageView.image = UIImage(named: "itsATie")
-            }
+        print("com: \(computerValue) user: \(userValue)")
+        if computerValue == userValue {
+            imageView.image = UIImage(named: "itsATie")
+            winnerLabel.text = "Its a Tie!!"
+        } else if (computerValue == .rock && userValue == .paper) || (computerValue == .paper && userValue == .rock) {
+            imageView.image = UIImage(named: "PaperCoversRock")
+            winnerLabel.text = "Paper covers Rock. You " + (userValue == .paper ? "Win" : "Loose") + "!!"
+        } else if (computerValue == .rock && userValue == .scissors) || (computerValue == .scissors && userValue == .rock) {
+            imageView.image = UIImage(named: "RockCrushesScissors")
+            winnerLabel.text = "Rock crushes Scissors. You " + (userValue == .rock ? "Win" : "Loose") + "!!"
+        } else if (computerValue == .scissors && userValue == .paper) || (computerValue == .paper && userValue == .scissors) {
+            imageView.image = UIImage(named: "ScissorsCutPaper")
+            winnerLabel.text = "Scissors cut Paper. You " + (userValue == .scissors ? "Win" : "Loose") + "!!"
         }
     }
     
