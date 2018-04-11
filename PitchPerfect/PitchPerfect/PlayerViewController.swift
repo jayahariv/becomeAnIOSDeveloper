@@ -41,6 +41,15 @@ class PlayerViewController: UIViewController {
         }
     }
     
+    func setupUI() {
+        slowButton.imageView?.contentMode = .scaleAspectFit
+        highPitch.imageView?.contentMode = .scaleAspectFit
+        fastButton.imageView?.contentMode = .scaleAspectFit
+        lowPitch.imageView?.contentMode = .scaleAspectFit
+        echoButton.imageView?.contentMode = .scaleAspectFit
+        reverbButton.imageView?.contentMode = .scaleAspectFit
+    }
+    
     func updateUI(isPlaying: Bool) {
         setPlayButtonsEnabled(!isPlaying)
         stopButton.isEnabled = isPlaying
@@ -67,6 +76,7 @@ class PlayerViewController: UIViewController {
     // MARK: Lifecycle methods
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupUI()
         configureUI(.notPlaying)
     }
     
