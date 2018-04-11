@@ -76,12 +76,12 @@ class PlayerViewController: UIViewController {
     // MARK: Lifecycle methods
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupUI()
         configureUI(.notPlaying)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
         setupAudio()
     }
 
