@@ -33,14 +33,17 @@ class PlayerViewController: UIViewController {
     func configureUI(_ playState: PlayingState, _ sender: UIButton? = nil) {
         switch(playState) {
         case .playing:
-            setPlayButtonsEnabled(false)
-            stopButton.isEnabled = true
+            updateUI(isPlaying: true)
             sender?.addGlow()
         case .notPlaying:
-            setPlayButtonsEnabled(true)
-            stopButton.isEnabled = false
+            updateUI(isPlaying: false)
             removeAllGlow()
         }
+    }
+    
+    func updateUI(isPlaying: Bool) {
+        setPlayButtonsEnabled(!isPlaying)
+        stopButton.isEnabled = isPlaying
     }
     
     func removeAllGlow() {
