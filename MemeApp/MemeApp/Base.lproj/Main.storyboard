@@ -24,9 +24,9 @@
                                     <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="b7f-Bg-nbw">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                         <items>
-                                            <barButtonItem systemItem="action" id="Wco-ZT-Zdp"/>
+                                            <barButtonItem tag="1" systemItem="action" id="Wco-ZT-Zdp"/>
                                             <barButtonItem style="plain" systemItem="flexibleSpace" id="waE-hy-w3J"/>
-                                            <barButtonItem style="plain" systemItem="cancel" id="2K0-Qc-RrK"/>
+                                            <barButtonItem tag="2" style="plain" systemItem="cancel" id="2K0-Qc-RrK"/>
                                         </items>
                                     </toolbar>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y3n-yt-NmA">
@@ -72,9 +72,13 @@
                                         <rect key="frame" x="0.0" y="603" width="375" height="44"/>
                                         <items>
                                             <barButtonItem style="plain" systemItem="flexibleSpace" id="Ya3-qz-a7X"/>
-                                            <barButtonItem systemItem="camera" id="ccG-0b-tIo"/>
+                                            <barButtonItem systemItem="camera" id="ccG-0b-tIo">
+                                                <connections>
+                                                    <action selector="onPressPhotos:" destination="BYZ-38-t0r" id="ukd-ae-7nh"/>
+                                                </connections>
+                                            </barButtonItem>
                                             <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="eFp-Yl-gna"/>
-                                            <barButtonItem title="Album" id="IB6-pS-Pq6"/>
+                                            <barButtonItem tag="1" title="Album" id="IB6-pS-Pq6"/>
                                             <barButtonItem style="plain" systemItem="flexibleSpace" id="19Q-yJ-sby"/>
                                         </items>
                                     </toolbar>
@@ -90,6 +94,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="vIj-yh-4cm" id="UkJ-RI-KQ7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
