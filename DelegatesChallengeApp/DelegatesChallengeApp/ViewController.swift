@@ -10,16 +10,31 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    // MARK: properties
+    @IBOutlet weak var zipCodeTextField: UITextField!
+    @IBOutlet weak var cashTextField: UITextField!
+    @IBOutlet weak var locableTextField: UITextField!
+    
+    var locableTextFieldEditable: Bool = true
+    let zipCodeTextFieldDelegate = ZipCodeTextFieldDelegate()
+    let cashTextFieldDelegate = CashTextFieldDelegate()
+    
+    // MARK: lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        zipCodeTextField.delegate = zipCodeTextFieldDelegate
+        cashTextField.delegate = cashTextFieldDelegate
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    // MARK: button actions
+    @IBAction func onToggleLock(_ sender: UISwitch) {
+        locableTextFieldEditable = sender.isOn
     }
+}
 
-
+extension ViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return locableTextFieldEditable
+    }
 }
 

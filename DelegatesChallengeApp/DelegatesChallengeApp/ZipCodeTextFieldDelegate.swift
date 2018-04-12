@@ -8,6 +8,9 @@
 
 import UIKit
 
-class ZipCodeTextFieldDelegate: NSObject {
-
+class ZipCodeTextFieldDelegate: NSObject, UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let newText = textField.text!.replacingCharacters(in: Range.init(range, in: textField.text!)!, with: string)
+        return newText.count <= 5 && CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string))
+    }
 }
