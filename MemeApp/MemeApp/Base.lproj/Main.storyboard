@@ -24,7 +24,11 @@
                                     <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="b7f-Bg-nbw">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                         <items>
-                                            <barButtonItem tag="1" systemItem="action" id="Wco-ZT-Zdp"/>
+                                            <barButtonItem tag="1" systemItem="action" id="Wco-ZT-Zdp">
+                                                <connections>
+                                                    <action selector="onShare:" destination="BYZ-38-t0r" id="CSI-70-hzd"/>
+                                                </connections>
+                                            </barButtonItem>
                                             <barButtonItem style="plain" systemItem="flexibleSpace" id="waE-hy-w3J"/>
                                             <barButtonItem tag="2" style="plain" systemItem="cancel" id="2K0-Qc-RrK"/>
                                         </items>
@@ -49,7 +53,10 @@
                                                         </attributes>
                                                     </fragment>
                                                 </attributedString>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" returnKeyType="done"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="BYZ-38-t0r" id="H7w-lx-sMV"/>
+                                                </connections>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" usesAttributedText="YES" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RPB-9r-oEK">
                                                 <rect key="frame" x="8" y="497" width="359" height="30"/>
@@ -65,7 +72,10 @@
                                                         </attributes>
                                                     </fragment>
                                                 </attributedString>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters" returnKeyType="done"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Bei-8P-k1c"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -109,9 +119,12 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="bottomLabel" destination="RPB-9r-oEK" id="0Fm-dA-bwl"/>
+                        <outlet property="bottomTextField" destination="RPB-9r-oEK" id="wX5-Nx-itm"/>
+                        <outlet property="bottomToolBar" destination="z6d-O2-mkS" id="bPc-iS-ZIA"/>
                         <outlet property="imageView" destination="vIj-yh-4cm" id="UkJ-RI-KQ7"/>
-                        <outlet property="topLabel" destination="1ai-57-VBS" id="x8p-5P-thu"/>
+                        <outlet property="shareButton" destination="Wco-ZT-Zdp" id="HkN-fb-qIA"/>
+                        <outlet property="topTextField" destination="1ai-57-VBS" id="7bL-Q5-ojQ"/>
+                        <outlet property="topToolBar" destination="b7f-Bg-nbw" id="dUa-pZ-cw5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
