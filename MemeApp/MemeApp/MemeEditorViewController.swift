@@ -18,16 +18,20 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var bottomToolBar: UIToolbar!
     @IBOutlet weak var shareButton: UIBarButtonItem!
     
+    var image: UIImage?
+    var memedImage: UIImage?
+    var adjustViewForKeyboard: Bool = false
+    
+    // MARK: Bottom tool bar button values represented using this Enum
     enum BottomToolBarButton: Int { case camera = 0, album}
+    
+    // MARK: Meme structure created!
     struct Meme {
         var topText: String
         var bottomText: String
         var originalImage: UIImage
         var memedImage: UIImage
     }
-    var image: UIImage?
-    var memedImage: UIImage?
-    var adjustViewForKeyboard: Bool = false
     
     // MARK: UI config methods
     func textAttributes() -> [String: Any] {
@@ -39,15 +43,15 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
         ]
     }
     
-    func updateUI() {
-        shareButton.isEnabled = imageView.image != nil
-    }
-    
     func setupUI() {
         topTextField.defaultTextAttributes = textAttributes()
         topTextField.textAlignment = .center
         bottomTextField.defaultTextAttributes = textAttributes()
         bottomTextField.textAlignment = .center
+    }
+    
+    func updateUI() {
+        shareButton.isEnabled = imageView.image != nil
     }
     
     func populateTextFields() {
@@ -131,6 +135,8 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
         let vc = UIActivityViewController.init(activityItems: [memedImage!], applicationActivities: nil)
         vc.completionWithItemsHandler = {[unowned self] (activityType: UIActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
             if !completed {
+                // remove the memedImage to free up memory, if user cancelled the activity.
+                self.memedImage = nil
                 return
             }
             self.save()
