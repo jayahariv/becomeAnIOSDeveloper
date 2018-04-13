@@ -12,11 +12,22 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     
     // MARK: properties
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var topLabel: UITextField!
-    @IBOutlet weak var bottomLabel: UITextField!
+    @IBOutlet weak var topTextField: UITextField!
+    @IBOutlet weak var bottomTextField: UITextField!
+    @IBOutlet weak var topToolBar: UIToolbar!
+    @IBOutlet weak var bottomToolBar: UIToolbar!
+    @IBOutlet weak var shareButton: UIBarButtonItem!
     
     enum BottomToolBarButton: Int { case camera = 0, album}
+    struct Meme {
+        var topText: String
+        var bottomText: String
+        var originalImage: UIImage
+        var memedImage: UIImage
+    }
     var image: UIImage?
+    var memedImage: UIImage?
+    var adjustViewForKeyboard: Bool = false
     
     // MARK: UI config methods
     func textAttributes() -> [String: Any] {
@@ -28,20 +39,71 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
         ]
     }
     
+    func updateUI() {
+        shareButton.isEnabled = imageView.image != nil
+    }
+    
     func setupUI() {
-        topLabel.text = "TOP"
-        topLabel.defaultTextAttributes = textAttributes()
-        topLabel.textAlignment = .center
+        topTextField.defaultTextAttributes = textAttributes()
+        topTextField.textAlignment = .center
+        bottomTextField.defaultTextAttributes = textAttributes()
+        bottomTextField.textAlignment = .center
+    }
+    
+    func populateTextFields() {
+        if topTextField.text?.count == 0 {
+            topTextField.text = "TOP"
+        } else if bottomTextField.text?.count == 0 {
+            bottomTextField.text = "BOTTOM"
+        }
+    }
+    
+    func toolBarShow(show: Bool) {
+        topToolBar.isHidden = !show
+        bottomToolBar.isHidden = !show
+    }
+    
+    // MARK: utility methods
+    func generateMemeImage() -> UIImage {
         
-        bottomLabel.text = "BOTTOM"
-        bottomLabel.defaultTextAttributes = textAttributes()
-        bottomLabel.textAlignment = .center
+        toolBarShow(show: false)
+        
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        let result = view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        
+        toolBarShow(show: true)
+        
+        print(result)
+        
+        return memedImage
+    }
+    
+    func save() {
+        // hoping this will be used in Meme2.0 App
+       let _ = Meme(topText: topTextField.text!,
+             bottomText: bottomTextField.text!,
+             originalImage: imageView.image!,
+             memedImage: memedImage!)
     }
     
     // MARK: lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        updateUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        subscribeKeyboardNotifications()
+        populateTextFields()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unsubscriberKeyboardNotifications()
     }
     
     // MARK: Button Actions
@@ -64,17 +126,82 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
         }
         present(cameraPicker, animated: true, completion: nil)
     }
+    @IBAction func onShare(_ sender: Any) {
+        memedImage = generateMemeImage()
+        let vc = UIActivityViewController.init(activityItems: [memedImage!], applicationActivities: nil)
+        vc.completionWithItemsHandler = {[unowned self] (activityType: UIActivityType?, completed: Bool, returnedItems: [Any]?, error: Error?) in
+            if !completed {
+                return
+            }
+            self.save()
+            self.dismiss(animated: true, completion: nil)
+        };
+        present(vc, animated: true, completion: nil)
+    }
 }
 
 // MARK: MemeEditorViewController: UIImagePickerControllerDelegate
 extension MemeEditorViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         imageView.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        updateUI()
         dismiss(animated: true, completion: nil)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: MemeEditorViewController: UITextFieldDelegate
+extension MemeEditorViewController: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        if textField == bottomTextField {
+            adjustViewForKeyboard = true
+        } else {
+            adjustViewForKeyboard = false
+        }
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        populateTextFields()
+    }
+}
+
+// MARK: MemeEditorViewController: Notification Helpers
+extension MemeEditorViewController {
+    func subscribeKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShown), name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func unsubscriberKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
+    }
+    
+    @objc func keyboardShown(notification: Notification) {
+        if adjustViewForKeyboard {
+            view.frame.origin.y -= getKeyboardHeight(notification)
+        }
+    }
+    
+    @objc func keyboardHide(notification: Notification) {
+        if adjustViewForKeyboard {
+            view.frame.origin.y = 0.0
+        }
+    }
+    
+    func getKeyboardHeight(_ notification: Notification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
+        return keyboardSize.cgRectValue.height
     }
 }
 
