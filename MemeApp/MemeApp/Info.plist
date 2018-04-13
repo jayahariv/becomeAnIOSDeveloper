@@ -41,7 +41,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSPhotoLibraryAddUsageDescription</key>
+	<key>NSPhotoLibraryUsageDescription</key>
 	<string>App creates the meme using the images from library</string>
+	<key>NSCameraUsageDescription</key>
+	<string>App takes photo and use that to create a meme</string>
 </dict>
 </plist>
