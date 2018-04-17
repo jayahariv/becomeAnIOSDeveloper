@@ -44,15 +44,15 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="372"/>
                                             </imageView>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" usesAttributedText="YES" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1ai-57-VBS">
-                                                <rect key="frame" x="8" y="32" width="304" height="30"/>
+                                                <rect key="frame" x="8" y="32" width="304" height="42"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="LgL-Ii-68q"/>
+                                                    <constraint firstAttribute="height" constant="42" id="LgL-Ii-68q"/>
                                                 </constraints>
                                                 <attributedString key="attributedText">
                                                     <fragment content="TOP">
                                                         <attributes>
                                                             <color key="NSColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="40" name="HelveticaNeue-Light"/>
+                                                            <font key="NSFont" size="40" name="Impact"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>
@@ -63,15 +63,15 @@
                                                 </connections>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" usesAttributedText="YES" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RPB-9r-oEK">
-                                                <rect key="frame" x="8" y="310" width="304" height="30"/>
+                                                <rect key="frame" x="8" y="298" width="304" height="42"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="vyk-mj-CcM"/>
+                                                    <constraint firstAttribute="height" constant="42" id="vyk-mj-CcM"/>
                                                 </constraints>
                                                 <attributedString key="attributedText">
                                                     <fragment content="BOTTOM">
                                                         <attributes>
                                                             <color key="NSColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <font key="NSFont" size="40" name="HelveticaNeue-Light"/>
+                                                            <font key="NSFont" size="40" name="Impact"/>
                                                             <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                         </attributes>
                                                     </fragment>

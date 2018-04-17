@@ -31,8 +31,8 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
         return [
             NSAttributedStringKey.strokeColor.rawValue: UIColor.black,
             NSAttributedStringKey.foregroundColor.rawValue: UIColor.white,
-            NSAttributedStringKey.font.rawValue: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-            NSAttributedStringKey.strokeWidth.rawValue: -1.0,
+            NSAttributedStringKey.font.rawValue: UIFont(name: "impact", size: 40)!,
+            NSAttributedStringKey.strokeWidth.rawValue: -3.0,
         ]
     }
     
@@ -45,6 +45,9 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     func setupUI() {
         setupTextField(topTextField)
         setupTextField(bottomTextField)
+    }
+  
+    func checkSourceTypeAvailablity() {
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         albumButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.photoLibrary)
     }
@@ -99,6 +102,7 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        checkSourceTypeAvailablity()
         subscribeKeyboardNotifications()
         populateTextFields()
     }
@@ -169,7 +173,7 @@ extension MemeEditorViewController: UITextFieldDelegate {
 // MARK: MemeEditorViewController: Notification Helpers
 extension MemeEditorViewController {
     func subscribeKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShown), name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShown), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: .UIKeyboardWillHide, object: nil)
     }
     
@@ -180,7 +184,7 @@ extension MemeEditorViewController {
     
     @objc func keyboardShown(notification: Notification) {
         if bottomTextField.isFirstResponder {
-            view.frame.origin.y -= getKeyboardHeight(notification)
+            view.frame.origin.y = -getKeyboardHeight(notification)
         }
     }
     
