@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08590BD5208109D800AC5D7C /* Meme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08590BD4208109D800AC5D7C /* Meme.swift */; };
+		08AB48C5208653F80080BAD4 /* impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08AB48C4208653F80080BAD4 /* impact.ttf */; };
 		08E990F5207F4168003FFE57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E990F4207F4168003FFE57 /* AppDelegate.swift */; };
 		08E990F7207F4168003FFE57 /* MemeEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E990F6207F4168003FFE57 /* MemeEditorViewController.swift */; };
 		08E990FA207F4168003FFE57 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08E990F8207F4168003FFE57 /* Main.storyboard */; };
@@ -15,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		08590BD4208109D800AC5D7C /* Meme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meme.swift; sourceTree = "<group>"; };
+		08AB48C4208653F80080BAD4 /* impact.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = impact.ttf; sourceTree = "<group>"; };
 		08E990F1207F4168003FFE57 /* MemeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08E990F4207F4168003FFE57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		08E990F6207F4168003FFE57 /* MemeEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemeEditorViewController.swift; sourceTree = "<group>"; };
@@ -54,8 +58,10 @@
 		08E990F3207F4168003FFE57 /* MemeApp */ = {
 			isa = PBXGroup;
 			children = (
+				08AB48C4208653F80080BAD4 /* impact.ttf */,
 				08E990F4207F4168003FFE57 /* AppDelegate.swift */,
 				08E990F6207F4168003FFE57 /* MemeEditorViewController.swift */,
+				08590BD4208109D800AC5D7C /* Meme.swift */,
 				08E990F8207F4168003FFE57 /* Main.storyboard */,
 				08E990FB207F416B003FFE57 /* Assets.xcassets */,
 				08E990FD207F416B003FFE57 /* LaunchScreen.storyboard */,
@@ -122,6 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08AB48C5208653F80080BAD4 /* impact.ttf in Resources */,
 				08E990FF207F416B003FFE57 /* LaunchScreen.storyboard in Resources */,
 				08E990FC207F416B003FFE57 /* Assets.xcassets in Resources */,
 				08E990FA207F4168003FFE57 /* Main.storyboard in Resources */,
@@ -135,6 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08590BD5208109D800AC5D7C /* Meme.swift in Sources */,
 				08E990F7207F4168003FFE57 /* MemeEditorViewController.swift in Sources */,
 				08E990F5207F4168003FFE57 /* AppDelegate.swift in Sources */,
 			);
@@ -281,7 +289,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 93GQ7UQBL3;
 				INFOPLIST_FILE = MemeApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -298,7 +308,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 93GQ7UQBL3;
 				INFOPLIST_FILE = MemeApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

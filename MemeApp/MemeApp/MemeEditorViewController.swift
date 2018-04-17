@@ -17,39 +17,42 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     @IBOutlet weak var topToolBar: UIToolbar!
     @IBOutlet weak var bottomToolBar: UIToolbar!
     @IBOutlet weak var shareButton: UIBarButtonItem!
+    @IBOutlet weak var cameraButton: UIBarButtonItem!
+    @IBOutlet weak var albumButton: UIBarButtonItem!
     
     var image: UIImage?
     var memedImage: UIImage?
-    var adjustViewForKeyboard: Bool = false
     
     // MARK: Bottom tool bar button values represented using this Enum
     enum BottomToolBarButton: Int { case camera = 0, album}
-    
-    // MARK: Meme structure created!
-    struct Meme {
-        var topText: String
-        var bottomText: String
-        var originalImage: UIImage
-        var memedImage: UIImage
-    }
     
     // MARK: UI config methods
     func textAttributes() -> [String: Any] {
         return [
             NSAttributedStringKey.strokeColor.rawValue: UIColor.black,
             NSAttributedStringKey.foregroundColor.rawValue: UIColor.white,
-            NSAttributedStringKey.font.rawValue: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-            NSAttributedStringKey.strokeWidth.rawValue: -1.0,
+            NSAttributedStringKey.font.rawValue: UIFont(name: "impact", size: 40)!,
+            NSAttributedStringKey.strokeWidth.rawValue: -3.0,
         ]
     }
     
-    func setupUI() {
-        topTextField.defaultTextAttributes = textAttributes()
-        topTextField.textAlignment = .center
-        bottomTextField.defaultTextAttributes = textAttributes()
-        bottomTextField.textAlignment = .center
+    func setupTextField(_ textfield: UITextField) {
+        textfield.defaultTextAttributes = textAttributes()
+        textfield.textAlignment = .center
     }
     
+    //Setup UI will be called only once when the view is loaded
+    func setupUI() {
+        setupTextField(topTextField)
+        setupTextField(bottomTextField)
+    }
+  
+    func checkSourceTypeAvailablity() {
+        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
+        albumButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.photoLibrary)
+    }
+    
+    // Update UI is called multiple times, while view loaded, and when image is picked etc.
     func updateUI() {
         shareButton.isEnabled = imageView.image != nil
     }
@@ -73,13 +76,11 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
         toolBarShow(show: false)
         
         UIGraphicsBeginImageContext(self.view.frame.size)
-        let result = view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
         let memedImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         
         toolBarShow(show: true)
-        
-        print(result)
         
         return memedImage
     }
@@ -101,6 +102,7 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        checkSourceTypeAvailablity()
         subscribeKeyboardNotifications()
         populateTextFields()
     }
@@ -116,20 +118,13 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
         cameraPicker.delegate = self
         switch BottomToolBarButton(rawValue: sender.tag)! {
         case .camera:
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                cameraPicker.sourceType = .camera
-            } else {
-                cameraPicker.sourceType = .savedPhotosAlbum
-            }
+            cameraPicker.sourceType = .camera
         case .album:
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                cameraPicker.sourceType = .photoLibrary
-            } else {
-                cameraPicker.sourceType = .savedPhotosAlbum
-            }
+            cameraPicker.sourceType = .photoLibrary
         }
         present(cameraPicker, animated: true, completion: nil)
     }
+    
     @IBAction func onShare(_ sender: Any) {
         memedImage = generateMemeImage()
         let vc = UIActivityViewController.init(activityItems: [memedImage!], applicationActivities: nil)
@@ -143,6 +138,10 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
             self.dismiss(animated: true, completion: nil)
         };
         present(vc, animated: true, completion: nil)
+    }
+    
+    @IBAction func onCancel(_ sender: UIBarButtonItem) {
+        // TODO: Hoping this will be functional in Meme2.0
     }
 }
 
@@ -161,15 +160,6 @@ extension MemeEditorViewController: UIImagePickerControllerDelegate {
 
 // MARK: MemeEditorViewController: UITextFieldDelegate
 extension MemeEditorViewController: UITextFieldDelegate {
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if textField == bottomTextField {
-            adjustViewForKeyboard = true
-        } else {
-            adjustViewForKeyboard = false
-        }
-        return true
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -183,7 +173,7 @@ extension MemeEditorViewController: UITextFieldDelegate {
 // MARK: MemeEditorViewController: Notification Helpers
 extension MemeEditorViewController {
     func subscribeKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShown), name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShown), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: .UIKeyboardWillHide, object: nil)
     }
     
@@ -193,13 +183,13 @@ extension MemeEditorViewController {
     }
     
     @objc func keyboardShown(notification: Notification) {
-        if adjustViewForKeyboard {
-            view.frame.origin.y -= getKeyboardHeight(notification)
+        if bottomTextField.isFirstResponder {
+            view.frame.origin.y = -getKeyboardHeight(notification)
         }
     }
     
     @objc func keyboardHide(notification: Notification) {
-        if adjustViewForKeyboard {
+        if bottomTextField.isFirstResponder {
             view.frame.origin.y = 0.0
         }
     }
