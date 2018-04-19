@@ -141,6 +141,35 @@
             </objects>
             <point key="canvasLocation" x="3525" y="-71"/>
         </scene>
+        <!--Meme Detail View Controller-->
+        <scene sceneID="ZPI-MP-bUc">
+            <objects>
+                <viewController id="8Zs-xK-fTR" customClass="MemeDetailViewController" customModule="MemeApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="WFR-jd-D3W">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kvX-u0-OBF">
+                                <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="kvX-u0-OBF" firstAttribute="leading" secondItem="zPC-Ng-VHW" secondAttribute="leading" id="Utl-kB-cqI"/>
+                            <constraint firstItem="kvX-u0-OBF" firstAttribute="bottom" secondItem="zPC-Ng-VHW" secondAttribute="bottom" id="dvW-tf-Fsq"/>
+                            <constraint firstItem="kvX-u0-OBF" firstAttribute="trailing" secondItem="zPC-Ng-VHW" secondAttribute="trailing" id="ePb-ae-hSB"/>
+                            <constraint firstItem="kvX-u0-OBF" firstAttribute="top" secondItem="zPC-Ng-VHW" secondAttribute="top" id="wpb-JQ-VE2"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="zPC-Ng-VHW"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="kvX-u0-OBF" id="ZRu-I5-gTZ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fjd-TQ-DJU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4466.25" y="-71.25"/>
+        </scene>
         <!--Sent Memes Collection View Controller-->
         <scene sceneID="z9w-Zi-rl7">
             <objects>
@@ -186,6 +215,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="8Zs-xK-fTR" kind="show" identifier="memeCollectionViewToDetailView" id="ife-NO-bLg"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="n3F-Wk-Ksa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -238,6 +270,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="8Zs-xK-fTR" kind="show" identifier="memeTableViewToDetailView" id="TN6-iA-zCA"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wqO-Su-eNi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -305,6 +340,7 @@
         <image name="table" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gYY-EJ-iPJ"/>
+        <segue reference="TN6-iA-zCA"/>
+        <segue reference="Qv9-ql-cE7"/>
     </inferredMetricsTieBreakers>
 </document>

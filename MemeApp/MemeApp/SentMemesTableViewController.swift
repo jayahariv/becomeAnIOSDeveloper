@@ -10,11 +10,6 @@ import UIKit
 
 class SentMemesTableViewController: UITableViewController {
     
-    var memes: [Meme]! {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.memes
-    }
-    
     // MARK: UI Configuration methods
     
     func setupUI() {
@@ -32,6 +27,14 @@ class SentMemesTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tableView.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier ==
+                MemeDetailViewController.SegueToMemeDetailViewController.fromTableView.rawValue {
+            let vc = segue.destination as! MemeDetailViewController
+            vc.meme = sender as! Meme
+        }
     }
 }
 
@@ -59,6 +62,13 @@ extension SentMemesTableViewController {
 // MARK: Table view delegate
 
 extension SentMemesTableViewController {
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(
+            withIdentifier: MemeDetailViewController.SegueToMemeDetailViewController.fromTableView.rawValue,
+            sender: memes[indexPath.row])
+    }
+    
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -66,10 +76,8 @@ extension SentMemesTableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
+            removeMeme(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
     

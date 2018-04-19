@@ -11,18 +11,11 @@ import UIKit
 private let reuseIdentifier = "sentMemesCollectionViewCell"
 
 class SentMemesCollectionViewController: UICollectionViewController {
-    
-    var memes: [Meme] {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.memes
-    }
-    
-    
+
     // MARK: UI Config methods
     
     func setupUI() {
         self.clearsSelectionOnViewWillAppear = false
-//        self.collectionView!.register(SentMemesCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     }
 
     // MARK: View lifecycle
@@ -35,6 +28,14 @@ class SentMemesCollectionViewController: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.collectionView?.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier ==
+            MemeDetailViewController.SegueToMemeDetailViewController.fromCollectionView.rawValue {
+            let vc = segue.destination as! MemeDetailViewController
+            vc.meme = sender as! Meme
+        }
     }
 }
 
@@ -64,6 +65,8 @@ extension SentMemesCollectionViewController {
 
 extension SentMemesCollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO: implement what to do when we select this item
+        performSegue(
+            withIdentifier: MemeDetailViewController.SegueToMemeDetailViewController.fromCollectionView.rawValue,
+            sender: memes[indexPath.row])
     }
 }
