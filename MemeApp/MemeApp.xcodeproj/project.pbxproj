@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		08590BD5208109D800AC5D7C /* Meme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08590BD4208109D800AC5D7C /* Meme.swift */; };
+		086EA94320885FD300B17463 /* SentMemesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086EA94220885FD300B17463 /* SentMemesTableViewController.swift */; };
+		086EA94520885FF000B17463 /* SentMemesCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086EA94420885FF000B17463 /* SentMemesCollectionViewController.swift */; };
+		086EA9492088608E00B17463 /* SentMemesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086EA9482088608E00B17463 /* SentMemesTableViewCell.swift */; };
 		08AB48C5208653F80080BAD4 /* impact.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 08AB48C4208653F80080BAD4 /* impact.ttf */; };
 		08E990F5207F4168003FFE57 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E990F4207F4168003FFE57 /* AppDelegate.swift */; };
 		08E990F7207F4168003FFE57 /* MemeEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E990F6207F4168003FFE57 /* MemeEditorViewController.swift */; };
@@ -18,6 +21,9 @@
 
 /* Begin PBXFileReference section */
 		08590BD4208109D800AC5D7C /* Meme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meme.swift; sourceTree = "<group>"; };
+		086EA94220885FD300B17463 /* SentMemesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentMemesTableViewController.swift; sourceTree = "<group>"; };
+		086EA94420885FF000B17463 /* SentMemesCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentMemesCollectionViewController.swift; sourceTree = "<group>"; };
+		086EA9482088608E00B17463 /* SentMemesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentMemesTableViewCell.swift; sourceTree = "<group>"; };
 		08AB48C4208653F80080BAD4 /* impact.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = impact.ttf; sourceTree = "<group>"; };
 		08E990F1207F4168003FFE57 /* MemeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08E990F4207F4168003FFE57 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +45,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		086EA9462088605A00B17463 /* tableview */ = {
+			isa = PBXGroup;
+			children = (
+				086EA94220885FD300B17463 /* SentMemesTableViewController.swift */,
+				086EA9482088608E00B17463 /* SentMemesTableViewCell.swift */,
+			);
+			name = tableview;
+			sourceTree = "<group>";
+		};
+		086EA9472088606400B17463 /* collectionview */ = {
+			isa = PBXGroup;
+			children = (
+				086EA94420885FF000B17463 /* SentMemesCollectionViewController.swift */,
+			);
+			name = collectionview;
+			sourceTree = "<group>";
+		};
 		08E990E8207F4168003FFE57 = {
 			isa = PBXGroup;
 			children = (
@@ -58,6 +81,8 @@
 		08E990F3207F4168003FFE57 /* MemeApp */ = {
 			isa = PBXGroup;
 			children = (
+				086EA9472088606400B17463 /* collectionview */,
+				086EA9462088605A00B17463 /* tableview */,
 				08AB48C4208653F80080BAD4 /* impact.ttf */,
 				08E990F4207F4168003FFE57 /* AppDelegate.swift */,
 				08E990F6207F4168003FFE57 /* MemeEditorViewController.swift */,
@@ -143,6 +168,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				08590BD5208109D800AC5D7C /* Meme.swift in Sources */,
+				086EA9492088608E00B17463 /* SentMemesTableViewCell.swift in Sources */,
+				086EA94320885FD300B17463 /* SentMemesTableViewController.swift in Sources */,
+				086EA94520885FF000B17463 /* SentMemesCollectionViewController.swift in Sources */,
 				08E990F7207F4168003FFE57 /* MemeEditorViewController.swift in Sources */,
 				08E990F5207F4168003FFE57 /* AppDelegate.swift in Sources */,
 			);
