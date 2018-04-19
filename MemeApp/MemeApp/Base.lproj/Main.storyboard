@@ -141,10 +141,10 @@
             </objects>
             <point key="canvasLocation" x="3525" y="-71"/>
         </scene>
-        <!--Collection View Controller-->
+        <!--Sent Memes Collection View Controller-->
         <scene sceneID="z9w-Zi-rl7">
             <objects>
-                <collectionViewController id="Lea-3l-ia2" sceneMemberID="viewController">
+                <collectionViewController id="Lea-3l-ia2" customClass="SentMemesCollectionViewController" customModule="MemeApp" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Pbl-ns-8ao">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -156,7 +156,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="9bU-80-wqX">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sentMemesCollectionViewCell" id="9bU-80-wqX" customClass="SentMemesCollectionViewCell" customModule="MemeApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="104" height="104"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -164,11 +164,14 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GON-nc-6R9">
-                                            <rect key="frame" x="9" y="7" width="86" height="89"/>
+                                            <rect key="frame" x="12" y="12" width="80" height="80"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
                                     </subviews>
                                 </view>
+                                <connections>
+                                    <outlet property="memeImageView" destination="GON-nc-6R9" id="TYT-zS-q5V"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -302,6 +305,6 @@
         <image name="table" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Qv9-ql-cE7"/>
+        <segue reference="gYY-EJ-iPJ"/>
     </inferredMetricsTieBreakers>
 </document>
