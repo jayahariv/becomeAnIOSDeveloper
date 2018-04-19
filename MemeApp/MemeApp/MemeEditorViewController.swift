@@ -87,10 +87,13 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     
     func save() {
         // hoping this will be used in Meme2.0 App
-       let _ = Meme(topText: topTextField.text!,
+       let meme = Meme(topText: topTextField.text!,
              bottomText: bottomTextField.text!,
              originalImage: imageView.image!,
              memedImage: memedImage!)
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.memes.append(meme)
     }
     
     // MARK: lifecycle
@@ -141,7 +144,7 @@ class MemeEditorViewController: UIViewController, UINavigationControllerDelegate
     }
     
     @IBAction func onCancel(_ sender: UIBarButtonItem) {
-        // TODO: Hoping this will be functional in Meme2.0
+        dismiss(animated: true, completion: nil)
     }
 }
 

@@ -12,5 +12,10 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    /*
+     * Stores the list of memes send so far!
+     */
+    var memes = [Meme]()
 }
 
