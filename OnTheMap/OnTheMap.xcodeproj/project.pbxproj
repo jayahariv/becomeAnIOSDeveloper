@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		085AE01C209941EA00DBA698 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE01B209941EA00DBA698 /* HttpClient.swift */; };
+		085AE01E2099420B00DBA698 /* UdacityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE01D2099420B00DBA698 /* UdacityConstants.swift */; };
+		085AE0222099428200DBA698 /* UdacityConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE0212099428200DBA698 /* UdacityConvenience.swift */; };
+		085AE025209945DD00DBA698 /* ParseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE024209945DD00DBA698 /* ParseConfig.swift */; };
+		085AE0272099976700DBA698 /* HttpErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE0262099976700DBA698 /* HttpErrors.swift */; };
+		085AE0292099A15900DBA698 /* HttpConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE0282099A15900DBA698 /* HttpConstants.swift */; };
 		08F5A9E520991E660098946D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F5A9E420991E660098946D /* AppDelegate.swift */; };
 		08F5A9E720991E660098946D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F5A9E620991E660098946D /* LoginViewController.swift */; };
 		08F5A9EA20991E660098946D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08F5A9E820991E660098946D /* Main.storyboard */; };
@@ -15,6 +21,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		085AE01B209941EA00DBA698 /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
+		085AE01D2099420B00DBA698 /* UdacityConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UdacityConstants.swift; sourceTree = "<group>"; };
+		085AE0212099428200DBA698 /* UdacityConvenience.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UdacityConvenience.swift; sourceTree = "<group>"; };
+		085AE024209945DD00DBA698 /* ParseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseConfig.swift; sourceTree = "<group>"; };
+		085AE0262099976700DBA698 /* HttpErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpErrors.swift; sourceTree = "<group>"; };
+		085AE0282099A15900DBA698 /* HttpConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpConstants.swift; sourceTree = "<group>"; };
 		08F5A9E120991E660098946D /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08F5A9E420991E660098946D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		08F5A9E620991E660098946D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -35,6 +47,51 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		085AE0172099415A00DBA698 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				08F5A9F020991E670098946D /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		085AE018209941A900DBA698 /* Clients */ = {
+			isa = PBXGroup;
+			children = (
+				085AE01A209941C900DBA698 /* shared */,
+				085AE019209941B200DBA698 /* udacity */,
+				085AE023209945B900DBA698 /* parse */,
+			);
+			name = Clients;
+			sourceTree = "<group>";
+		};
+		085AE019209941B200DBA698 /* udacity */ = {
+			isa = PBXGroup;
+			children = (
+				085AE01D2099420B00DBA698 /* UdacityConstants.swift */,
+				085AE0212099428200DBA698 /* UdacityConvenience.swift */,
+			);
+			name = udacity;
+			sourceTree = "<group>";
+		};
+		085AE01A209941C900DBA698 /* shared */ = {
+			isa = PBXGroup;
+			children = (
+				085AE01B209941EA00DBA698 /* HttpClient.swift */,
+				085AE0262099976700DBA698 /* HttpErrors.swift */,
+				085AE0282099A15900DBA698 /* HttpConstants.swift */,
+			);
+			name = shared;
+			sourceTree = "<group>";
+		};
+		085AE023209945B900DBA698 /* parse */ = {
+			isa = PBXGroup;
+			children = (
+				085AE024209945DD00DBA698 /* ParseConfig.swift */,
+			);
+			name = parse;
+			sourceTree = "<group>";
+		};
 		08F5A9D820991E660098946D = {
 			isa = PBXGroup;
 			children = (
@@ -54,14 +111,47 @@
 		08F5A9E320991E660098946D /* OnTheMap */ = {
 			isa = PBXGroup;
 			children = (
+				08F5A9F7209940C20098946D /* Model */,
+				08F5A9F9209940CF0098946D /* View */,
+				08F5A9FA209940D70098946D /* Controller */,
+				085AE0172099415A00DBA698 /* Supporting Files */,
 				08F5A9E420991E660098946D /* AppDelegate.swift */,
+				08F5A9FB209940E70098946D /* Assets */,
+			);
+			path = OnTheMap;
+			sourceTree = "<group>";
+		};
+		08F5A9F7209940C20098946D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				085AE018209941A900DBA698 /* Clients */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		08F5A9F9209940CF0098946D /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		08F5A9FA209940D70098946D /* Controller */ = {
+			isa = PBXGroup;
+			children = (
 				08F5A9E620991E660098946D /* LoginViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		08F5A9FB209940E70098946D /* Assets */ = {
+			isa = PBXGroup;
+			children = (
 				08F5A9E820991E660098946D /* Main.storyboard */,
 				08F5A9EB20991E670098946D /* Assets.xcassets */,
 				08F5A9ED20991E670098946D /* LaunchScreen.storyboard */,
-				08F5A9F020991E670098946D /* Info.plist */,
 			);
-			path = OnTheMap;
+			name = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,8 +225,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				085AE0272099976700DBA698 /* HttpErrors.swift in Sources */,
+				085AE0292099A15900DBA698 /* HttpConstants.swift in Sources */,
 				08F5A9E720991E660098946D /* LoginViewController.swift in Sources */,
+				085AE01E2099420B00DBA698 /* UdacityConstants.swift in Sources */,
+				085AE01C209941EA00DBA698 /* HttpClient.swift in Sources */,
 				08F5A9E520991E660098946D /* AppDelegate.swift in Sources */,
+				085AE025209945DD00DBA698 /* ParseConfig.swift in Sources */,
+				085AE0222099428200DBA698 /* UdacityConvenience.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
