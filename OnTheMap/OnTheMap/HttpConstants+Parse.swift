@@ -1,5 +1,5 @@
 //
-//  ParseConfig.swift
+//  HttpConstants+Parse.swift
 //  OnTheMap
 //
 //  Created by Jayahari Vavachan on 5/1/18.
@@ -10,10 +10,9 @@ import Foundation
 
 extension HttpConstants {
     
-    static func parseSchema() -> String {
-        return "https"
+    struct ParseConstants {
+        static let scheme = "https";
+        static let host = "parse.udacity.com"
     }
-    static func parseHost() -> String {
-        return "parse.udacity.com"
-    }
+    
 }

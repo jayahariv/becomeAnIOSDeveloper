@@ -19,16 +19,18 @@ class HttpErrors {
         
         /* all the error which will happen when any URLSession task fails */
         static let URLSessionTaskFailure = "URLSessionTaskFailure"
+        
+        static let HTTPGeneralFailure = "HTTPGeneralFailure"
     }
     
+    // common error codes are predefined
     struct HttpErrorCode {
         static let ErrorNotEmpty = 1_1001
         static let NoData = 1_1002
         static let InvalidStatusCode = 1_1003
         static let InvalidJSONObject = 1_1004
-    }
-    
-    struct HttpErrorUserInfoKeys {
-        static let message = "message"
+        static let InvalidType = 1_1005
+        
+        static let RequestCreationError = 2_1001
     }
 }

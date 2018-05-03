@@ -20,20 +20,14 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        HttpClient().get(.udacity, method: HttpConstants.Methods.AuthenticationSession, params: nil) { (result, error) in
-            print("first repsonse")
-        }
         
-        HttpClient().get(.parse, method: HttpConstants.Methods.AuthenticationSession, params: nil) { (resault, error) in
-            print("second response")
-        }
-        
-        print()
     }
     
     // MARK: Button Actions
     @IBAction func onLogin(_ sender: UIButton) {
-        
+        HttpClient.shared.authenticate(userName: emailTextField.text!, password: passwordTextField.text!) { (result, error) in
+            // present
+        }
     }
     
     @IBAction func onSignUp(_ sender: UIButton) {
