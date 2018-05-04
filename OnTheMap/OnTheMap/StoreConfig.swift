@@ -1,5 +1,5 @@
 //
-//  UdacityConfig.swift
+//  StoreConfig.swift
 //  OnTheMap
 //
 //  Created by Jayahari Vavachan on 5/2/18.
@@ -8,12 +8,13 @@
 
 import Foundation
 
-class UdacityConfig: NSObject {
+class StoreConfig: NSObject {
     
     var sessionId: String?
     var sessionExpiry: String?
+    var accountKey: String?
     
-    static let shared: UdacityConfig = {
-       return UdacityConfig()
+    static let shared: StoreConfig = {
+       return StoreConfig()
     }()
 }

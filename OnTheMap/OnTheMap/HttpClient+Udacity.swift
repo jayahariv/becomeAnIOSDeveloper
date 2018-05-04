@@ -28,7 +28,7 @@ extension HttpClient {
                                completionHandler: @escaping UdacityNewSessionCompletionHandler) {
         
         // GUARD: whether the request created successfully
-        guard let request = urlRequest(.udacity, path: HttpConstants.UdacityMethods.AuthenticationSession) else {
+        guard let request = udacityRequest(HttpConstants.UdacityMethods.AuthenticationSession) else {
             
             let error = NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
                                 code: HttpErrors.HttpErrorCode.RequestCreationError, userInfo: nil)
@@ -72,11 +72,27 @@ extension HttpClient {
                 return
             }
             
-            UdacityConfig.shared.sessionId = sessionId
-            UdacityConfig.shared.sessionExpiry = sessionExpiry
+            guard let accountDetails = result![HttpConstants.UdacityResponseKeys.account] as? Dictionary<String, AnyObject> else {
+                showError(HttpErrors.HttpErrorCode.InvalidType)
+                return
+            }
+            
+            // GUARD: valid session-ID and sessionExpiry present inside the session details
+            guard let accountKey = accountDetails[HttpConstants.UdacityResponseKeys.accountKey] as? String else {
+                showError(HttpErrors.HttpErrorCode.InvalidType)
+                return
+            }
+            
+            StoreConfig.shared.sessionId = sessionId
+            StoreConfig.shared.sessionExpiry = sessionExpiry
+            StoreConfig.shared.accountKey = accountKey
             
             // SUCCESS
             completionHandler(sessionId, sessionExpiry, nil)
         }
+    }
+    
+    func udacityRequest(_ path: String, params: [String: AnyObject] = [:]) -> URLRequest? {
+        return urlRequest(.udacity, path: path, headers: [:], params: params)
     }
 }

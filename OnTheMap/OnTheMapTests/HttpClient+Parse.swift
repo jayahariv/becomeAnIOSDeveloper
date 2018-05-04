@@ -22,7 +22,7 @@ class HttpClient_Parse: XCTestCase {
         super.tearDown()
     }
     
-    func testFailureStudentLocation() {
+    func testNoStudentLocation() {
         
         let promise = expectation(description: "OnTheMap- Unit Test")
         
@@ -45,6 +45,23 @@ class HttpClient_Parse: XCTestCase {
             XCTAssert(error == nil, "No Error should happen")
             XCTAssert(result != nil, "Student Location UNit test failed!!")
             XCTAssert(result?.count == 20, "Student Location UNit test failed!!")
+            promise.fulfill()
+        }
+        
+        waitForExpectations(timeout: 30, handler: nil)
+    }
+    
+    func testMyLocationNoData() {
+        
+        let promise = expectation(description: "OnTheMap- Unit Test")
+        
+        StoreConfig.shared.accountKey = "11470468759"
+        HttpClient.shared.getMyLocation() { (result, error) in
+            
+            print(error)
+            XCTAssert(error == nil, "No Error should happen")
+            XCTAssert(result != nil, "Student Location result empty!!")
+            XCTAssert(result?.count == 0, "Student Location result is having list")
             promise.fulfill()
         }
         

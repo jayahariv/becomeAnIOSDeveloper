@@ -34,5 +34,7 @@ extension HttpConstants {
         static let session = "session"
         static let sessionId = "id"
         static let sessionExpiry = "expiration"
+        static let account = "account"
+        static let accountKey = "key"
     }
 }

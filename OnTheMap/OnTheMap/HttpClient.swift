@@ -29,8 +29,7 @@ class HttpClient: NSObject {
         
         let task = session.dataTask(with: urlRequest) { [unowned self] (data, response, error) in
             
-            print(response)
-            
+            print(urlRequest.url?.absoluteString)
             guard error == nil else {
                 self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
                             code: HttpErrors.HttpErrorCode.ErrorNotEmpty,
@@ -86,8 +85,6 @@ class HttpClient: NSObject {
     
     // GET request
     func get(_ urlRequest: URLRequest, completionHandler: @escaping HTTPCompletionHandler) {
-        print(urlRequest.url?.absoluteString ?? "NO URL!!!")
-        print("headers: \(urlRequest.allHTTPHeaderFields)")
         task(urlRequest, completionHandler: completionHandler)
     }
     
@@ -113,7 +110,7 @@ class HttpClient: NSObject {
     func urlRequest(_ client: HttpConstants.Clients,
                     path: String,
                     headers: [String: String] = [:],
-                    params: [String: String] = [:]) -> URLRequest? {
+                    params: [String: AnyObject] = [:]) -> URLRequest? {
         
         var urlComponents = URLComponents()
         switch client {
@@ -129,7 +126,7 @@ class HttpClient: NSObject {
         
         var queryItems = [URLQueryItem]()
         for (key, value) in params {
-            queryItems.append(URLQueryItem(name: key, value: value))
+            queryItems.append(URLQueryItem(name: key, value: "\(value)"))
         }
         urlComponents.queryItems = queryItems
         

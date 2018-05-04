@@ -33,5 +33,7 @@ class HttpErrors {
         
         static let RequestCreationError = 2_1001
         static let NoResultDictionary = 2_1002
+        
+        static let LoginKeyNotFound = 3_1001
     }
 }

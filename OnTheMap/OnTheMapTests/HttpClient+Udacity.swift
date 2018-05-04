@@ -43,7 +43,12 @@ class HttpClient_Udacity: XCTestCase {
         HttpClient.shared.authenticate(userName: "6wypslp86ooc@gmail.com", password: "7Y8NRSlT37kw") { (sessionId, sessionExpiry, error) in
             XCTAssert(error == nil, "Authentication Unit test failed")
             XCTAssert(sessionId != nil, "Needed a valid sessionID")
-            XCTAssert(sessionExpiry != nil, "Needed a valid session expiry")
+            
+            guard sessionExpiry != nil else {
+                XCTFail("Session Expiry should be present")
+                promise.fulfill()
+                return
+            }
             
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
