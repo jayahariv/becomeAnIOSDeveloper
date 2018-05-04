@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import CoreLocation
 
 @testable import OnTheMap
 
@@ -58,9 +59,37 @@ class HttpClient_Parse: XCTestCase {
         StoreConfig.shared.accountKey = "11470468759"
         HttpClient.shared.getMyLocation() { (result, error) in
             
+            print(result)
             XCTAssert(error == nil, "No Error should happen")
             XCTAssert(result != nil, "Student Location result empty!!")
             XCTAssert(result?.count == 0, "Student Location result is having list")
+            promise.fulfill()
+        }
+        
+        waitForExpectations(timeout: 30, handler: nil)
+    }
+    
+    func testNewLocationPost() {
+        
+        let promise = expectation(description: "OnTheMap- Unit Test")
+        
+        StoreConfig.shared.accountKey = "11470468759"
+        StoreConfig.shared.firstName = "John"
+        StoreConfig.shared.lastName = "Doe"
+        
+        HttpClient.shared.postNewLocation("Mountain View, CA", info: "http://www.google.com") { (createdAt, error) in
+            
+            XCTAssert(error == nil, "No Error should happen")
+            if let createdAt = createdAt {
+                
+                // check for a day gap, as the server is showing some error!!!
+                let day: Double = 24 * 60 * 60
+                XCTAssert(createdAt < Date().addingTimeInterval(day), "Shouldn't be future time")
+                XCTAssert(createdAt > Date().addingTimeInterval(-day), "Shouldn't be too much past ")
+            } else {
+                XCTFail("createdAt shouldn't be empty!")
+            }
+            
             promise.fulfill()
         }
         

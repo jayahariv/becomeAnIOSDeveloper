@@ -14,6 +14,7 @@
 		085AE0272099976700DBA698 /* HttpErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE0262099976700DBA698 /* HttpErrors.swift */; };
 		085AE0292099A15900DBA698 /* HttpConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE0282099A15900DBA698 /* HttpConstants.swift */; };
 		0872D1E9209C34EE00F05639 /* OnTheMapUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0872D1E8209C34EE00F05639 /* OnTheMapUtils.swift */; };
+		0872D1EB209C494300F05639 /* Date+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0872D1EA209C494300F05639 /* Date+Utility.swift */; };
 		08F5A9E520991E660098946D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F5A9E420991E660098946D /* AppDelegate.swift */; };
 		08F5A9E720991E660098946D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F5A9E620991E660098946D /* LoginViewController.swift */; };
 		08F5A9EA20991E660098946D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08F5A9E820991E660098946D /* Main.storyboard */; };
@@ -43,6 +44,7 @@
 		085AE0262099976700DBA698 /* HttpErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpErrors.swift; sourceTree = "<group>"; };
 		085AE0282099A15900DBA698 /* HttpConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpConstants.swift; sourceTree = "<group>"; };
 		0872D1E8209C34EE00F05639 /* OnTheMapUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnTheMapUtils.swift; sourceTree = "<group>"; };
+		0872D1EA209C494300F05639 /* Date+Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utility.swift"; sourceTree = "<group>"; };
 		08F5A9E120991E660098946D /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08F5A9E420991E660098946D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		08F5A9E620991E660098946D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				0872D1E8209C34EE00F05639 /* OnTheMapUtils.swift */,
+				0872D1EA209C494300F05639 /* Date+Utility.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 				08F5A9E720991E660098946D /* LoginViewController.swift in Sources */,
 				085AE01E2099420B00DBA698 /* HttpConstants+Udacity.swift in Sources */,
 				085AE01C209941EA00DBA698 /* HttpClient.swift in Sources */,
+				0872D1EB209C494300F05639 /* Date+Utility.swift in Sources */,
 				08F5A9E520991E660098946D /* AppDelegate.swift in Sources */,
 				085AE025209945DD00DBA698 /* HttpConstants+Parse.swift in Sources */,
 				0872D1E9209C34EE00F05639 /* OnTheMapUtils.swift in Sources */,

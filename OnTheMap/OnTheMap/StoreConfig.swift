@@ -20,4 +20,12 @@ class StoreConfig: NSObject {
     static let shared: StoreConfig = {
        return StoreConfig()
     }()
+    
+    func clear() {
+        sessionId = nil
+        sessionExpiry = nil
+        accountKey = nil
+        firstName = nil
+        lastName = nil
+    }
 }

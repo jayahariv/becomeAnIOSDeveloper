@@ -26,6 +26,7 @@ class HttpClient_Udacity: XCTestCase {
         
         let promise = expectation(description: "OnTheMap- Unit Test")
         
+        StoreConfig.shared.clear()
         HttpClient.shared.authenticate(userName: "abcd@gmail.com", password: "abcd") { (success, error) in
             
             XCTAssert(error?.code == HttpErrors.HttpErrorCode.InvalidStatusCode, "Authentication Unit test failed")
