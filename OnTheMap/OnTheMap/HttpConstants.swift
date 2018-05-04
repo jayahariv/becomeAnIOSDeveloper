@@ -8,4 +8,8 @@
 
 import Foundation
 
-class HttpConstants: NSObject { }
+class HttpConstants: NSObject {
+    enum Clients {
+        case udacity, parse;
+    }
+}

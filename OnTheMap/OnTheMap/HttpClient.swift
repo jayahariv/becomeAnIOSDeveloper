@@ -29,6 +29,8 @@ class HttpClient: NSObject {
         
         let task = session.dataTask(with: urlRequest) { [unowned self] (data, response, error) in
             
+            print(response)
+            
             guard error == nil else {
                 self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
                             code: HttpErrors.HttpErrorCode.ErrorNotEmpty,
@@ -85,6 +87,7 @@ class HttpClient: NSObject {
     // GET request
     func get(_ urlRequest: URLRequest, completionHandler: @escaping HTTPCompletionHandler) {
         print(urlRequest.url?.absoluteString ?? "NO URL!!!")
+        print("headers: \(urlRequest.allHTTPHeaderFields)")
         task(urlRequest, completionHandler: completionHandler)
     }
     
@@ -107,11 +110,21 @@ class HttpClient: NSObject {
     
     // MARK: ------ Helper Methods ------
     
-    func urlRequest(_ path: String, params: [String: String] = [:]) -> URLRequest? {
+    func urlRequest(_ client: HttpConstants.Clients,
+                    path: String,
+                    headers: [String: String] = [:],
+                    params: [String: String] = [:]) -> URLRequest? {
         
         var urlComponents = URLComponents()
-        urlComponents.scheme = HttpConstants.UdacityConstants.scheme
-        urlComponents.host = HttpConstants.UdacityConstants.host
+        switch client {
+        case .udacity:
+            urlComponents.scheme = HttpConstants.UdacityConstants.scheme
+            urlComponents.host = HttpConstants.UdacityConstants.host
+        case .parse:
+            urlComponents.scheme = HttpConstants.ParseConstants.scheme
+            urlComponents.host = HttpConstants.ParseConstants.host
+        }
+        
         urlComponents.path = path
         
         var queryItems = [URLQueryItem]()
@@ -124,7 +137,12 @@ class HttpClient: NSObject {
             return nil
         }
         
-        return URLRequest(url: url)
+        var request = URLRequest(url: url)
+        for (key, value) in headers {
+            request.addValue(value, forHTTPHeaderField: key)
+        }
+        
+        return request
     }
     
     func finish(_ domain: String?, code: Int, info: [String : Any]? = nil, completionHandler: HTTPCompletionHandler?) {

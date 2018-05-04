@@ -15,11 +15,9 @@ extension HttpClient {
     // MARK: ------ Public APIs ------
     func authenticate(userName: String,
                       password: String,
-                      completionHandler: @escaping HTTPCompletionHandler) {
+                      completionHandler: @escaping UdacityNewSessionCompletionHandler) {
         
-        getNewSession(userName: userName, password: password) { (sessionId, expiry, error) in
-           
-        }
+        getNewSession(userName: userName, password: password, completionHandler: completionHandler)
         
     }
     
@@ -30,7 +28,7 @@ extension HttpClient {
                                completionHandler: @escaping UdacityNewSessionCompletionHandler) {
         
         // GUARD: whether the request created successfully
-        guard let request = urlRequest(HttpConstants.UdacityMethods.AuthenticationSession) else {
+        guard let request = urlRequest(.udacity, path: HttpConstants.UdacityMethods.AuthenticationSession) else {
             
             let error = NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
                                 code: HttpErrors.HttpErrorCode.RequestCreationError, userInfo: nil)
@@ -39,7 +37,6 @@ extension HttpClient {
         }
         
         let bodyParams = ["udacity": [ "username": userName, "password": password ]] as [String : AnyObject]
-        
         post(request, parameters: bodyParams) { [unowned self] (result, error) in
             
             func showError(_ code: Int) {

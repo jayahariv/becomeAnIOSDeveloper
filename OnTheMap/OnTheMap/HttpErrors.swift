@@ -32,5 +32,6 @@ class HttpErrors {
         static let InvalidType = 1_1005
         
         static let RequestCreationError = 2_1001
+        static let NoResultDictionary = 2_1002
     }
 }
