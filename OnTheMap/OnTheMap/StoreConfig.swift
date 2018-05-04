@@ -14,6 +14,9 @@ class StoreConfig: NSObject {
     var sessionExpiry: String?
     var accountKey: String?
     
+    var firstName: String?
+    var lastName: String?
+    
     static let shared: StoreConfig = {
        return StoreConfig()
     }()

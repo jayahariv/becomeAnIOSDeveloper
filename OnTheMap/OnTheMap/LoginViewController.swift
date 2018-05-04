@@ -25,8 +25,8 @@ class LoginViewController: UIViewController {
     
     // MARK: Button Actions
     @IBAction func onLogin(_ sender: UIButton) {
-        HttpClient.shared.authenticate(userName: emailTextField.text!, password: passwordTextField.text!) { (sessionId, sessionExpiry, error) in
-         // implement
+        HttpClient.shared.authenticate(userName: emailTextField.text!, password: passwordTextField.text!) { (success, error) in
+            print("SUCCESS: \(success)")
         }
     }
     

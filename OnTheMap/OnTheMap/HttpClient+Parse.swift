@@ -8,9 +8,12 @@
 
 import Foundation
 
+// MARK: ----- Completion Handler Type Alias -----
+
 typealias StudentLocationHandler = (_ studentLocation: [[String: AnyObject]]?, _ error: NSError?) -> Void
 typealias MyLocationHandler = (_ location: [String: AnyObject]?, _ error: NSError?) -> Void
 
+// MARK: ----- Parse Specific Enums -----
 // struct defined for the sorting order keys
 struct StudentLocationSortOrder {
     static let updatedAt = "updatedAt"
@@ -19,6 +22,7 @@ struct StudentLocationSortOrder {
 
 extension HttpClient {
     
+    // MARK: ----- Public APIs -----
     /*
         Page, PageCount => this function will receive the page number and number of items per page.
         For example, page=1, pageCount=100 will return the first 100 items. For page=2, pageCount=200, you will reieve
@@ -129,6 +133,9 @@ extension HttpClient {
             
         }
     }
+    
+    
+    // MARK: ----- Private Helper methods -----
     
     // this method will convert input as Parse API compatible URLRequest
     func parseURLRequest(_ path: String, params: [String: AnyObject] = [:]) -> URLRequest? {
