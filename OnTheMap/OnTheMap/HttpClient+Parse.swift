@@ -87,7 +87,9 @@ extension HttpClient {
             return
         }
         let params = [
-            "where": "{\"uniqueKey\":\"\(accountKey)\"}"
+            HttpConstants.ParseParameterKeys.where: substitudeKeyInString(HttpConstants.ParseParameterKeys.uniqueKeyString,
+                                                                          key: HttpConstants.ParseParameterKeys.uniqueKey,
+                                                                          value: accountKey)
         ]
         
         // GUARD: Valid request created

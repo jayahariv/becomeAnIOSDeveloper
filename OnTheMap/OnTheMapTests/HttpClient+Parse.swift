@@ -58,7 +58,6 @@ class HttpClient_Parse: XCTestCase {
         StoreConfig.shared.accountKey = "11470468759"
         HttpClient.shared.getMyLocation() { (result, error) in
             
-            print(error)
             XCTAssert(error == nil, "No Error should happen")
             XCTAssert(result != nil, "Student Location result empty!!")
             XCTAssert(result?.count == 0, "Student Location result is having list")

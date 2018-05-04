@@ -30,7 +30,9 @@ extension HttpConstants {
         static let limit = "limit"
         static let skip = "skip"
         static let order = "order"
-        static let uniqueKey = "uniqueKey"
+        static let uniqueKeyString = "{\"uniqueKey\":\"{key}\"}"
+        static let uniqueKey = "key"
+        static let `where` = "where"
     }
     
     struct ParseResponseKeys {

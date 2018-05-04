@@ -29,7 +29,6 @@ class HttpClient: NSObject {
         
         let task = session.dataTask(with: urlRequest) { [unowned self] (data, response, error) in
             
-            print(urlRequest.url?.absoluteString)
             guard error == nil else {
                 self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
                             code: HttpErrors.HttpErrorCode.ErrorNotEmpty,
@@ -147,5 +146,12 @@ class HttpClient: NSObject {
         let error = NSError(domain: domain ?? HttpErrors.HttpErrorDomain.HTTPGeneralFailure, code: code, userInfo: info)
         
         completionHandler?(nil, error)
+    }
+    
+    func substitudeKeyInString(_ string: String, key: String, value: String) -> String? {
+        if string.range(of: "{\(key)}") != nil {
+            return string.replacingOccurrences(of: "{\(key)}", with: "\(value)")
+        }
+        return nil
     }
 }
