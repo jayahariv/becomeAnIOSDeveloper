@@ -51,5 +51,6 @@ extension HttpConstants {
         static let results = "results"
         static let createdAt = "createdAt"
         static let objectId = "objectId"
+        static let updatedAt = "updatedAt"
     }
 }

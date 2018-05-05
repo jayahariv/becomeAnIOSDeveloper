@@ -56,9 +56,12 @@ class HttpClient: NSObject {
     func urlRequest(_ client: HttpConstants.Clients,
                     path: String,
                     headers: [String: String] = [:],
-                    params: [String: AnyObject] = [:]) -> URLRequest? {
+                    params: [String: AnyObject] = [:]) throws -> URLRequest {
         
         var urlComponents = URLComponents()
+        urlComponents.path = path
+        
+        // Scheme and Host are prepared here
         switch client {
         case .udacity:
             urlComponents.scheme = HttpConstants.UdacityConstants.scheme
@@ -68,8 +71,7 @@ class HttpClient: NSObject {
             urlComponents.host = HttpConstants.ParseConstants.host
         }
         
-        urlComponents.path = path
-        
+        // Query Items are prepared here...
         var queryItems = [URLQueryItem]()
         for (key, value) in params {
             queryItems.append(URLQueryItem(name: key, value: "\(value)"))
@@ -77,7 +79,9 @@ class HttpClient: NSObject {
         urlComponents.queryItems = queryItems
         
         guard let url = urlComponents.url else {
-            return nil
+            throw NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
+                          code: HttpErrors.HttpErrorCode.NoData,
+                          userInfo: nil)
         }
         
         var request = URLRequest(url: url)
@@ -88,18 +92,13 @@ class HttpClient: NSObject {
         return request
     }
     
-    func finish(_ domain: String?, code: Int, info: [String : Any]? = nil, completionHandler: HTTPCompletionHandler?) {
-        
-        let error = NSError(domain: domain ?? HttpErrors.HttpErrorDomain.HTTPGeneralFailure, code: code, userInfo: info)
-        
-        completionHandler?(nil, error)
-    }
-    
-    func substitudeKeyInString(_ string: String, key: String, value: String) -> String? {
+    func substitudeKeyInString(_ string: String, key: String, value: String) throws -> String {
         if string.range(of: "{\(key)}") != nil {
             return string.replacingOccurrences(of: "{\(key)}", with: "\(value)")
         }
-        return nil
+        throw NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
+                      code: HttpErrors.HttpErrorCode.NoData,
+                      userInfo: nil)
     }
 }
 
@@ -110,21 +109,18 @@ private extension HttpClient {
     // Session Task
     private func task(_ urlRequest: URLRequest, completionHandler: @escaping HTTPCompletionHandler) {
         
-        let task = session.dataTask(with: urlRequest) { [unowned self] (data, response, error) in
+        let task = session.dataTask(with: urlRequest) { (data, response, error) in
             
             guard error == nil else {
-                self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                            code: HttpErrors.HttpErrorCode.ErrorNotEmpty,
-                            info: (error as? URLError)?.userInfo,
-                            completionHandler: completionHandler)
+                completionHandler(nil, error! as NSError)
                 return
             }
             
             guard data != nil else {
-                self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                            code: HttpErrors.HttpErrorCode.NoData,
-                            info: (error as? URLError)?.userInfo,
-                            completionHandler: completionHandler)
+                
+                completionHandler(nil, NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                               code: HttpErrors.HttpErrorCode.NoData,
+                                               userInfo: nil))
                 return
             }
             
@@ -133,10 +129,9 @@ private extension HttpClient {
                 statusCode <= 299, statusCode >= 200
                 else {
                     
-                    self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                                code: HttpErrors.HttpErrorCode.InvalidStatusCode,
-                                info: (error as? URLError)?.userInfo,
-                                completionHandler: completionHandler)
+                    completionHandler(nil, NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                                   code: HttpErrors.HttpErrorCode.InvalidStatusCode,
+                                                   userInfo: nil))
                     return
             }
             
@@ -151,9 +146,10 @@ private extension HttpClient {
                 let serializedData = try? JSONSerialization.jsonObject(with: newData!,
                                                                        options: .allowFragments) as AnyObject
                 else {
-                    self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                                code: HttpErrors.HttpErrorCode.InvalidJSONObject,
-                                completionHandler: completionHandler)
+                    
+                    completionHandler(nil, NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                                   code: HttpErrors.HttpErrorCode.InvalidJSONObject,
+                                                   userInfo: nil))
                     return
             }
             
@@ -168,6 +164,7 @@ private extension HttpClient {
     func jsonTaskWithParameters(_ urlRequest: URLRequest,
                                 parameters: [String: AnyObject]?,
                                 completionHandler: @escaping HTTPCompletionHandler) {
+        
         var mutableURLRequest = urlRequest
         mutableURLRequest.addValue("application/json", forHTTPHeaderField: "accept")
         mutableURLRequest.addValue("application/json", forHTTPHeaderField: "content-type")

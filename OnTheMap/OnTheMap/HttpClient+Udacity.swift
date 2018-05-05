@@ -21,169 +21,140 @@ extension HttpClient {
                       password: String,
                       completionHandler: @escaping UdacityNewSessionCompletionHandler) {
         
-        getNewSession(userName: userName, password: password) { [unowned self] (sessionId, accountKey, error) in
+        do {
             
-            func showError(_ code: Int) {
-                let error = NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                                    code: code,
-                                    userInfo: nil)
-                completionHandler(false, error)
+            try getNewSession(userName: userName, password: password) { [unowned self] (sessionId, sessionExpiry, accountKey, error) in
+                
+                do {
+                    guard error == nil else {
+                        throw error!
+                    }
+                    
+                    guard sessionId != nil, sessionExpiry != nil, accountKey != nil else {
+                        throw NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                      code: HttpErrors.HttpErrorCode.LoginKeyNotFound,
+                                      userInfo: nil)
+                    }
+                    
+                    // SAVE DATA to STORE
+                    StoreConfig.shared.sessionId = sessionId
+                    StoreConfig.shared.sessionExpiry = sessionExpiry
+                    StoreConfig.shared.accountKey = accountKey
+                    
+                    try self.getPublicUserData(completionHandler: { (firstName, lastName, error) in
+                        
+                        do {
+                            guard error == nil else {
+                                throw error!
+                            }
+                            
+                            guard firstName != nil, lastName != nil else {
+                                throw NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                              code: HttpErrors.HttpErrorCode.NoValidResultDictionary,
+                                              userInfo: nil)
+                            }
+                            
+                            // SAVE DATA to STORE
+                            StoreConfig.shared.firstName = firstName
+                            StoreConfig.shared.lastName = lastName
+                            
+                            completionHandler(true, nil)
+                            
+                        } catch {
+                            completionHandler(false, error as NSError)
+                        }
+                    })
+                } catch {
+                    completionHandler(false, error as NSError)
+                }
             }
             
-            guard error == nil else {
-                completionHandler(false, error)
-                return
-            }
-            
-            guard sessionId != nil else {
-                showError(HttpErrors.HttpErrorCode.LoginKeyNotFound)
-                return
-            }
-            
-            guard accountKey != nil else {
-                showError(HttpErrors.HttpErrorCode.LoginKeyNotFound)
-                return
-            }
-            
-            self.getPublicUserData(completionHandler: { (firstName, lastName, error) in
-                func showError(_ code: Int) {
-                    let error = NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                                        code: code,
-                                        userInfo: nil)
-                    completionHandler(false, error)
-                }
-                
-                guard error == nil else {
-                    completionHandler(false, error)
-                    return
-                }
-                
-                guard firstName != nil else {
-                    showError(HttpErrors.HttpErrorCode.NoValidResultDictionary)
-                    return
-                }
-                
-                guard lastName != nil else {
-                    showError(HttpErrors.HttpErrorCode.NoValidResultDictionary)
-                    return
-                }
-                
-                completionHandler(true, nil)
-                
-            })
+        } catch {
+            completionHandler(false, error as NSError)
         }
-        
     }
 }
 
+
 private extension HttpClient {
+    
+    typealias HttpClientNewSessionHandler = (_ sessionId: String?, _ sessionExpiry: String?,  _ accountKet: String?, _ error: NSError?) -> Void
+    typealias HttpClientPublicUserDataHandler = (_ firstName: String?, _ lastName: String?, _ error: NSError?) -> Void
+    
     // MARK: ------ Private APIs ------
     
     func getNewSession(userName: String,
                        password: String,
-                       completionHandler: @escaping (_ sessionId: String?, _ accountKet: String?, _ error: NSError?) -> Void) {
-        
-        // GUARD: whether the request created successfully
-        guard let request = udacityRequest(HttpConstants.UdacityMethods.AuthenticationSession) else {
+                       completionHandler: @escaping HttpClientNewSessionHandler) throws {
+        // request
+        let request: URLRequest!
+        do {
             
-            let error = NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
-                                code: HttpErrors.HttpErrorCode.RequestCreationError, userInfo: nil)
-            completionHandler(nil, nil, error)
-            return
+            request = try udacityRequest(HttpConstants.UdacityMethods.AuthenticationSession)
+        } catch {
+            
+            throw error
         }
         
-        let bodyParams = ["udacity": [ "username": userName, "password": password ]] as [String : AnyObject]
-        post(request, parameters: bodyParams) { [unowned self] (result, error) in
+        // body
+        let bodyParams = [
+            HttpConstants.UdacityParameterKeys.udacity: [
+                HttpConstants.UdacityParameterKeys.username: userName,
+                HttpConstants.UdacityParameterKeys.password: password ]
+            ] as [String : AnyObject]
+        
+        
+        post(request, parameters: bodyParams) {(result, error) in
             
-            func showError(_ code: Int) {
-                let error = NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                                    code: code, userInfo: error?.userInfo)
-                completionHandler(nil, nil, error)
+            do {
+                // GUARD: No error present
+                guard error == nil else {
+                    throw error!
+                }
+                
+                // GUARD: parse and check whether the correct response is returned
+                guard
+                    ((result as? Dictionary<String, AnyObject>) != nil),
+                    let sessionDetails = result![HttpConstants.UdacityResponseKeys.session] as? Dictionary<String, String>,
+                    let sessionId = sessionDetails[HttpConstants.UdacityResponseKeys.sessionId],
+                    let sessionExpiry = sessionDetails[HttpConstants.UdacityResponseKeys.sessionExpiry],
+                    let accountDetails = result![HttpConstants.UdacityResponseKeys.account] as? Dictionary<String, AnyObject>,
+                    let accountKey = accountDetails[HttpConstants.UdacityResponseKeys.accountKey] as? String
+                    else {
+                        throw NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                      code: HttpErrors.HttpErrorCode.InvalidType,
+                                      userInfo: nil)
+                }
+                
+                // SUCCESS
+                completionHandler(sessionId, sessionExpiry, accountKey, nil)
+                
+            } catch {
+                completionHandler(nil, nil, nil, error as NSError)
             }
-            
-            // GUARD: No error present
-            guard error == nil else {
-                completionHandler(nil, nil, error)
-                return
-            }
-            
-            // GUARD: whether some valid result returned
-            guard ((result as? Dictionary<String, AnyObject>) != nil) else {
-                showError(HttpErrors.HttpErrorCode.InvalidType)
-                return
-            }
-            
-            // GUARD: a valid session details present in response
-            guard let sessionDetails = result![HttpConstants.UdacityResponseKeys.session] as? Dictionary<String, String> else {
-                showError(HttpErrors.HttpErrorCode.InvalidType)
-                return
-            }
-            
-            // GUARD: valid session-ID and sessionExpiry present inside the session details
-            guard
-                let sessionId = sessionDetails[HttpConstants.UdacityResponseKeys.sessionId],
-                let sessionExpiry = sessionDetails[HttpConstants.UdacityResponseKeys.sessionExpiry]
-                else {
-                    showError(HttpErrors.HttpErrorCode.InvalidType)
-                    return
-            }
-            
-            guard let accountDetails = result![HttpConstants.UdacityResponseKeys.account] as? Dictionary<String, AnyObject> else {
-                showError(HttpErrors.HttpErrorCode.InvalidType)
-                return
-            }
-            
-            // GUARD: valid session-ID and sessionExpiry present inside the session details
-            guard let accountKey = accountDetails[HttpConstants.UdacityResponseKeys.accountKey] as? String else {
-                showError(HttpErrors.HttpErrorCode.InvalidType)
-                return
-            }
-            
-            // SAVE DATA to STORE
-            StoreConfig.shared.sessionId = sessionId
-            StoreConfig.shared.sessionExpiry = sessionExpiry
-            StoreConfig.shared.accountKey = accountKey
-            
-            // SUCCESS
-            completionHandler(sessionId, accountKey, nil)
         }
     }
     
     // get user data
-    func getPublicUserData(completionHandler: @escaping UdacityUserDataCompletionHandler) {
-        
-        func showError(_ code: Int) {
-            let error = NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
-                                code: code,
-                                userInfo: nil)
-            completionHandler(nil, nil, error)
-        }
+    func getPublicUserData(completionHandler: @escaping HttpClientPublicUserDataHandler) throws {
         
         // GUARD: check whether Login Key Present or not
         guard let userId = StoreConfig.shared.accountKey else {
-            
-            showError(HttpErrors.HttpErrorCode.LoginKeyNotFound)
-            return
+            throw NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
+                          code: HttpErrors.HttpErrorCode.LoginKeyNotFound,
+                          userInfo: nil)
         }
         
         // GUARD: whether substituted string returns a valid string
-        guard
-            let method = substitudeKeyInString(HttpConstants.UdacityMethods.PublicUserData,
+        var request: URLRequest!
+        do {
+            let method = try substitudeKeyInString(HttpConstants.UdacityMethods.PublicUserData,
                                                key: HttpConstants.UdacityParameterKeys.publicUserDataIDKey,
                                                value: userId)
-            else {
-                
-                showError(HttpErrors.HttpErrorCode.RequestCreationError)
-                return
+            request = try udacityRequest(method)
+        } catch {
+            throw error
         }
-        
-        // GUARD: check a valid request is created
-        guard let request = udacityRequest(method) else {
-            
-            showError(HttpErrors.HttpErrorCode.RequestCreationError)
-            return
-        }
-        
         
         get(request) { (result, error) in
             
@@ -193,47 +164,32 @@ private extension HttpClient {
                 return
             }
             
-            func showError(_ code: Int) {
-                let error = NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                                    code: code,
-                                    userInfo: nil)
-                completionHandler(nil, nil, error)
-            }
-            
             // GUARD: Result not empty
             guard result != nil else {
-                
-                showError(HttpErrors.HttpErrorCode.NoResultDictionary)
+                completionHandler(nil, nil, NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                                    code: HttpErrors.HttpErrorCode.NoResultDictionary,
+                                                    userInfo: nil))
                 return
             }
             
             // GUARD: check for valid user present in response
-            guard let user = (result as? [String: AnyObject])?[HttpConstants.UdacityResponseKeys.user] as? [String: AnyObject] else {
-                
-                showError(HttpErrors.HttpErrorCode.InvalidType)
-                return
-            }
-            
-            // GUARD: check user data contains lastName and firstName data
             guard
+                let user = (result as? [String: AnyObject])?[HttpConstants.UdacityResponseKeys.user] as? [String: AnyObject],
                 let lastName = user[HttpConstants.UdacityResponseKeys.lastName] as? String,
                 let firstName = user[HttpConstants.UdacityResponseKeys.firstName] as? String
-                else {
-                    
-                    showError(HttpErrors.HttpErrorCode.InvalidType)
-                    return
+            else {
+                completionHandler(nil, nil, NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                                    code: HttpErrors.HttpErrorCode.InvalidType,
+                                                    userInfo: nil))
+                return
             }
-            
-            // SAVE DATA to STORE
-            StoreConfig.shared.firstName = firstName
-            StoreConfig.shared.lastName = lastName
             
             // SUCCESS
             completionHandler(firstName, lastName, nil)
         }
     }
     
-    func udacityRequest(_ path: String, params: [String: AnyObject] = [:]) -> URLRequest? {
-        return urlRequest(.udacity, path: path, headers: [:], params: params)
+    func udacityRequest(_ path: String, params: [String: AnyObject] = [:]) throws -> URLRequest {
+        return try urlRequest(.udacity, path: path, headers: [:], params: params)
     }
 }
