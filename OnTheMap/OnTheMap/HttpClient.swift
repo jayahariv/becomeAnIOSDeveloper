@@ -22,64 +22,6 @@ class HttpClient: NSObject {
         return URLSession(configuration: URLSessionConfiguration.default)
     }()
     
-    // MARK: ------ PRIVATE APIs ------
-    
-    // Session Task
-    private func task(_ urlRequest: URLRequest, completionHandler: @escaping HTTPCompletionHandler) {
-        
-        let task = session.dataTask(with: urlRequest) { [unowned self] (data, response, error) in
-            
-            guard error == nil else {
-                self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                            code: HttpErrors.HttpErrorCode.ErrorNotEmpty,
-                            info: (error as? URLError)?.userInfo,
-                            completionHandler: completionHandler)
-                return
-            }
-            
-            guard data != nil else {
-                self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                            code: HttpErrors.HttpErrorCode.NoData,
-                            info: (error as? URLError)?.userInfo,
-                            completionHandler: completionHandler)
-                return
-            }
-            
-            guard
-                let statusCode = (response as? HTTPURLResponse)?.statusCode,
-                statusCode <= 299, statusCode >= 200
-            else {
-                
-                self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                            code: HttpErrors.HttpErrorCode.InvalidStatusCode,
-                            info: (error as? URLError)?.userInfo,
-                            completionHandler: completionHandler)
-                return
-            }
-            
-            // Remove the first 5 characters from Udacity response data
-            var newData = data
-            if (response as? HTTPURLResponse)?.url?.host == HttpConstants.UdacityConstants.host {
-                let range = Range(5..<data!.count)
-                newData = data?.subdata(in: range)
-            }
-            
-            guard
-                let serializedData = try? JSONSerialization.jsonObject(with: newData!,
-                                                                       options: .allowFragments) as AnyObject
-            else {
-                self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                            code: HttpErrors.HttpErrorCode.InvalidJSONObject,
-                            completionHandler: completionHandler)
-                return
-            }
-            
-            completionHandler(serializedData, nil)
-        }
-        
-        task.resume()
-    }
-    
     // MARK: ------ Internal APIs ------
     
     // GET request
@@ -91,17 +33,22 @@ class HttpClient: NSObject {
     func post(_ urlRequest: URLRequest,
               parameters: [String: AnyObject]?,
               completionHandler: @escaping HTTPCompletionHandler) {
-  
+        
         var mutableURLRequest = urlRequest
-        mutableURLRequest.addValue("application/json", forHTTPHeaderField: "accept")
-        mutableURLRequest.addValue("application/json", forHTTPHeaderField: "content-type")
         mutableURLRequest.httpMethod = "POST"
-        if let parameters = parameters {
-            mutableURLRequest.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
-        }
         
+        jsonTaskWithParameters(mutableURLRequest, parameters: parameters, completionHandler: completionHandler)
+    }
+    
+    // PUT request
+    func put(_ urlRequest: URLRequest,
+              parameters: [String: AnyObject]?,
+              completionHandler: @escaping HTTPCompletionHandler) {
         
-        task(mutableURLRequest, completionHandler: completionHandler)
+        var mutableURLRequest = urlRequest
+        mutableURLRequest.httpMethod = "PUT"
+        
+        jsonTaskWithParameters(mutableURLRequest, parameters: parameters, completionHandler: completionHandler)
     }
     
     // MARK: ------ Helper Methods ------
@@ -153,5 +100,82 @@ class HttpClient: NSObject {
             return string.replacingOccurrences(of: "{\(key)}", with: "\(value)")
         }
         return nil
+    }
+}
+
+// MARK: ------ PRIVATE APIs ------
+
+private extension HttpClient {
+    
+    // Session Task
+    private func task(_ urlRequest: URLRequest, completionHandler: @escaping HTTPCompletionHandler) {
+        
+        let task = session.dataTask(with: urlRequest) { [unowned self] (data, response, error) in
+            
+            guard error == nil else {
+                self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                            code: HttpErrors.HttpErrorCode.ErrorNotEmpty,
+                            info: (error as? URLError)?.userInfo,
+                            completionHandler: completionHandler)
+                return
+            }
+            
+            guard data != nil else {
+                self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                            code: HttpErrors.HttpErrorCode.NoData,
+                            info: (error as? URLError)?.userInfo,
+                            completionHandler: completionHandler)
+                return
+            }
+            
+            guard
+                let statusCode = (response as? HTTPURLResponse)?.statusCode,
+                statusCode <= 299, statusCode >= 200
+                else {
+                    
+                    self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                code: HttpErrors.HttpErrorCode.InvalidStatusCode,
+                                info: (error as? URLError)?.userInfo,
+                                completionHandler: completionHandler)
+                    return
+            }
+            
+            // Remove the first 5 characters from Udacity response data
+            var newData = data
+            if (response as? HTTPURLResponse)?.url?.host == HttpConstants.UdacityConstants.host {
+                let range = Range(5..<data!.count)
+                newData = data?.subdata(in: range)
+            }
+            
+            guard
+                let serializedData = try? JSONSerialization.jsonObject(with: newData!,
+                                                                       options: .allowFragments) as AnyObject
+                else {
+                    self.finish(HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                code: HttpErrors.HttpErrorCode.InvalidJSONObject,
+                                completionHandler: completionHandler)
+                    return
+            }
+            
+            completionHandler(serializedData, nil)
+        }
+        
+        task.resume()
+    }
+    
+    // session task with parameters
+    
+    func jsonTaskWithParameters(_ urlRequest: URLRequest,
+                                parameters: [String: AnyObject]?,
+                                completionHandler: @escaping HTTPCompletionHandler) {
+        var mutableURLRequest = urlRequest
+        mutableURLRequest.addValue("application/json", forHTTPHeaderField: "accept")
+        mutableURLRequest.addValue("application/json", forHTTPHeaderField: "content-type")
+        if let parameters = parameters {
+            mutableURLRequest.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+        }
+        
+        
+        task(mutableURLRequest, completionHandler: completionHandler)
     }
 }

@@ -20,6 +20,7 @@ extension HttpConstants {
     
     struct ParseMethods {
         static let studentsLocation = "/parse/classes/StudentLocation"
+        static let updateStudentLocation = "/parse/classes/StudentLocation/{location}"
     }
     
     struct ParseHeaderKeys {
@@ -41,10 +42,14 @@ extension HttpConstants {
         static let mediaURL = "mediaURL"
         static let latitude = "latitude"
         static let longitude = "longitude"
+        
+        // uses to update the key through substitude method
+        static let updateStudentLocationKey = "location"
     }
     
     struct ParseResponseKeys {
         static let results = "results"
         static let createdAt = "createdAt"
+        static let objectId = "objectId"
     }
 }

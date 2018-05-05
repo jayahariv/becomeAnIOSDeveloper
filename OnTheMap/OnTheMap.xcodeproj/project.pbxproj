@@ -101,7 +101,6 @@
 			children = (
 				085AE0212099428200DBA698 /* HttpClient+Udacity.swift */,
 				085AE01D2099420B00DBA698 /* HttpConstants+Udacity.swift */,
-				08FE279F209A88540099A103 /* StoreConfig.swift */,
 			);
 			name = udacity;
 			sourceTree = "<group>";
@@ -112,6 +111,7 @@
 				085AE01B209941EA00DBA698 /* HttpClient.swift */,
 				085AE0262099976700DBA698 /* HttpErrors.swift */,
 				085AE0282099A15900DBA698 /* HttpConstants.swift */,
+				08FE279F209A88540099A103 /* StoreConfig.swift */,
 			);
 			name = shared;
 			sourceTree = "<group>";

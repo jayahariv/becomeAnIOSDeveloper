@@ -17,6 +17,8 @@ class StoreConfig: NSObject {
     var firstName: String?
     var lastName: String?
     
+    var locationObjectId: String?
+    
     static let shared: StoreConfig = {
        return StoreConfig()
     }()
@@ -27,5 +29,6 @@ class StoreConfig: NSObject {
         accountKey = nil
         firstName = nil
         lastName = nil
+        locationObjectId = nil
     }
 }
