@@ -28,6 +28,7 @@ class HttpClient_Parse: XCTestCase {
         let promise = expectation(description: "OnTheMap- Unit Test")
         
         HttpClient.shared.getStudentLocation(0, pageCount: 0, sort: StudentLocationSortOrder.inverseUpdatedAt) { (result, error) in
+            
             XCTAssert(error == nil, "No Error should happen")
             XCTAssert(result != nil, "Student Location UNit test failed!!")
             XCTAssert(result?.count == 0, "Student Location UNit test failed!!")
@@ -52,14 +53,13 @@ class HttpClient_Parse: XCTestCase {
         waitForExpectations(timeout: 30, handler: nil)
     }
     
-    func testMyLocationNoData() {
+    func testMyLocation() {
         
         let promise = expectation(description: "OnTheMap- Unit Test")
         
         StoreConfig.shared.accountKey = "11470468759"
         HttpClient.shared.getMyLocation() { (result, error) in
             
-            print(result)
             XCTAssert(error == nil, "No Error should happen")
             XCTAssert(result != nil, "Student Location result empty!!")
             XCTAssert(result?.count == 0, "Student Location result is having list")
@@ -80,12 +80,41 @@ class HttpClient_Parse: XCTestCase {
         HttpClient.shared.postNewLocation("Mountain View, CA", info: "http://www.google.com") { (createdAt, error) in
             
             XCTAssert(error == nil, "No Error should happen")
-            if let createdAt = createdAt {
+            if let createdAt = createdAt, let objectId = StoreConfig.shared.locationObjectId {
                 
                 // check for a day gap, as the server is showing some error!!!
                 let day: Double = 24 * 60 * 60
                 XCTAssert(createdAt < Date().addingTimeInterval(day), "Shouldn't be future time")
                 XCTAssert(createdAt > Date().addingTimeInterval(-day), "Shouldn't be too much past ")
+                XCTAssert(objectId.count > 0 , "Valid Object ID should be returned")
+            } else {
+                XCTFail("createdAt shouldn't be empty!")
+            }
+            
+            promise.fulfill()
+        }
+        
+        waitForExpectations(timeout: 30, handler: nil)
+    }
+    
+    func testUpdateLocation() {
+        
+        let promise = expectation(description: "OnTheMap- Unit Test")
+        
+        StoreConfig.shared.accountKey = "11470468759"
+        StoreConfig.shared.firstName = "John"
+        StoreConfig.shared.lastName = "Doe"
+        StoreConfig.shared.locationObjectId = "4NWUUCKWEb"
+        
+        HttpClient.shared.updateMyLocation("Mountain View, CA", info: "http://www.google.com") { (updatedAt, error) in
+            
+            XCTAssert(error == nil, "No Error should happen")
+            if let updatedAt = updatedAt {
+                
+                // check for a day gap, as the server is showing some error!!!
+                let day: Double = 24 * 60 * 60
+                XCTAssert(updatedAt < Date().addingTimeInterval(day), "Shouldn't be future time")
+                XCTAssert(updatedAt > Date().addingTimeInterval(-day), "Shouldn't be too much past ")
             } else {
                 XCTFail("createdAt shouldn't be empty!")
             }

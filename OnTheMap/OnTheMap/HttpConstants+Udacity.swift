@@ -29,6 +29,7 @@ extension HttpConstants {
         static let password = "password";
         
         static let publicUserDataIDKey = "user_id"
+        static let XCRF_Token = "XSRF-TOKEN"
     }
     
     struct UdacityResponseKeys {

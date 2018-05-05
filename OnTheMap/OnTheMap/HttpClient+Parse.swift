@@ -14,6 +14,7 @@ import CoreLocation
 typealias StudentLocationHandler = (_ studentLocation: [[String: AnyObject]]?, _ error: NSError?) -> Void
 typealias MyLocationHandler = (_ location: [String: AnyObject]?, _ error: NSError?) -> Void
 typealias PostNewLocation = (_ createdDate: Date?, _ error: NSError?) -> Void
+typealias UpdateNewLocation = (_ updatedDate: Date?, _ error: NSError?) -> Void
 
 // MARK: ----- Parse Specific Enums -----
 // struct defined for the sorting order keys
@@ -44,40 +45,43 @@ extension HttpClient {
             HttpConstants.ParseParameterKeys.order: sort
         ]
         
-        guard let request = parseURLRequest(HttpConstants.ParseMethods.studentsLocation, params: params as [String: AnyObject]) else {
+        var request: URLRequest!
+        do {
+           
+            request = try parseURLRequest(HttpConstants.ParseMethods.studentsLocation, params: params as [String: AnyObject])
+        } catch {
             
-            let error = NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
-                                code: HttpErrors.HttpErrorCode.RequestCreationError,
-                                userInfo: nil)
-            completionHandler(nil, error)
-            return
+            completionHandler(nil, error as NSError)
         }
         
         get(request) { (result, error) in
             
-            // GUARD: no error
-            guard error == nil else {
-                completionHandler(nil, error)
-                return
+            do {
+                // GUARD: no error
+                guard error == nil else {
+                    throw error!
+                }
+                
+                // GUARD: result shouldn't be empty
+                guard result != nil else {
+                    throw NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                  code: HttpErrors.HttpErrorCode.NoResultDictionary,
+                                  userInfo: nil)
+                }
+                
+                // GUARD: result type should match and fetch the list of students
+                guard let results = result![HttpConstants.ParseResponseKeys.results] as? [[String: AnyObject]] else {
+                    throw NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                  code: HttpErrors.HttpErrorCode.InvalidType,
+                                  userInfo: nil)
+                }
+                
+                completionHandler(results, nil)
+                
+            } catch {
+                
+                completionHandler(nil, error as NSError)
             }
-            
-            // GUARD: result shouldn't be empty
-            guard result != nil else {
-                completionHandler(nil, NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                                               code: HttpErrors.HttpErrorCode.NoResultDictionary,
-                                               userInfo: nil))
-                return
-            }
-            
-            // GUARD: result type should match and fetch the list of students
-            guard let results = result![HttpConstants.ParseResponseKeys.results] as? [[String: AnyObject]] else {
-                completionHandler(nil, NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                                               code: HttpErrors.HttpErrorCode.InvalidType,
-                                               userInfo: nil))
-                return
-            }
-            
-            completionHandler(results, nil)
         }
     }
     
@@ -85,66 +89,69 @@ extension HttpClient {
     
     func getMyLocation(completionHandler: @escaping MyLocationHandler) {
         
-        // GUARD: whether account key present?
-        guard let accountKey = StoreConfig.shared.accountKey else {
-            completionHandler(nil, NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
-                                           code: HttpErrors.HttpErrorCode.LoginKeyNotFound,
-                                           userInfo: nil))
-            return
-        }
-        let params = [
-            HttpConstants.ParseParameterKeys.where: substitudeKeyInString(HttpConstants.ParseParameterKeys.uniqueKeyString,
-                                                                          key: HttpConstants.ParseParameterKeys.uniqueKey,
-                                                                          value: accountKey)
-        ]
+        var request: URLRequest!
+        do {
+            // GUARD: whether account key present?
+            guard let accountKey = StoreConfig.shared.accountKey else {
+                throw NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
+                              code: HttpErrors.HttpErrorCode.LoginKeyNotFound,
+                              userInfo: nil)
+            }
+            
+            let whereValue = try substitudeKeyInString(HttpConstants.ParseParameterKeys.uniqueKeyString,
+                                                   key: HttpConstants.ParseParameterKeys.uniqueKey,
+                                                   value: accountKey)
+            let params = [
+                HttpConstants.ParseParameterKeys.where: whereValue
+            ]
+            
+            request = try parseURLRequest(HttpConstants.ParseMethods.studentsLocation, params: params as [String: AnyObject])
         
-        // GUARD: Valid request created
-        guard let request = parseURLRequest(HttpConstants.ParseMethods.studentsLocation, params: params as [String: AnyObject]) else {
-            completionHandler(nil, NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
-                                           code: HttpErrors.HttpErrorCode.RequestCreationError,
-                                           userInfo: nil))
-            return
+        } catch {
+            
+            completionHandler(nil, error as NSError)
         }
         
         get(request) { (result, error) in
             
-            // GUARD make sure, no error returned!
-            guard error == nil else {
-                completionHandler(nil, error)
-                return
-            }
-            
-            // GUARD: result shouldn't be empty
-            guard result != nil else {
-                completionHandler(nil, NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                                               code: HttpErrors.HttpErrorCode.NoResultDictionary,
-                                               userInfo: nil))
-                return
-            }
-            
-            // GUARD: result type should be matching
-            if
-                (result as? [String: [String: AnyObject]]) != nil,
-                let results = result![HttpConstants.ParseResponseKeys.results] as? [[String: AnyObject]] {
+            do {
+                // GUARD make sure, no error returned!
+                guard error == nil else {
+                    throw error!
+                }
                 
-                completionHandler( results.first, nil)
+                // GUARD: result shouldn't be empty
+                guard result != nil else {
+                    throw NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                  code: HttpErrors.HttpErrorCode.NoResultDictionary,
+                                  userInfo: nil)
+                }
                 
+                // check any locations are presnt in result
+                if
+                    (result as? [String: [String: AnyObject]]) != nil,
+                    let results = result![HttpConstants.ParseResponseKeys.results] as? [[String: AnyObject]] {
+                    
+                    completionHandler( results.first, nil)
+                
+                } else {
+                    
+                    // if not send an empty dictionary
+                    completionHandler([:], nil)
+                }
+                
+            } catch {
+                
+                completionHandler(nil, error as NSError)
             }
-            
-            completionHandler([:], nil)
-            
         }
     }
     
+    // name = name of the location
+    // info = data to be posted in the location
     func postNewLocation(_ name: String, info: String, completionHandler: @escaping PostNewLocation) {
+        
         OnTheMapUtils.getCoordinate(addressString: name) { [unowned self] (location, error) in
-            
-            func showError(_ code: Int) {
-                let error = NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
-                                    code: code,
-                                    userInfo: nil)
-                completionHandler(nil, error)
-            }
             
             // GUARD: No Error
             guard error == nil else {
@@ -152,7 +159,34 @@ extension HttpClient {
                 return
             }
             
-            self.postNewLocation(location, mediaString: info, mapString: name, completionHandler: completionHandler)
+            self.postNewLocation(location, mediaString: info, mapString: name, completionHandler: { (createdAt, objectId, error) in
+                
+                guard error == nil, createdAt != nil, objectId != nil else {
+                    completionHandler(nil, error!)
+                    return
+                }
+                
+                // SAVE Location ObjectID
+                StoreConfig.shared.locationObjectId = objectId
+                
+                completionHandler(createdAt, nil)
+                
+            })
+        }
+    }
+    
+    // name = name of the location
+    // info = data to be posted in the location
+    func updateMyLocation(_ name: String, info: String, completionHandler: @escaping UpdateNewLocation) {
+        OnTheMapUtils.getCoordinate(addressString: name) { [unowned self] (location, error) in
+            
+            // GUARD: No Error
+            guard error == nil else {
+                completionHandler(nil, error)
+                return
+            }
+            
+            self.updateLocation(location, mediaString: info, mapString: name, completionHandler: completionHandler)
         }
     }
 }
@@ -161,42 +195,128 @@ extension HttpClient {
 
 private extension HttpClient {
     
+    typealias PrivatePostNewLocationHandler = (_ createdDate: Date?, _ objectId: String?, _ error: NSError?) -> Void
+    
     func postNewLocation(_ location: CLLocationCoordinate2D,
                          mediaString: String,
                          mapString: String,
-                         completionHandler: @escaping PostNewLocation) {
+                         completionHandler: @escaping PrivatePostNewLocationHandler) {
         
-        func showError(_ code: Int) {
-            let error = NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
-                                code: code,
-                                userInfo: nil)
-            completionHandler(nil, error)
-        }
-        let headers = [
-            HttpConstants.ParseHeaderKeys.contentType: HttpConstants.ParseConstants.applicationJSON
-        ]
-        
-        guard let request = parseURLRequest(HttpConstants.ParseMethods.studentsLocation, params: [:], headers: headers) else {
-            showError(HttpErrors.HttpErrorCode.RequestCreationError)
-            return
+        var request: URLRequest!
+        var body: AnyObject!
+        do {
+            
+            request = try parseURLRequest(HttpConstants.ParseMethods.studentsLocation)
+            body = try bodyForLocation(location, mediaString: mediaString, mapString: mapString)
+        } catch {
+            
+            completionHandler(nil, nil, error as NSError)
         }
         
-        guard let uniqueKey = StoreConfig.shared.accountKey else {
-            showError(HttpErrors.HttpErrorCode.InvalidRequestInput)
-            return
+        task(HttpConstants.HTTPMethod.POST, urlRequest: request, body: body) { (result, error) in
+            
+            do {
+                // GUARD: No error
+                guard error == nil else {
+                    throw error!
+                }
+                
+                // GUARD: valid result
+                guard result != nil else {
+                    throw NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                  code: HttpErrors.HttpErrorCode.NoResultDictionary,
+                                  userInfo: nil)
+                }
+                
+                // GUARD: response has valid types present
+                guard
+                    let createdAt = (result as? [String: String])?[HttpConstants.ParseResponseKeys.createdAt],
+                    let objectId = (result as? [String: String])?[HttpConstants.ParseResponseKeys.objectId]
+                else {
+                    throw NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                  code: HttpErrors.HttpErrorCode.InvalidType,
+                                  userInfo: nil)
+                }
+                
+                completionHandler(Date.fromStringType1(createdAt), objectId, nil)
+                
+            } catch {
+                completionHandler(nil, nil, error as NSError)
+            }
+        }
+    }
+    
+    func updateLocation(_ location: CLLocationCoordinate2D,
+                        mediaString: String,
+                        mapString: String,
+                        completionHandler: @escaping UpdateNewLocation) {
+        
+        var request: URLRequest!
+        var body: AnyObject!
+        do {
+            guard let objectId = StoreConfig.shared.locationObjectId else {
+                throw NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
+                              code: HttpErrors.HttpErrorCode.InvalidRequestInput,
+                              userInfo: nil)
+            }
+            
+            let requestPath = try substitudeKeyInString(HttpConstants.ParseMethods.updateStudentLocation,
+                                                    key: HttpConstants.ParseParameterKeys.updateStudentLocationKey,
+                                                    value: objectId)
+            
+            body = try bodyForLocation(location, mediaString: mediaString, mapString: mapString)
+            
+            request = try parseURLRequest(requestPath)
+            
+        } catch {
+            completionHandler(nil, error as NSError)
+        }
+ 
+        task(HttpConstants.HTTPMethod.PUT, urlRequest: request, body: body) { (result, error) in
+            
+            do {
+                // GUARD: No error
+                guard error == nil else {
+                    throw error!
+                }
+                
+                // GUARD: result not empty check
+                guard result != nil else {
+                    throw NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                  code: HttpErrors.HttpErrorCode.NoResultDictionary,
+                                  userInfo: nil)
+                }
+                
+                guard let updatedAt = (result as? [String: String])?[HttpConstants.ParseResponseKeys.updatedAt] else {
+                    throw NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
+                                  code: HttpErrors.HttpErrorCode.InvalidType,
+                                  userInfo: nil)
+                }
+                
+                completionHandler(Date.fromStringType1(updatedAt), nil)
+                
+            } catch {
+                
+                completionHandler(nil, error as NSError)
+            }
+        }
+    }
+    
+    func bodyForLocation(_ location: CLLocationCoordinate2D,
+                            mediaString: String,
+                            mapString: String) throws -> AnyObject {
+        
+        guard
+            let uniqueKey = StoreConfig.shared.accountKey,
+            let firstName = StoreConfig.shared.firstName,
+            let lastName = StoreConfig.shared.lastName
+        else {
+            throw NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
+                          code: HttpErrors.HttpErrorCode.InvalidRequestInput,
+                          userInfo: nil)
         }
         
-        guard let firstName = StoreConfig.shared.firstName else {
-            showError(HttpErrors.HttpErrorCode.InvalidRequestInput)
-            return
-        }
-        
-        guard let lastName = StoreConfig.shared.lastName else {
-            showError(HttpErrors.HttpErrorCode.InvalidRequestInput)
-            return
-        }
-        
-        let body = [
+        return [
             HttpConstants.ParseParameterKeys.uniqueKey: uniqueKey,
             HttpConstants.ParseParameterKeys.firstName: firstName,
             HttpConstants.ParseParameterKeys.lastName: lastName,
@@ -204,40 +324,11 @@ private extension HttpClient {
             HttpConstants.ParseParameterKeys.mediaURL: mediaString,
             HttpConstants.ParseParameterKeys.latitude: location.latitude,
             HttpConstants.ParseParameterKeys.longitude: location.longitude,
-            ] as [String: AnyObject]
-        
-        post(request, parameters: body) { (result, error) in
-            
-            func showError(_ code: Int) {
-                let error = NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                                    code: code,
-                                    userInfo: nil)
-                completionHandler(nil, error)
-            }
-            
-            // GUARD: No error
-            guard error == nil else {
-                completionHandler(nil, error)
-                return
-            }
-            
-            // GUARD: valid result
-            guard result != nil else {
-                showError(HttpErrors.HttpErrorCode.NoResultDictionary)
-                return
-            }
-            
-            guard let createdAt = (result as? [String: String])?[HttpConstants.ParseResponseKeys.createdAt] else {
-                showError(HttpErrors.HttpErrorCode.InvalidType)
-                return
-            }
-            
-            completionHandler(Date.fromStringType1(createdAt), nil)
-        }
+            ] as AnyObject
     }
     
     // this method will convert input as Parse API compatible URLRequest
-    func parseURLRequest(_ path: String, params: [String: AnyObject] = [:], headers: [String: String] = [:]) -> URLRequest? {
+    func parseURLRequest(_ path: String, params: [String: AnyObject] = [:], headers: [String: String] = [:]) throws -> URLRequest {
         
         var headersShared = [
             HttpConstants.ParseHeaderKeys.applicationId: HttpConstants.ParseConstants.AppId,
@@ -249,9 +340,7 @@ private extension HttpClient {
             let (key, value) = arg
             headersShared[key] = value
         }
-        return urlRequest(.parse,
-                          path: HttpConstants.ParseMethods.studentsLocation,
-                          headers: headersShared,
-                          params: params)
+        
+        return try urlRequest(.parse, path: path, headers: headersShared, params: params)
     }
 }

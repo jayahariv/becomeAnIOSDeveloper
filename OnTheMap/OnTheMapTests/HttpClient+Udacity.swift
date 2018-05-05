@@ -29,12 +29,16 @@ class HttpClient_Udacity: XCTestCase {
         StoreConfig.shared.clear()
         HttpClient.shared.authenticate(userName: "abcd@gmail.com", password: "abcd") { (success, error) in
             
-            XCTAssert(error?.code == HttpErrors.HttpErrorCode.InvalidStatusCode, "Authentication Unit test failed")
-            XCTAssert(success == false, "should be successfull")
-            
-            XCTAssert(StoreConfig.shared.sessionExpiry == nil, "Session Expiry should be empty")
-            XCTAssert(StoreConfig.shared.sessionId == nil, "Session ID should be empty")
-            XCTAssert(StoreConfig.shared.accountKey == nil, "AccountKey should be empty")
+            guard
+                error != nil,
+                success == false,
+                StoreConfig.shared.sessionExpiry == nil,
+                StoreConfig.shared.sessionId == nil,
+                StoreConfig.shared.accountKey == nil
+            else {
+                XCTFail()
+                return
+            }
             
             promise.fulfill()
         }
@@ -53,16 +57,41 @@ class HttpClient_Udacity: XCTestCase {
             
             guard let sessionExpiry = StoreConfig.shared.sessionExpiry else {
                 XCTFail("Session Expiry should be present")
-                promise.fulfill()
                 return
             }
             
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
-            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
             
-            let sessionExpiryDate = dateFormatter.date(from:sessionExpiry)
+            let sessionExpiryDate = Date.fromStringType2(sessionExpiry)
             XCTAssert(sessionExpiryDate! > Date(), "Expiry date is past time")
+            
+            promise.fulfill()
+        }
+        
+        waitForExpectations(timeout: 30, handler: nil)
+    }
+    
+    func testLogout() {
+        
+        let promise = expectation(description: "OnTheMap- Unit Test")
+        
+        HttpClient.shared.logout() { (success, error) in
+            
+            XCTAssert(error == nil, "Authentication Unit test failed")
+            XCTAssert(success == true, "should be successfull")
+            
+//            guard let sessionExpiry = StoreConfig.shared.sessionExpiry else {
+//                XCTFail("Session Expiry should be present")
+//                promise.fulfill()
+//                return
+//            }
+//            
+//            let sessionExpiryDate = Date.fromStringType2(sessionExpiry)
+////            print(sessionExpiryDate)
+//            // check for a 7 hours gap, as the server is showing some error!!!
+//            let buffer: Double = 7 * 60 * 60 + 60
+//            let futureDate = Date().addingTimeInterval(buffer)
+//            print(futureDate)
+//            XCTAssert(sessionExpiryDate! < futureDate, "Shouldn't be future time")
             
             promise.fulfill()
         }
