@@ -202,22 +202,18 @@ private extension HttpClient {
                          mapString: String,
                          completionHandler: @escaping PrivatePostNewLocationHandler) {
         
-        let headers = [
-            HttpConstants.ParseHeaderKeys.contentType: HttpConstants.ParseConstants.applicationJSON
-        ]
-        
         var request: URLRequest!
-        var body: [String: AnyObject]!
+        var body: AnyObject!
         do {
             
-            request = try parseURLRequest(HttpConstants.ParseMethods.studentsLocation, params: [:], headers: headers)
+            request = try parseURLRequest(HttpConstants.ParseMethods.studentsLocation)
             body = try bodyForLocation(location, mediaString: mediaString, mapString: mapString)
         } catch {
             
             completionHandler(nil, nil, error as NSError)
         }
         
-        post(request, parameters: body) { (result, error) in
+        task(HttpConstants.HTTPMethod.POST, urlRequest: request, body: body) { (result, error) in
             
             do {
                 // GUARD: No error
@@ -255,12 +251,8 @@ private extension HttpClient {
                         mapString: String,
                         completionHandler: @escaping UpdateNewLocation) {
         
-        let headers = [
-            HttpConstants.ParseHeaderKeys.contentType: HttpConstants.ParseConstants.applicationJSON
-        ]
-        
         var request: URLRequest!
-        var body: [String: AnyObject]!
+        var body: AnyObject!
         do {
             guard let objectId = StoreConfig.shared.locationObjectId else {
                 throw NSError(domain: HttpErrors.HttpErrorDomain.HTTPGeneralFailure,
@@ -274,13 +266,13 @@ private extension HttpClient {
             
             body = try bodyForLocation(location, mediaString: mediaString, mapString: mapString)
             
-            request = try parseURLRequest(requestPath, params: [:], headers: headers)
+            request = try parseURLRequest(requestPath)
             
         } catch {
             completionHandler(nil, error as NSError)
         }
  
-        put(request, parameters: body) { (result, error) in
+        task(HttpConstants.HTTPMethod.PUT, urlRequest: request, body: body) { (result, error) in
             
             do {
                 // GUARD: No error
@@ -312,7 +304,7 @@ private extension HttpClient {
     
     func bodyForLocation(_ location: CLLocationCoordinate2D,
                             mediaString: String,
-                            mapString: String) throws -> [String: AnyObject] {
+                            mapString: String) throws -> AnyObject {
         
         guard
             let uniqueKey = StoreConfig.shared.accountKey,
@@ -332,7 +324,7 @@ private extension HttpClient {
             HttpConstants.ParseParameterKeys.mediaURL: mediaString,
             HttpConstants.ParseParameterKeys.latitude: location.latitude,
             HttpConstants.ParseParameterKeys.longitude: location.longitude,
-            ] as [String: AnyObject]
+            ] as AnyObject
     }
     
     // this method will convert input as Parse API compatible URLRequest

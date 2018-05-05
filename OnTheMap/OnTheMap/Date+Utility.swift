@@ -17,4 +17,12 @@ extension Date {
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         return dateFormatter.date(from: dateString)
     }
+    
+    // 2018-07-04T05:58:59.784070Z
+    static func fromStringType2(_ dateString: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        return dateFormatter.date(from: dateString)
+    }
 }

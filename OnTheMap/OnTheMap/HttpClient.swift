@@ -29,27 +29,26 @@ class HttpClient: NSObject {
         task(urlRequest, completionHandler: completionHandler)
     }
     
-    // POST request
-    func post(_ urlRequest: URLRequest,
-              parameters: [String: AnyObject]?,
+    // POST, PUT, DELETE tasks can be created using this method
+    
+    func task(_ httpMethod: String,
+              urlRequest: URLRequest,
+              body: AnyObject? = nil,
               completionHandler: @escaping HTTPCompletionHandler) {
         
         var mutableURLRequest = urlRequest
-        mutableURLRequest.httpMethod = "POST"
+        mutableURLRequest.httpMethod = httpMethod
+        mutableURLRequest.addValue(HttpConstants.CommonHeaders.applicationJSONValue,
+                                   forHTTPHeaderField: HttpConstants.CommonHeaders.acceptKey)
+        mutableURLRequest.addValue(HttpConstants.CommonHeaders.applicationJSONValue,
+                                   forHTTPHeaderField: HttpConstants.CommonHeaders.contentTypeKey)
+        if let body = body {
+            mutableURLRequest.httpBody = try? JSONSerialization.data(withJSONObject: body, options: .prettyPrinted)
+        }
         
-        jsonTaskWithParameters(mutableURLRequest, parameters: parameters, completionHandler: completionHandler)
+        task(mutableURLRequest, completionHandler: completionHandler)
     }
     
-    // PUT request
-    func put(_ urlRequest: URLRequest,
-              parameters: [String: AnyObject]?,
-              completionHandler: @escaping HTTPCompletionHandler) {
-        
-        var mutableURLRequest = urlRequest
-        mutableURLRequest.httpMethod = "PUT"
-        
-        jsonTaskWithParameters(mutableURLRequest, parameters: parameters, completionHandler: completionHandler)
-    }
     
     // MARK: ------ Helper Methods ------
     
@@ -157,22 +156,5 @@ private extension HttpClient {
         }
         
         task.resume()
-    }
-    
-    // session task with parameters
-    
-    func jsonTaskWithParameters(_ urlRequest: URLRequest,
-                                parameters: [String: AnyObject]?,
-                                completionHandler: @escaping HTTPCompletionHandler) {
-        
-        var mutableURLRequest = urlRequest
-        mutableURLRequest.addValue("application/json", forHTTPHeaderField: "accept")
-        mutableURLRequest.addValue("application/json", forHTTPHeaderField: "content-type")
-        if let parameters = parameters {
-            mutableURLRequest.httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
-        }
-        
-        
-        task(mutableURLRequest, completionHandler: completionHandler)
     }
 }
