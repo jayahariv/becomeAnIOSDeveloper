@@ -19,15 +19,14 @@ class LoginViewController: UIViewController {
     // MARK: View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
     }
     
     // MARK: Button Actions
     @IBAction func onLogin(_ sender: UIButton) {
-        HttpClient.shared.authenticate(userName: emailTextField.text!, password: passwordTextField.text!) { (success, error) in
-            print("SUCCESS: \(success)")
-        }
+        self.performSegue(withIdentifier: "LoginToHome", sender: nil)
+//        HttpClient.shared.authenticate(userName: emailTextField.text!, password: passwordTextField.text!) { (success, error) in
+//
+//        }
     }
     
     @IBAction func onSignUp(_ sender: UIButton) {
