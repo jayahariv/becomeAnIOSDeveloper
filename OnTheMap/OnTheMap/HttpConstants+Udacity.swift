@@ -13,6 +13,7 @@ extension HttpConstants {
     struct UdacityConstants {
         static let scheme = "https";
         static let host = "www.udacity.com"
+        static let signupURLString = "https://www.udacity.com/account/auth#!/signup"
     }
     
     struct UdacityMethods {

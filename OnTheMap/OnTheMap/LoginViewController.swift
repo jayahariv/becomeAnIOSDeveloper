@@ -66,6 +66,11 @@ class LoginViewController: UIViewController {
     
     @IBAction func onSignUp(_ sender: UIButton) {
         
+        guard let url = URL(string: HttpConstants.UdacityConstants.signupURLString) else {
+            return
+        }
+        
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
     // MARK: Helper methods
