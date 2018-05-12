@@ -10,8 +10,12 @@ import UIKit
 
 class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtocol {
     
+    // MARK: Properties
+    
+    // IBOutlet
     @IBOutlet weak var tableView: UITableView!
     
+    // Class Properties
     var studentLocationResults: StudentLocationResults?
     
     // MARK: View Lifecycle
@@ -20,9 +24,14 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
         super.viewDidLoad()
         addHomeNavigationBarButtons()
         getStudentLocations()
+        setupUI()
     }
     
     // MARK: Helper methods
+    
+    func setupUI() {
+        title = "On the Map"
+    }
     
     func getStudentLocations() {
         
@@ -44,7 +53,7 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
         }
     }
     
-    // MARK: Navigation Items Delegate methods
+    // MARK: NavigationItemsDelegate
     
     func onLogout() {
         logout()
@@ -59,6 +68,7 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
     }
 }
 
+// MARK: UITableViewDataSource
 extension ListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return studentLocationResults?.results.count ?? 0
@@ -78,5 +88,16 @@ extension ListViewController: UITableViewDataSource {
         cell?.imageView?.image = UIImage(named: "icon_pin")
         
         return cell!
+    }
+}
+
+extension ListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let studentLocation = studentLocationResults?.results[indexPath.row]
+        
+        guard let mediaURL = studentLocation?.mediaURL, mediaURL.openInSafari() else {
+            showError("Invalid Link")
+            return
+        }
     }
 }

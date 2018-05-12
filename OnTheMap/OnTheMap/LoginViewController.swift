@@ -79,11 +79,9 @@ class LoginViewController: UIViewController, Alerting {
     }
     
     @IBAction func onSignUp(_ sender: UIButton) {
-        
-        guard let url = URL(string: HttpConstants.UdacityConstants.signupURLString) else {
+        guard HttpConstants.UdacityConstants.signupURLString.openInSafari() else {
+            showError("Invalid Link")
             return
         }
-        
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
 }

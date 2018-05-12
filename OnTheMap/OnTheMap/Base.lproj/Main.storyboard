@@ -170,6 +170,7 @@
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="3PY-nz-tVk" id="bzr-ok-n76"/>
+                                    <outlet property="delegate" destination="3PY-nz-tVk" id="TKy-oF-pJw"/>
                                 </connections>
                             </tableView>
                         </subviews>
