@@ -38,4 +38,8 @@ class HttpErrors {
         static let LoginKeyNotFound = 3_1001
         static let NoValidResultDictionary = 3_1002
     }
+    
+    struct UserInfoKeys {
+        static let statusCode = "statusCode"
+    }
 }

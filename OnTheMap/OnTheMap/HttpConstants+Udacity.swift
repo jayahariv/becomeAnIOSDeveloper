@@ -45,4 +45,8 @@ extension HttpConstants {
         static let firstName = "first_name"
         static let lastName = "last_name"
     }
+    
+    struct UdacityErrorCode {
+        static let usernamePasswordIncorrect = 403
+    }
 }

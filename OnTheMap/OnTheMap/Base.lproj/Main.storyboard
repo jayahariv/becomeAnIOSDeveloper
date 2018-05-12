@@ -64,7 +64,6 @@
                                                         </state>
                                                         <connections>
                                                             <action selector="onLogin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="VM3-1S-vTy"/>
-                                                            <segue destination="NFf-IX-1jo" kind="presentation" identifier="LoginToHome" id="9ag-1K-uz6"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -102,11 +101,12 @@
                     <connections>
                         <outlet property="emailTextField" destination="9MR-vu-xxz" id="GTS-dD-slE"/>
                         <outlet property="passwordTextField" destination="a1b-MT-xUt" id="eT6-mE-BBv"/>
+                        <segue destination="NFf-IX-1jo" kind="presentation" identifier="LoginToHome" id="xgv-OX-fXH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-228" y="262"/>
+            <point key="canvasLocation" x="-228" y="261.31934032983509"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="fjM-dI-E2T">
