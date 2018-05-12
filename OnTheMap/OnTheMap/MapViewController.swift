@@ -8,7 +8,16 @@
 
 import UIKit
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, Alerting {
+    
+    var alertTitle: String = "Map View Page Alert"
+    
+    var alertButtonTitle: String = "Cancel"
+    
+    struct C {
+        static let logoutFailedMessage = "Something went wrong. Please try again"
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,7 +27,15 @@ class MapViewController: UIViewController {
 
 extension MapViewController: HomeNavigationItemsProtocol {
     func onLogout() {
-        print("logout")
+        HttpClient.shared.logout { [unowned self] (success, _) in
+            if success {
+                DispatchQueue.main.async { [unowned self] in 
+                    self.dismiss(animated: true, completion: nil)
+                }
+            } else {
+                self.showError(C.logoutFailedMessage)
+            }
+        }
     }
     
     func onRefresh() {

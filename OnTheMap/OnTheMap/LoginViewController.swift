@@ -8,7 +8,13 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, Alerting {
+    
+    // MARK: Alerting data-source
+    var alertTitle: String  = "Login Page Error"
+    
+    var alertButtonTitle: String = "Cancel"
+    
 
     // MARK: Properties
     @IBOutlet weak var emailTextField: UITextField!
@@ -18,8 +24,6 @@ class LoginViewController: UIViewController {
     // MARK: Class Constants Enum
     struct C {
         static let segueToHome = "LoginToHome"
-        static let errorPageTitle = "Login Page Error"
-        static let errorButtonTitle = "Cancel"
         static let invalidUsernamePasswordMessage = "Email or Password is incorrect. Please try again"
         static let invalidEmailAddress = "Please provide a valid email address."
         static let invalidPassword = "Minimum password length is 7, please check your password."
@@ -28,6 +32,17 @@ class LoginViewController: UIViewController {
     // MARK: View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        clearFields()
+    }
+    
+    // MARK: Helper methods
+    func clearFields() {
+        emailTextField.text = ""
+        passwordTextField.text = ""
     }
     
     // MARK: Button Actions
@@ -71,14 +86,5 @@ class LoginViewController: UIViewController {
         }
         
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
-    }
-    
-    // MARK: Helper methods
-    func showError(_ message: String) {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: C.errorPageTitle, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: C.errorButtonTitle, style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
     }
 }
