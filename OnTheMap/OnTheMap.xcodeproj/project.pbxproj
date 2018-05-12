@@ -12,6 +12,7 @@
 		0856622520A695A1004FE53C /* String+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856622420A695A1004FE53C /* String+Utility.swift */; };
 		0856622720A6BAA7004FE53C /* HomeNavigationItemsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856622620A6BAA7004FE53C /* HomeNavigationItemsProtocol.swift */; };
 		0856622A20A6C5F0004FE53C /* AlertingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856622920A6C5F0004FE53C /* AlertingProtocol.swift */; };
+		0856622D20A75B97004FE53C /* StudentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856622C20A75B97004FE53C /* StudentLocation.swift */; };
 		085AE01C209941EA00DBA698 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE01B209941EA00DBA698 /* HttpClient.swift */; };
 		085AE01E2099420B00DBA698 /* HttpConstants+Udacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE01D2099420B00DBA698 /* HttpConstants+Udacity.swift */; };
 		085AE0222099428200DBA698 /* HttpClient+Udacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE0212099428200DBA698 /* HttpClient+Udacity.swift */; };
@@ -47,6 +48,7 @@
 		0856622420A695A1004FE53C /* String+Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utility.swift"; sourceTree = "<group>"; };
 		0856622620A6BAA7004FE53C /* HomeNavigationItemsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigationItemsProtocol.swift; sourceTree = "<group>"; };
 		0856622920A6C5F0004FE53C /* AlertingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertingProtocol.swift; sourceTree = "<group>"; };
+		0856622C20A75B97004FE53C /* StudentLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentLocation.swift; sourceTree = "<group>"; };
 		085AE01B209941EA00DBA698 /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
 		085AE01D2099420B00DBA698 /* HttpConstants+Udacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpConstants+Udacity.swift"; sourceTree = "<group>"; };
 		085AE0212099428200DBA698 /* HttpClient+Udacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+Udacity.swift"; sourceTree = "<group>"; };
@@ -95,6 +97,14 @@
 				0856622920A6C5F0004FE53C /* AlertingProtocol.swift */,
 			);
 			name = Protocols;
+			sourceTree = "<group>";
+		};
+		0856622B20A75B6A004FE53C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0856622C20A75B97004FE53C /* StudentLocation.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		085AE0172099415A00DBA698 /* Supporting Files */ = {
@@ -175,6 +185,8 @@
 		08F5A9E320991E660098946D /* OnTheMap */ = {
 			isa = PBXGroup;
 			children = (
+				0856622820A6C5BD004FE53C /* Protocols */,
+				0872D1E7209C34D200F05639 /* Utility */,
 				08F5A9F7209940C20098946D /* Model */,
 				08F5A9F9209940CF0098946D /* View */,
 				08F5A9FA209940D70098946D /* Controller */,
@@ -188,8 +200,7 @@
 		08F5A9F7209940C20098946D /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				0856622820A6C5BD004FE53C /* Protocols */,
-				0872D1E7209C34D200F05639 /* Utility */,
+				0856622B20A75B6A004FE53C /* Models */,
 				085AE018209941A900DBA698 /* Clients */,
 			);
 			name = Model;
@@ -333,6 +344,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0856622D20A75B97004FE53C /* StudentLocation.swift in Sources */,
 				085AE0272099976700DBA698 /* HttpErrors.swift in Sources */,
 				085AE0292099A15900DBA698 /* HttpConstants.swift in Sources */,
 				08FE27A0209A88540099A103 /* StoreConfig.swift in Sources */,

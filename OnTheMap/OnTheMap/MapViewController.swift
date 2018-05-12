@@ -9,11 +9,29 @@
 import UIKit
 
 class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol {
+    var studentLocationResults: StudentLocationResults?
+    
     // MARK: View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addHomeNavigationBarButtons()
+        getStudentLocations()
+    }
+    
+    func getStudentLocations() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            HttpClient.shared.getStudentLocation(1,
+                                                 pageCount: 100,
+                                                 sort: StudentLocationSortOrder.inverseUpdatedAt) {[unowned self] (result, error) in
+                
+                guard error == nil else {
+                    return
+                }
+                
+                self.studentLocationResults = result
+            }
+        }
     }
     
     // MARK: Navigation Items Delegate Methods
@@ -23,7 +41,7 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
     }
     
     func onRefresh() {
-        print("refresh")
+        getStudentLocations()
     }
     
     func onAddPin() {
