@@ -6,7 +6,7 @@
 //  Copyright © 2018 JayahariV. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 extension String {
     func isValidEmail() -> Bool {
@@ -20,5 +20,18 @@ extension String {
         let validPasswordRegex = "^.{7,}$"
         let test = NSPredicate(format: "SELF MATCHES %@", validPasswordRegex)
         return test.evaluate(with: self)
+    }
+    
+    func openInSafari() -> Bool {
+        guard let url = URL(string: self) else {
+            return false
+        }
+        
+        guard UIApplication.shared.canOpenURL(url) else {
+            return false
+        }
+        
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        return true
     }
 }

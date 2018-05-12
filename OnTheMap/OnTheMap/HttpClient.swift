@@ -25,8 +25,8 @@ class HttpClient: NSObject {
     // MARK: ------ Internal APIs ------
     
     // GET request
-    func get(_ urlRequest: URLRequest, completionHandler: @escaping HTTPCompletionHandler) {
-        task(urlRequest, completionHandler: completionHandler)
+    func get(_ urlRequest: URLRequest, shouldSerializeResult: Bool = true, completionHandler: @escaping HTTPCompletionHandler) {
+        task(urlRequest, shouldSerializeResult:shouldSerializeResult, completionHandler: completionHandler)
     }
     
     // POST, PUT, DELETE tasks can be created using this method
@@ -106,7 +106,7 @@ class HttpClient: NSObject {
 private extension HttpClient {
     
     // Session Task
-    private func task(_ urlRequest: URLRequest, completionHandler: @escaping HTTPCompletionHandler) {
+    private func task(_ urlRequest: URLRequest, shouldSerializeResult: Bool = true, completionHandler: @escaping HTTPCompletionHandler) {
         
         let task = session.dataTask(with: urlRequest) { (data, response, error) in
             
@@ -139,6 +139,11 @@ private extension HttpClient {
             if (response as? HTTPURLResponse)?.url?.host == HttpConstants.UdacityConstants.host {
                 let range = Range(5..<data!.count)
                 newData = data?.subdata(in: range)
+            }
+            
+            guard shouldSerializeResult else {
+                completionHandler(newData as AnyObject, nil)
+                return
             }
             
             guard

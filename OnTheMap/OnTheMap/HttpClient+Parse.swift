@@ -11,7 +11,7 @@ import CoreLocation
 
 // MARK: ----- Completion Handler Type Alias -----
 
-typealias StudentLocationHandler = (_ studentLocation: [[String: AnyObject]]?, _ error: NSError?) -> Void
+typealias StudentLocationHandler = (_ results: StudentLocationResults?, _ error: NSError?) -> Void
 typealias MyLocationHandler = (_ location: [String: AnyObject]?, _ error: NSError?) -> Void
 typealias PostNewLocation = (_ createdDate: Date?, _ error: NSError?) -> Void
 typealias UpdateNewLocation = (_ updatedDate: Date?, _ error: NSError?) -> Void
@@ -54,7 +54,7 @@ extension HttpClient {
             completionHandler(nil, error as NSError)
         }
         
-        get(request) { (result, error) in
+        get(request, shouldSerializeResult: false) { (result, error) in
             
             do {
                 // GUARD: no error
@@ -69,14 +69,17 @@ extension HttpClient {
                                   userInfo: nil)
                 }
                 
-                // GUARD: result type should match and fetch the list of students
-                guard let results = result![HttpConstants.ParseResponseKeys.results] as? [[String: AnyObject]] else {
-                    throw NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
-                                  code: HttpErrors.HttpErrorCode.InvalidType,
-                                  userInfo: nil)
-                }
+                let decoder = JSONDecoder()
                 
-                completionHandler(results, nil)
+                do {
+                    let locationResults = try decoder.decode(StudentLocationResults.self, from: result as! Data)
+                    
+                    completionHandler(locationResults, nil)
+                    
+                } catch {
+
+                    completionHandler(nil, error as NSError)
+                }
                 
             } catch {
                 
