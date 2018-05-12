@@ -17,7 +17,7 @@ extension String {
     }
     
     func isValidPassword() -> Bool {
-        let validPasswordRegex = "^{7,}$"
+        let validPasswordRegex = "^.{7,}$"
         let test = NSPredicate(format: "SELF MATCHES %@", validPasswordRegex)
         return test.evaluate(with: self)
     }
