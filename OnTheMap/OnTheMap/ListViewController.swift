@@ -8,7 +8,11 @@
 
 import UIKit
 
-class ListViewController: UIViewController {
+class ListViewController: UIViewController, Alerting {
+    var alertTitle: String = "List Page Alert"
+    
+    var alertButtonTitle: String = "Cancel"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addHomeNavigationBarButtons()
@@ -17,7 +21,7 @@ class ListViewController: UIViewController {
 
 extension ListViewController: HomeNavigationItemsProtocol {
     func onLogout() {
-        print("Logout from List")
+        logout()
     }
     
     func onRefresh() {

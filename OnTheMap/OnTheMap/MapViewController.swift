@@ -14,10 +14,6 @@ class MapViewController: UIViewController, Alerting {
     
     var alertButtonTitle: String = "Cancel"
     
-    struct C {
-        static let logoutFailedMessage = "Something went wrong. Please try again"
-    }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,15 +23,7 @@ class MapViewController: UIViewController, Alerting {
 
 extension MapViewController: HomeNavigationItemsProtocol {
     func onLogout() {
-        HttpClient.shared.logout { [unowned self] (success, _) in
-            if success {
-                DispatchQueue.main.async { [unowned self] in 
-                    self.dismiss(animated: true, completion: nil)
-                }
-            } else {
-                self.showError(C.logoutFailedMessage)
-            }
-        }
+        logout()
     }
     
     func onRefresh() {
