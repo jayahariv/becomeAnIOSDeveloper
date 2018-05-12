@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import MapKit
 
 /*
  
@@ -36,4 +37,24 @@ struct StudentLocation: Codable {
     var mediaURL: String?
     var latitude: Double?
     var longitude: Double?
+}
+
+class StudentLocationAnnotation: NSObject, MKAnnotation {
+    var title: String?
+    var coordinate: CLLocationCoordinate2D
+    var subtitle: String?
+    
+    init?(_ loc: StudentLocation) {
+        title = (loc.firstName ?? "") + " " + (loc.lastName ?? "")
+        subtitle = loc.mediaURL
+        guard
+            let lat = loc.latitude,
+            let long = loc.longitude
+        else {
+            return nil
+        }
+        coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
+        
+        super.init()
+    }
 }
