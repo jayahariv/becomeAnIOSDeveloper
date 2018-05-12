@@ -8,20 +8,16 @@
 
 import UIKit
 
-class MapViewController: UIViewController, Alerting {
-    
-    var alertTitle: String = "Map View Page Alert"
-    
-    var alertButtonTitle: String = "Cancel"
-    
+class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol {
+    // MARK: View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addHomeNavigationBarButtons()
     }
-}
-
-extension MapViewController: HomeNavigationItemsProtocol {
+    
+    // MARK: Navigation Items Delegate Methods
+    
     func onLogout() {
         logout()
     }
@@ -31,6 +27,6 @@ extension MapViewController: HomeNavigationItemsProtocol {
     }
     
     func onAddPin() {
-        print("add pin")
+        addLocationPin()
     }
 }

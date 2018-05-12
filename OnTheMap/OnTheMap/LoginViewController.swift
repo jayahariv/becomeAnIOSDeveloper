@@ -9,12 +9,6 @@
 import UIKit
 
 class LoginViewController: UIViewController, Alerting {
-    
-    // MARK: Alerting data-source
-    var alertTitle: String  = "Login Page Error"
-    
-    var alertButtonTitle: String = "Cancel"
-    
 
     // MARK: Properties
     @IBOutlet weak var emailTextField: UITextField!
@@ -32,11 +26,16 @@ class LoginViewController: UIViewController, Alerting {
     // MARK: View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         clearFields()
+    }
+    
+    func setupUI() {
+        title = "Login"
     }
     
     // MARK: Helper methods

@@ -8,18 +8,17 @@
 
 import UIKit
 
-class ListViewController: UIViewController, Alerting {
-    var alertTitle: String = "List Page Alert"
+class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtocol {
     
-    var alertButtonTitle: String = "Cancel"
+    // MARK: View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addHomeNavigationBarButtons()
     }
-}
-
-extension ListViewController: HomeNavigationItemsProtocol {
+    
+    // MARK: Navigation Items Delegate methods
+    
     func onLogout() {
         logout()
     }
@@ -29,6 +28,6 @@ extension ListViewController: HomeNavigationItemsProtocol {
     }
     
     func onAddPin() {
-        print("Add pin from List")
+        addLocationPin()
     }
 }

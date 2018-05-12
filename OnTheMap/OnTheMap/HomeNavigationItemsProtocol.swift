@@ -56,4 +56,8 @@ extension HomeNavigationItemsProtocol where Self: UIViewController, Self: Alerti
             }
         }
     }
+    
+    func addLocationPin() {
+        print("Add Location Pin method here..")
+    }
 }
