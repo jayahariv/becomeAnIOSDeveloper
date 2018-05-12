@@ -10,6 +10,7 @@
 		0856621F20A563FF004FE53C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856621E20A563FF004FE53C /* MapViewController.swift */; };
 		0856622120A56409004FE53C /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856622020A56409004FE53C /* ListViewController.swift */; };
 		0856622520A695A1004FE53C /* String+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856622420A695A1004FE53C /* String+Utility.swift */; };
+		0856622720A6BAA7004FE53C /* HomeNavigationItemsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856622620A6BAA7004FE53C /* HomeNavigationItemsProtocol.swift */; };
 		085AE01C209941EA00DBA698 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE01B209941EA00DBA698 /* HttpClient.swift */; };
 		085AE01E2099420B00DBA698 /* HttpConstants+Udacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE01D2099420B00DBA698 /* HttpConstants+Udacity.swift */; };
 		085AE0222099428200DBA698 /* HttpClient+Udacity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085AE0212099428200DBA698 /* HttpClient+Udacity.swift */; };
@@ -43,6 +44,7 @@
 		0856621E20A563FF004FE53C /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		0856622020A56409004FE53C /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		0856622420A695A1004FE53C /* String+Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utility.swift"; sourceTree = "<group>"; };
+		0856622620A6BAA7004FE53C /* HomeNavigationItemsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigationItemsProtocol.swift; sourceTree = "<group>"; };
 		085AE01B209941EA00DBA698 /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
 		085AE01D2099420B00DBA698 /* HttpConstants+Udacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpConstants+Udacity.swift"; sourceTree = "<group>"; };
 		085AE0212099428200DBA698 /* HttpClient+Udacity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HttpClient+Udacity.swift"; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				0872D1E8209C34EE00F05639 /* OnTheMapUtils.swift */,
 				0872D1EA209C494300F05639 /* Date+Utility.swift */,
 				0856622420A695A1004FE53C /* String+Utility.swift */,
+				0856622620A6BAA7004FE53C /* HomeNavigationItemsProtocol.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 				08FE27A0209A88540099A103 /* StoreConfig.swift in Sources */,
 				08F5A9E720991E660098946D /* LoginViewController.swift in Sources */,
 				085AE01E2099420B00DBA698 /* HttpConstants+Udacity.swift in Sources */,
+				0856622720A6BAA7004FE53C /* HomeNavigationItemsProtocol.swift in Sources */,
 				085AE01C209941EA00DBA698 /* HttpClient.swift in Sources */,
 				0856622520A695A1004FE53C /* String+Utility.swift in Sources */,
 				0856622120A56409004FE53C /* ListViewController.swift in Sources */,
