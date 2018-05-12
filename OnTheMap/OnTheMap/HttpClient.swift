@@ -130,7 +130,7 @@ private extension HttpClient {
                     
                     completionHandler(nil, NSError(domain: HttpErrors.HttpErrorDomain.URLSessionTaskFailure,
                                                    code: HttpErrors.HttpErrorCode.InvalidStatusCode,
-                                                   userInfo: nil))
+                                                   userInfo: [HttpErrors.UserInfoKeys.statusCode: (response as? HTTPURLResponse)?.statusCode ?? 0]))
                     return
             }
             
