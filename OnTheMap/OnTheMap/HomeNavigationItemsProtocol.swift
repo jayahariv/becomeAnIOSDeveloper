@@ -21,6 +21,10 @@ import UIKit
     func onAddPin()
 }
 
+fileprivate struct C {
+    static let UnknownError = "Unknown error happened!"
+}
+
 extension HomeNavigationItemsProtocol where Self: UIViewController, Self: Alerting {
     
     func addHomeNavigationBarButtons() {
@@ -52,13 +56,13 @@ extension HomeNavigationItemsProtocol where Self: UIViewController, Self: Alerti
                     self.dismiss(animated: true, completion: nil)
                 }
             } else {
-                self.showAlertMessage("Unknown error happened!")
+                self.showAlertMessage(C.UnknownError)
             }
         }
     }
     
     func showAddLocation(_ updating: Bool = false) {
-        let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddLocationViewController") as! AddLocationViewController
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: String(describing: AddLocationViewController.self)) as! AddLocationViewController
         vc.isUpdating = updating
         self.show(vc, sender: nil)
     }
@@ -68,7 +72,6 @@ extension HomeNavigationItemsProtocol where Self: UIViewController, Self: Alerti
         let message = "User \(username) Has Already Posted a Student Location. Would You Like to Overwrite Their Location?"
         HttpClient.shared.getMyLocation { [unowned self] (locationResults, error) in
             if (locationResults?.results.count ?? 0) > 0 {
-                
                 StoreConfig.shared.locationObjectId = locationResults?.results.first?.objectId
                 self.showCustomAlert("",
                                      message: message,

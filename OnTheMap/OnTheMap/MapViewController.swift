@@ -18,20 +18,25 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
     // iVars
     var studentLocationAnnotations = [StudentLocationAnnotation]()
     
+    fileprivate struct C {
+        static let annotationViewReusableID = "StudentLocationAnnotationID"
+        static let title = "One the Map"
+    }
+    
     // MARK: View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addHomeNavigationBarButtons()
         getStudentLocations()
-        setupMap()
+        setupUI()
     }
     
     
     // MARK: Helper methods
     
-    func setupMap() {
-        // setup whatever for initial 
+    func setupUI() {
+        title = C.title
     }
     
     func getStudentLocations() {
@@ -84,14 +89,12 @@ extension MapViewController: MKMapViewDelegate {
             return nil
         }
         
-        let identifier = "StudentLocationAnnotationID"
         var view: MKMarkerAnnotationView
-        
-        if let dequedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView {
+        if let dequedView = mapView.dequeueReusableAnnotationView(withIdentifier: C.annotationViewReusableID) as? MKMarkerAnnotationView {
             dequedView.annotation = annotation
             view = dequedView
         } else {
-            view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: C.annotationViewReusableID)
             view.canShowCallout = true
             view.calloutOffset = CGPoint(x: -5, y: 5)
             view.rightCalloutAccessoryView = UIButton(type: .custom)

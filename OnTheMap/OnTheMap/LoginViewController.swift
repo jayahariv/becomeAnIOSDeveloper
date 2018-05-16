@@ -17,10 +17,13 @@ class LoginViewController: UIViewController, Alerting {
     
     // MARK: Class Constants Enum
     struct C {
+        static let title = "Login"
         static let segueToHome = "LoginToHome"
         static let invalidUsernamePasswordMessage = "Email or Password is incorrect. Please try again"
         static let invalidEmailAddress = "Please provide a valid email address."
         static let invalidPassword = "Minimum password length is 7, please check your password."
+        static let invalidURLErrorMessage = "Please enter a valid URL."
+        static let unknownError = "Unknown error happened. Please try again."
     }
     
     // MARK: View Lifecycle
@@ -35,7 +38,7 @@ class LoginViewController: UIViewController, Alerting {
     }
     
     func setupUI() {
-        title = "Login"
+        title = C.title
     }
     
     // MARK: Helper methods
@@ -72,7 +75,7 @@ class LoginViewController: UIViewController, Alerting {
                         self.showAlertMessage(C.invalidUsernamePasswordMessage)
                     }
                 default:
-                    self.showError(error, message: "Unknown error happened. Please try again")
+                    self.showError(error, message: C.unknownError)
                 }
             }
         }
@@ -80,7 +83,7 @@ class LoginViewController: UIViewController, Alerting {
     
     @IBAction func onSignUp(_ sender: UIButton) {
         guard HttpConstants.UdacityConstants.signupURLString.openInSafari() else {
-            showAlertMessage("Invalid Link")
+            showAlertMessage(C.invalidURLErrorMessage)
             return
         }
     }
