@@ -21,14 +21,16 @@ class AddLocationViewController: UIViewController, Alerting {
     struct C {
         static let invalidLocation = "Please provide a valid Location String."
         static let invalidURL = "Please provide a valid URL."
+        static let leftButtonTitle = "Cancel"
         static let segueToMap = "AddLocationToMap"
+        static let title = "Add Location"
     }
 
     // MARK: View Lifecycle
     
     override func viewDidLoad() {
-        title = "Add Location"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel",
+        title = C.title
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: C.leftButtonTitle,
                                                            style: .done,
                                                            target: self,
                                                            action: #selector(onCancel))

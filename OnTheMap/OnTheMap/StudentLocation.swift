@@ -58,4 +58,11 @@ class StudentLocationAnnotation: NSObject, MKAnnotation {
         
         super.init()
     }
+    
+    init(title: String, subtitle: String?, coordinate: CLLocationCoordinate2D) {
+        self.coordinate = coordinate
+        super.init()
+        self.title = title
+        self.subtitle = subtitle
+    }
 }

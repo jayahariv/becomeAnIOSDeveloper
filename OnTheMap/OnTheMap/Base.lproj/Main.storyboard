@@ -274,6 +274,9 @@
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ACz-k2-8Yk">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BD4-AB-WXR" id="FTB-34-bpj"/>
+                                </connections>
                             </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cVu-Dr-wxQ">
                                 <rect key="frame" x="16.5" y="581" width="342" height="44"/>
@@ -301,6 +304,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Fmp-rS-2bm"/>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="ACz-k2-8Yk" id="dPh-CG-kZp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P6d-8d-5KJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
