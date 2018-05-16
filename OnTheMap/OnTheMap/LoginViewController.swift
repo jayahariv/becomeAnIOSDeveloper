@@ -48,12 +48,12 @@ class LoginViewController: UIViewController, Alerting {
     @IBAction func onLogin(_ sender: UIButton) {
         
         guard let emailAddress = emailTextField.text, emailAddress.isValidEmail() else {
-            showError(C.invalidEmailAddress)
+            showAlertMessage(C.invalidEmailAddress)
             return
         }
         
         guard let password = passwordTextField.text, password.isValidPassword() else {
-            showError(C.invalidPassword)
+            showAlertMessage(C.invalidPassword)
             return
         }
         
@@ -69,10 +69,10 @@ class LoginViewController: UIViewController, Alerting {
                         let statusCode = error?.userInfo[HttpErrors.UserInfoKeys.statusCode] as? Int,
                         statusCode == HttpConstants.UdacityErrorCode.usernamePasswordIncorrect
                     {
-                        self.showError(C.invalidUsernamePasswordMessage)
+                        self.showAlertMessage(C.invalidUsernamePasswordMessage)
                     }
                 default:
-                    self.showError("Unknown error happened(\(error?.code ?? 0)). Please try again")
+                    self.showError(error, message: "Unknown error happened. Please try again")
                 }
             }
         }
@@ -80,7 +80,7 @@ class LoginViewController: UIViewController, Alerting {
     
     @IBAction func onSignUp(_ sender: UIButton) {
         guard HttpConstants.UdacityConstants.signupURLString.openInSafari() else {
-            showError("Invalid Link")
+            showAlertMessage("Invalid Link")
             return
         }
     }

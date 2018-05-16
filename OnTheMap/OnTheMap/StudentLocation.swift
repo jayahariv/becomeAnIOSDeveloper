@@ -37,6 +37,7 @@ struct StudentLocation: Codable {
     var mediaURL: String?
     var latitude: Double?
     var longitude: Double?
+    var objectId: String?
 }
 
 class StudentLocationAnnotation: NSObject, MKAnnotation {
@@ -56,5 +57,12 @@ class StudentLocationAnnotation: NSObject, MKAnnotation {
         coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
         
         super.init()
+    }
+    
+    init(title: String, subtitle: String?, coordinate: CLLocationCoordinate2D) {
+        self.coordinate = coordinate
+        super.init()
+        self.title = title
+        self.subtitle = subtitle
     }
 }
