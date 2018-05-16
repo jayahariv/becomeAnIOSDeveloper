@@ -18,6 +18,12 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
     // Class Properties
     var studentLocationResults: StudentLocationResults?
     
+    fileprivate struct C {
+        static let title = "One the Map"
+        static let tableReusableID = "listTableView"
+        static let invalidURLErrorMessage = "Please enter a valid URL"
+    }
+    
     // MARK: View Lifecycle
     
     override func viewDidLoad() {
@@ -30,7 +36,7 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
     // MARK: Helper methods
     
     func setupUI() {
-        title = "On the Map"
+        title = C.title
     }
     
     func getStudentLocations() {
@@ -79,10 +85,9 @@ extension ListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let id = "listTableView"
-        var cell = tableView.dequeueReusableCell(withIdentifier: id)
+        var cell = tableView.dequeueReusableCell(withIdentifier: C.tableReusableID)
         if cell == nil {
-            cell = UITableViewCell(style: .subtitle, reuseIdentifier: id)
+            cell = UITableViewCell(style: .subtitle, reuseIdentifier: C.tableReusableID)
         }
         
         let studentLocation = studentLocationResults?.results[indexPath.row]
@@ -100,7 +105,7 @@ extension ListViewController: UITableViewDelegate {
         let studentLocation = studentLocationResults?.results[indexPath.row]
         
         guard let mediaURL = studentLocation?.mediaURL, mediaURL.openInSafari() else {
-            showAlertMessage("Invalid Link")
+            showAlertMessage(C.invalidURLErrorMessage)
             return
         }
     }
