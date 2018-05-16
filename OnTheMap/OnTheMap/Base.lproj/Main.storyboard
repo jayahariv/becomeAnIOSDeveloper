@@ -192,6 +192,39 @@
             </objects>
             <point key="canvasLocation" x="2861.5999999999999" y="655.32233883058473"/>
         </scene>
+        <!--Add Location View Controller-->
+        <scene sceneID="ZH2-pi-quW">
+            <objects>
+                <viewController storyboardIdentifier="AddLocationViewController" id="pnS-JI-bVf" customClass="AddLocationViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Y3U-Ge-kNk">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="AOY-q6-sZ0"/>
+                    </view>
+                    <connections>
+                        <segue destination="BD4-AB-WXR" kind="show" id="3WR-3b-M6o"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pS2-UV-uA1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3903" y="304"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="tEU-F5-drR">
+            <objects>
+                <viewController id="BD4-AB-WXR" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="c4e-Zn-RJi">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="Fmp-rS-2bm"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="P6d-8d-5KJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4702" y="304"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="oGG-Dg-h5P">
             <objects>

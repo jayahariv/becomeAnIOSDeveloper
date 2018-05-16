@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08343CB120ACAC7C00D04F8A /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08343CB020ACAC7C00D04F8A /* AddLocationViewController.swift */; };
 		0856621F20A563FF004FE53C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856621E20A563FF004FE53C /* MapViewController.swift */; };
 		0856622120A56409004FE53C /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856622020A56409004FE53C /* ListViewController.swift */; };
 		0856622520A695A1004FE53C /* String+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856622420A695A1004FE53C /* String+Utility.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		08343CB020ACAC7C00D04F8A /* AddLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationViewController.swift; sourceTree = "<group>"; };
 		0856621E20A563FF004FE53C /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		0856622020A56409004FE53C /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		0856622420A695A1004FE53C /* String+Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utility.swift"; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				08F5A9E620991E660098946D /* LoginViewController.swift */,
 				0856621E20A563FF004FE53C /* MapViewController.swift */,
 				0856622020A56409004FE53C /* ListViewController.swift */,
+				08343CB020ACAC7C00D04F8A /* AddLocationViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -361,6 +364,7 @@
 				085AE025209945DD00DBA698 /* HttpConstants+Parse.swift in Sources */,
 				0872D1E9209C34EE00F05639 /* OnTheMapUtils.swift in Sources */,
 				08FE27A2209B75AE0099A103 /* HttpClient+Parse.swift in Sources */,
+				08343CB120ACAC7C00D04F8A /* AddLocationViewController.swift in Sources */,
 				085AE0222099428200DBA698 /* HttpClient+Udacity.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

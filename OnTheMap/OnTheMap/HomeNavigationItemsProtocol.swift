@@ -58,6 +58,14 @@ extension HomeNavigationItemsProtocol where Self: UIViewController, Self: Alerti
     }
     
     func addLocationPin() {
-        print("Add Location Pin method here..")
+        let username = (StoreConfig.shared.firstName ?? "_") + " " + (StoreConfig.shared.lastName ?? "_")
+        HttpClient.shared.getMyLocation { [unowned self] (locationResults, error) in
+            if (locationResults?.results.count ?? 0) > 0 {
+                self.showCustomAlert("", message: "User \(username) Has Already Posted a Student Location. Would You Like to Overwrite Their Location?", extraAction: UIAlertAction(title: "Overwrite", style: .default, handler: { (action) in
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddLocationViewController") as! AddLocationViewController
+                    self.show(vc, sender: nil)
+                }))
+            }
+        }
     }
 }
