@@ -66,6 +66,10 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
     func onAddPin() {
         addLocationPin()
     }
+    
+    func onCancel() {
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 // MARK: UITableViewDataSource
@@ -96,7 +100,7 @@ extension ListViewController: UITableViewDelegate {
         let studentLocation = studentLocationResults?.results[indexPath.row]
         
         guard let mediaURL = studentLocation?.mediaURL, mediaURL.openInSafari() else {
-            showError("Invalid Link")
+            showAlertMessage("Invalid Link")
             return
         }
     }

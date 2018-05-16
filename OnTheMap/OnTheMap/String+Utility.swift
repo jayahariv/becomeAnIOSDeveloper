@@ -22,6 +22,13 @@ extension String {
         return test.evaluate(with: self)
     }
     
+    func isValidURL() -> Bool {
+        guard let url = URL(string: self) else {
+            return false
+        }
+        return UIApplication.shared.canOpenURL(url)
+    }
+    
     func openInSafari() -> Bool {
         guard let url = URL(string: self) else {
             return false

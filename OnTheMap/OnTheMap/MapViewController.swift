@@ -71,6 +71,10 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
     func onAddPin() {
         addLocationPin()
     }
+    
+    func onCancel() {
+        navigationController?.popViewController(animated: true)
+    }
 }
 
 extension MapViewController: MKMapViewDelegate {

@@ -52,19 +52,34 @@ extension HomeNavigationItemsProtocol where Self: UIViewController, Self: Alerti
                     self.dismiss(animated: true, completion: nil)
                 }
             } else {
-                self.showError("Unknown error happened!")
+                self.showAlertMessage("Unknown error happened!")
             }
         }
     }
     
+    func showAddLocation(_ updating: Bool = false) {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddLocationViewController") as! AddLocationViewController
+        vc.isUpdating = updating
+        self.show(vc, sender: nil)
+    }
+    
     func addLocationPin() {
         let username = (StoreConfig.shared.firstName ?? "_") + " " + (StoreConfig.shared.lastName ?? "_")
+        let message = "User \(username) Has Already Posted a Student Location. Would You Like to Overwrite Their Location?"
         HttpClient.shared.getMyLocation { [unowned self] (locationResults, error) in
             if (locationResults?.results.count ?? 0) > 0 {
-                self.showCustomAlert("", message: "User \(username) Has Already Posted a Student Location. Would You Like to Overwrite Their Location?", extraAction: UIAlertAction(title: "Overwrite", style: .default, handler: { (action) in
-                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddLocationViewController") as! AddLocationViewController
-                    self.show(vc, sender: nil)
-                }))
+                
+                StoreConfig.shared.locationObjectId = locationResults?.results.first?.objectId
+                self.showCustomAlert("",
+                                     message: message,
+                                     extraAction: UIAlertAction(title: "Overwrite",
+                                                                style: .default,
+                                                                handler: { [unowned self] (action) in
+                                                                    self.showAddLocation(true)
+                                                                })
+                )
+            } else {
+                self.showAddLocation()
             }
         }
     }

@@ -52,6 +52,7 @@ extension HttpClient {
         } catch {
             
             completionHandler(nil, error as NSError)
+            return
         }
         
         get(request, shouldSerializeResult: false) { (result, error) in
@@ -113,6 +114,7 @@ extension HttpClient {
         } catch {
             
             completionHandler(nil, error as NSError)
+            return
         }
         
         get(request, shouldSerializeResult: false) { (result, error) in
@@ -168,9 +170,6 @@ extension HttpClient {
                     return
                 }
                 
-                // SAVE Location ObjectID
-                StoreConfig.shared.locationObjectId = objectId
-                
                 completionHandler(createdAt, nil)
                 
             })
@@ -213,6 +212,7 @@ private extension HttpClient {
         } catch {
             
             completionHandler(nil, nil, error as NSError)
+            return
         }
         
         task(HttpConstants.HTTPMethod.POST, urlRequest: request, body: body) { (result, error) in
@@ -272,6 +272,7 @@ private extension HttpClient {
             
         } catch {
             completionHandler(nil, error as NSError)
+            return
         }
  
         task(HttpConstants.HTTPMethod.PUT, urlRequest: request, body: body) { (result, error) in
