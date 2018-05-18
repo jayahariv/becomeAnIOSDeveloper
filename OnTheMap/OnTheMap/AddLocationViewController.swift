@@ -20,7 +20,6 @@ class AddLocationViewController: UIViewController, Alerting {
     // MARK: Enums
     struct C {
         static let invalidLocation = "Please provide a valid Location String."
-        static let invalidURL = "Please provide a valid URL."
         static let leftButtonTitle = "Cancel"
         static let segueToMap = "AddLocationToMap"
         static let title = "Add Location"
@@ -60,7 +59,7 @@ class AddLocationViewController: UIViewController, Alerting {
         }
         
         guard let websiteText = websiteTextField.text, websiteText.isValidURL() else {
-            showAlertMessage(C.invalidURL)
+            showAlertMessage(Constants.Messages.invalidURL)
             return
         }
         

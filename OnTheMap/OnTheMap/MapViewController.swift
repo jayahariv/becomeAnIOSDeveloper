@@ -97,8 +97,15 @@ extension MapViewController: MKMapViewDelegate {
             view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: C.annotationViewReusableID)
             view.canShowCallout = true
             view.calloutOffset = CGPoint(x: -5, y: 5)
-            view.rightCalloutAccessoryView = UIButton(type: .custom)
+            view.rightCalloutAccessoryView = UIButton(type: .infoDark)
         }
         return view
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        
+        if !(view.annotation?.subtitle??.openInSafari() ?? false) {
+            showBodyMessage(Constants.Messages.invalidURL)
+        }
     }
 }

@@ -21,7 +21,6 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
     fileprivate struct C {
         static let title = "One the Map"
         static let tableReusableID = "listTableView"
-        static let invalidURLErrorMessage = "Please enter a valid URL"
     }
     
     // MARK: View Lifecycle
@@ -105,7 +104,7 @@ extension ListViewController: UITableViewDelegate {
         let studentLocation = studentLocationResults?.results[indexPath.row]
         
         guard let mediaURL = studentLocation?.mediaURL, mediaURL.openInSafari() else {
-            showAlertMessage(C.invalidURLErrorMessage)
+            showAlertMessage(Constants.Messages.invalidURL)
             return
         }
     }

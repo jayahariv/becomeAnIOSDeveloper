@@ -20,11 +20,11 @@ class NewLocationInMapViewController: UIViewController, Alerting {
     var locationCoordinate: CLLocationCoordinate2D?
     
     // MARK: Enums
-    fileprivate struct C {
-        static let ErrorUpdatingLocation = "Error while updating location"
-        static let ErrorAddingLocation = "Error while adding new location"
-    }
     
+    fileprivate struct C {
+        static let UpdatingLocationError = "Update Location Error"
+        static let AddingLocationError = "Adding Location Error"
+    }
     
     // MARK: View Lifecycle
     override func viewDidLoad() {
@@ -51,7 +51,7 @@ class NewLocationInMapViewController: UIViewController, Alerting {
                 if error == nil {
                     self.done()
                 } else {
-                    self.showError(error, message: C.ErrorUpdatingLocation)
+                    self.showError(C.UpdatingLocationError, error: error)
                 }
             }
         } else {
@@ -59,7 +59,7 @@ class NewLocationInMapViewController: UIViewController, Alerting {
                 if error == nil {
                     self.done()
                 } else {
-                    self.showError(error, message: C.ErrorAddingLocation)
+                    self.showError(C.AddingLocationError, error: error)
                 }
             }
         }
