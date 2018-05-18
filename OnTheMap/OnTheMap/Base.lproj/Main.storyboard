@@ -266,13 +266,13 @@
                                 </subviews>
                             </stackView>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="eKM-zs-KUO">
-                                <rect key="frame" x="257.5" y="279" width="20" height="20"/>
+                                <rect key="frame" x="257.5" y="260" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Jnp-IJ-FPa" firstAttribute="centerX" secondItem="AOY-q6-sZ0" secondAttribute="centerX" id="1dp-sC-dpg"/>
-                            <constraint firstItem="eKM-zs-KUO" firstAttribute="top" secondItem="AOY-q6-sZ0" secondAttribute="top" constant="259" id="29K-Pz-tgM"/>
+                            <constraint firstItem="eKM-zs-KUO" firstAttribute="top" secondItem="AOY-q6-sZ0" secondAttribute="top" constant="240" id="29K-Pz-tgM"/>
                             <constraint firstItem="Jnp-IJ-FPa" firstAttribute="top" secondItem="AOY-q6-sZ0" secondAttribute="top" constant="24" id="Vwe-ij-VWh"/>
                             <constraint firstItem="eKM-zs-KUO" firstAttribute="centerX" secondItem="Y3U-Ge-kNk" secondAttribute="centerX" constant="80" id="jpF-Ou-H1w"/>
                         </constraints>

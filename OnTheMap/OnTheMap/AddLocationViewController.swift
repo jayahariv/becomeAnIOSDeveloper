@@ -28,6 +28,7 @@ class AddLocationViewController: UIViewController, Alerting {
         static let segueToMap = "AddLocationToMap"
         static let title = "Add Location"
         static let geocodeFetchingError = "Geocordinate Convertion Error"
+        static let geocodeNoResultError = "No geo location found for the given string. Please try again"
     }
 
     // MARK: View Lifecycle
@@ -106,8 +107,8 @@ class AddLocationViewController: UIViewController, Alerting {
             self.loadingUI(false)
             guard error == nil else {
                 switch error?.code {
-                case HttpErrors.HttpErrorCode.InvalidStatusCode:
-                    self.show(C.geocodeFetchingError, message: Constants.Messages.serverError)
+                case CLError.Code.geocodeFoundNoResult.rawValue:
+                    self.show(C.geocodeFetchingError, message: C.geocodeNoResultError)
                 default:
                     self.showError(C.geocodeFetchingError, error: error)
                 }

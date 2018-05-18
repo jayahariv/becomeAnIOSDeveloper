@@ -67,6 +67,7 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
             }
             
             DispatchQueue.main.async { [unowned self] in
+                self.mapView.removeAnnotations(self.mapView.annotations)
                 self.mapView.addAnnotations(annotations)
             }
         }
