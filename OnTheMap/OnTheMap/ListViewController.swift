@@ -14,6 +14,7 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
     
     // IBOutlet
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     fileprivate struct C {
         static let title = "One the Map"
@@ -43,13 +44,19 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
     
     func onRefresh() {
 
+        activityIndicator.startAnimating()
         loadStudentLocations { [unowned self] (success, error) in
+            
+            DispatchQueue.main.async { [unowned self] in
+                self.activityIndicator.stopAnimating()
+            }
+            
             guard error == nil && success == true else {
                 self.showError("Load Students Error", error: error)
                 return
             }
             
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [unowned self] in
                 self.tableView.reloadData()
             }
         }

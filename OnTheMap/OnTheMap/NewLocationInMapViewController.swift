@@ -13,6 +13,8 @@ class NewLocationInMapViewController: UIViewController, Alerting {
     // MARK: Properties
     
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var finishButton: UIButton!
     
     var isUpdating: Bool = false
     var location: String!
@@ -31,12 +33,28 @@ class NewLocationInMapViewController: UIViewController, Alerting {
         setupUI()
     }
     
+    // MARK: Helper methods
+    func loadingUI(_ loading: Bool) {
+        DispatchQueue.main.async { [unowned self] in
+            if loading {
+                self.activityIndicator.startAnimating()
+            } else {
+                self.activityIndicator.stopAnimating()
+            }
+            
+            self.finishButton.isEnabled = !loading
+        }
+    }
+    
     // MARK: Button Actions
     
     @IBAction func onTouchFinish(_ sender: UIButton) {
         
+        loadingUI(true)
         if isUpdating {
             HttpClient.shared.updateMyLocation(location, info: websiteText) {[unowned self] (updatedAt, error) in
+                
+                self.loadingUI(false)
                 if error == nil {
                     self.done()
                 } else {
@@ -45,6 +63,8 @@ class NewLocationInMapViewController: UIViewController, Alerting {
             }
         } else {
             HttpClient.shared.postNewLocation(location, info: websiteText) {[unowned self] (createdAt, error) in
+                
+                self.loadingUI(false)
                 if error == nil {
                     self.done()
                 } else {

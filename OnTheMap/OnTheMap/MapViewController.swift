@@ -15,6 +15,7 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
     
     // IBOutlets
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     fileprivate struct C {
         static let annotationViewReusableID = "StudentLocationAnnotationID"
@@ -37,30 +38,30 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
         title = C.title
     }
     
-    // show annotations from the Student Locations present in the store
-    func showAnnotations() {
-        var annotations = [StudentLocationAnnotation]()
-        for loc in StoreConfig.shared.studentLocationResults {
-            if let anotation = StudentLocationAnnotation.init(loc) {
-                annotations.append(anotation)
-            }
-        }
-        
-        DispatchQueue.main.async {
-            self.mapView.addAnnotations(annotations)
-        }
-    }
-    
     func loadStudents() {
         
+        activityIndicator.startAnimating()
         loadStudentLocations {[unowned self] (success, error) in
+            
+            DispatchQueue.main.async { [unowned self] in 
+                self.activityIndicator.stopAnimating()
+            }
             
             guard error == nil && success == true else {
                 self.showError("Student Location Loading", error: error)
                 return
             }
             
-            self.showAnnotations()
+            var annotations = [StudentLocationAnnotation]()
+            for loc in StoreConfig.shared.studentLocationResults {
+                if let anotation = StudentLocationAnnotation.init(loc) {
+                    annotations.append(anotation)
+                }
+            }
+            
+            DispatchQueue.main.async { [unowned self] in
+                self.mapView.addAnnotations(annotations)
+            }
         }
     }
     

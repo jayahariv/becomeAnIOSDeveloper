@@ -14,6 +14,8 @@ class LoginViewController: UIViewController, Alerting {
     @IBOutlet weak var emailTextField: UITextField!
     
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var loginButton: UIButton!
     
     // MARK: Class Constants Enum
     struct C {
@@ -36,18 +38,33 @@ class LoginViewController: UIViewController, Alerting {
         clearFields()
     }
     
-    func setupUI() {
-        title = C.title
-    }
-    
     // MARK: Helper methods
     func clearFields() {
         emailTextField.text = ""
         passwordTextField.text = ""
     }
     
+    func setupUI() {
+        title = C.title
+    }
+    
+    func loadingUI(_ loading: Bool) {
+        DispatchQueue.main.async { [unowned self] in
+            if loading {
+                self.activityIndicator.startAnimating()
+            } else {
+                self.activityIndicator.stopAnimating()
+            }
+            
+            self.loginButton.isEnabled = !loading
+            self.emailTextField.isEnabled = !loading
+            self.passwordTextField.isEnabled = !loading
+        }
+    }
+    
     // MARK: Button Actions
     @IBAction func onLogin(_ sender: UIButton) {
+        
         
         guard let emailAddress = emailTextField.text, emailAddress.isValidEmail() else {
             showAlertMessage(C.invalidEmailAddress)
@@ -59,9 +76,10 @@ class LoginViewController: UIViewController, Alerting {
             return
         }
         
+        loadingUI(true)
         HttpClient.shared.authenticate(userName: emailTextField.text!, password: passwordTextField.text!) {[unowned self] (success, error) in
             if success {
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [unowned self] in 
                     self.performSegue(withIdentifier: C.segueToHome, sender: nil)
                 }
             } else {
@@ -77,6 +95,8 @@ class LoginViewController: UIViewController, Alerting {
                     self.showError(C.pageErrorTitle, error: error)
                 }
             }
+            
+            self.loadingUI(false)
         }
     }
     

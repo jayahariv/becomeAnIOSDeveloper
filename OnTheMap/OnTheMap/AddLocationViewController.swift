@@ -17,6 +17,8 @@ class AddLocationViewController: UIViewController, Alerting {
     
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var websiteTextField: UITextField!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var findLocationButton: UIButton!
     
     // MARK: Enums
     struct C {
@@ -54,6 +56,21 @@ class AddLocationViewController: UIViewController, Alerting {
         }
     }
     
+    // MARK: helper methods
+    
+    func loadingUI(_ loading: Bool) {
+        DispatchQueue.main.async { [unowned self] in 
+            if loading {
+                self.activityIndicator.startAnimating()
+            } else {
+                self.activityIndicator.stopAnimating()
+            }
+            self.locationTextField.isEnabled = !loading
+            self.websiteTextField.isEnabled = !loading
+            self.findLocationButton.isEnabled = !loading
+        }
+    }
+    
     // MARK: Button Actions
     
     @objc func onCancel() {
@@ -72,7 +89,10 @@ class AddLocationViewController: UIViewController, Alerting {
             return
         }
         
+        loadingUI(true)
         OnTheMapUtils.getCoordinate(addressString: location) { [unowned self] (coordinate, error) in
+            
+            self.loadingUI(false)
             guard error == nil else {
                 self.showError("Geocordinate Convertion Error", error: error)
                 return
