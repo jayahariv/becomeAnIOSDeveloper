@@ -19,7 +19,9 @@ class HttpClient: NSObject {
     // URL Session Property
     
     private lazy var session: URLSession = {
-        return URLSession(configuration: URLSessionConfiguration.default)
+        let config = URLSessionConfiguration.default
+        config.timeoutIntervalForRequest = 10.0
+        return URLSession(configuration: config)
     }()
     
     // MARK: ------ Internal APIs ------
@@ -159,7 +161,6 @@ private extension HttpClient {
             
             completionHandler(serializedData, nil)
         }
-        
         task.resume()
     }
 }
