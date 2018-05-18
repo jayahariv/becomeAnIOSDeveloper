@@ -15,9 +15,6 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
     // IBOutlet
     @IBOutlet weak var tableView: UITableView!
     
-    // Class Properties
-    var studentLocationResults: StudentLocationResults?
-    
     fileprivate struct C {
         static let title = "One the Map"
         static let tableReusableID = "listTableView"
@@ -28,7 +25,6 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
     override func viewDidLoad() {
         super.viewDidLoad()
         addHomeNavigationBarButtons()
-        getStudentLocations()
         setupUI()
     }
     
@@ -38,25 +34,6 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
         title = C.title
     }
     
-    func getStudentLocations() {
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            HttpClient.shared.getStudentLocation(1,
-                                                 pageCount: 100,
-                                                 sort: StudentLocationSortOrder.inverseUpdatedAt)
-            { [unowned self] (result, error) in
-                
-                guard error == nil else {
-                    return
-                }
-                
-                self.studentLocationResults = result
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
-        }
-    }
     
     // MARK: NavigationItemsDelegate
     
@@ -65,7 +42,17 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
     }
     
     func onRefresh() {
-        getStudentLocations()
+
+        loadStudentLocations { [unowned self] (success, error) in
+            guard error == nil && success == true else {
+                self.showError("Load Students Error", error: error)
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
     
     func onAddPin() {
@@ -80,7 +67,7 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
 // MARK: UITableViewDataSource
 extension ListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return studentLocationResults?.results.count ?? 0
+        return StoreConfig.shared.studentLocationResults.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -89,10 +76,10 @@ extension ListViewController: UITableViewDataSource {
             cell = UITableViewCell(style: .subtitle, reuseIdentifier: C.tableReusableID)
         }
         
-        let studentLocation = studentLocationResults?.results[indexPath.row]
+        let studentLocation = StoreConfig.shared.studentLocationResults[indexPath.row]
         
-        cell?.textLabel?.text = (studentLocation?.firstName ?? "") + " " + (studentLocation?.lastName ?? "")
-        cell?.detailTextLabel?.text = studentLocation?.mediaURL
+        cell?.textLabel?.text = (studentLocation.firstName ?? "") + " " + (studentLocation.lastName ?? "")
+        cell?.detailTextLabel?.text = studentLocation.mediaURL
         cell?.imageView?.image = UIImage(named: "icon_pin")
         
         return cell!
@@ -101,9 +88,9 @@ extension ListViewController: UITableViewDataSource {
 
 extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let studentLocation = studentLocationResults?.results[indexPath.row]
+        let studentLocation = StoreConfig.shared.studentLocationResults[indexPath.row]
         
-        guard let mediaURL = studentLocation?.mediaURL, mediaURL.openInSafari() else {
+        guard let mediaURL = studentLocation.mediaURL, mediaURL.openInSafari() else {
             showAlertMessage(Constants.Messages.invalidURL)
             return
         }

@@ -15,8 +15,6 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
     
     // IBOutlets
     @IBOutlet weak var mapView: MKMapView!
-    // iVars
-    var studentLocationAnnotations = [StudentLocationAnnotation]()
     
     fileprivate struct C {
         static let annotationViewReusableID = "StudentLocationAnnotationID"
@@ -28,8 +26,8 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
     override func viewDidLoad() {
         super.viewDidLoad()
         addHomeNavigationBarButtons()
-        getStudentLocations()
         setupUI()
+        loadStudents()
     }
     
     
@@ -39,28 +37,30 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
         title = C.title
     }
     
-    func getStudentLocations() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            HttpClient.shared.getStudentLocation(1,
-                                                 pageCount: 100,
-                                                 sort: StudentLocationSortOrder.inverseUpdatedAt)
-            { [unowned self] (result, error) in
-                
-                guard error == nil else {
-                    self.showError("Fetch Student Location Error", error: error)
-                    return
-                }
-                
-                for loc in result?.results ?? [] {
-                    if let anotation = StudentLocationAnnotation.init(loc) {
-                        self.studentLocationAnnotations.append(anotation)
-                    }
-                }
-                
-                DispatchQueue.main.async {
-                    self.mapView.addAnnotations(self.studentLocationAnnotations)
-                }
+    // show annotations from the Student Locations present in the store
+    func showAnnotations() {
+        var annotations = [StudentLocationAnnotation]()
+        for loc in StoreConfig.shared.studentLocationResults {
+            if let anotation = StudentLocationAnnotation.init(loc) {
+                annotations.append(anotation)
             }
+        }
+        
+        DispatchQueue.main.async {
+            self.mapView.addAnnotations(annotations)
+        }
+    }
+    
+    func loadStudents() {
+        
+        loadStudentLocations {[unowned self] (success, error) in
+            
+            guard error == nil && success == true else {
+                self.showError("Student Location Loading", error: error)
+                return
+            }
+            
+            self.showAnnotations()
         }
     }
     
@@ -71,7 +71,7 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
     }
     
     func onRefresh() {
-        getStudentLocations()
+        loadStudents()
     }
     
     func onAddPin() {
