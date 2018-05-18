@@ -10,14 +10,18 @@ import Foundation
 
 class StoreConfig: NSObject {
     
+    // account details
     var sessionId: String?
     var sessionExpiry: String?
     var accountKey: String?
     
+    // profile details
     var firstName: String?
     var lastName: String?
-    
     var locationObjectId: String?
+    
+    // other student details
+    var studentLocationResults = [StudentLocation]()
     
     static let shared: StoreConfig = {
        return StoreConfig()

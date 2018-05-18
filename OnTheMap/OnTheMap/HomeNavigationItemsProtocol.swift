@@ -86,4 +86,24 @@ extension HomeNavigationItemsProtocol where Self: UIViewController, Self: Alerti
             }
         }
     }
+    
+    // loads the student locations from the server to the StoreConfig
+    func loadStudentLocations(completion: @escaping (_ success: Bool, _ error: NSError?) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            HttpClient.shared.getStudentLocation(1,
+                                                 pageCount: 100,
+                                                 sort: StudentLocationSortOrder.inverseUpdatedAt)
+            { (result, error) in
+                
+                guard error == nil else {
+                    completion(false, error)
+                    return
+                }
+                
+                StoreConfig.shared.studentLocationResults = result?.results ?? []
+                
+                completion(true, nil)
+            }
+        }
+    }
 }

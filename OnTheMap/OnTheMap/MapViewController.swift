@@ -15,12 +15,12 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
     
     // IBOutlets
     @IBOutlet weak var mapView: MKMapView!
-    // iVars
-    var studentLocationAnnotations = [StudentLocationAnnotation]()
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     fileprivate struct C {
         static let annotationViewReusableID = "StudentLocationAnnotationID"
         static let title = "One the Map"
+        static let studentsLoadingError = "Students Location Loading Error"
     }
     
     // MARK: View Lifecycle
@@ -28,8 +28,8 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
     override func viewDidLoad() {
         super.viewDidLoad()
         addHomeNavigationBarButtons()
-        getStudentLocations()
         setupUI()
+        loadStudents()
     }
     
     
@@ -39,26 +39,36 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
         title = C.title
     }
     
-    func getStudentLocations() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            HttpClient.shared.getStudentLocation(1,
-                                                 pageCount: 100,
-                                                 sort: StudentLocationSortOrder.inverseUpdatedAt)
-            { [unowned self] (result, error) in
-                
-                guard error == nil else {
-                    return
+    func loadStudents() {
+        
+        activityIndicator.startAnimating()
+        loadStudentLocations {[unowned self] (success, error) in
+            
+            DispatchQueue.main.async { [unowned self] in 
+                self.activityIndicator.stopAnimating()
+            }
+            
+            guard error == nil && success == true else {
+                switch error?.code {
+                case HttpErrors.HttpErrorCode.InvalidStatusCode:
+                    self.show(C.studentsLoadingError, message: Constants.Messages.serverError)
+                default:
+                    self.showError(C.studentsLoadingError, error: error)
                 }
                 
-                for loc in result?.results ?? [] {
-                    if let anotation = StudentLocationAnnotation.init(loc) {
-                        self.studentLocationAnnotations.append(anotation)
-                    }
+                return
+            }
+            
+            var annotations = [StudentLocationAnnotation]()
+            for loc in StoreConfig.shared.studentLocationResults {
+                if let anotation = StudentLocationAnnotation.init(loc) {
+                    annotations.append(anotation)
                 }
-                
-                DispatchQueue.main.async {
-                    self.mapView.addAnnotations(self.studentLocationAnnotations)
-                }
+            }
+            
+            DispatchQueue.main.async { [unowned self] in
+                self.mapView.removeAnnotations(self.mapView.annotations)
+                self.mapView.addAnnotations(annotations)
             }
         }
     }
@@ -70,7 +80,7 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
     }
     
     func onRefresh() {
-        getStudentLocations()
+        loadStudents()
     }
     
     func onAddPin() {
@@ -97,8 +107,15 @@ extension MapViewController: MKMapViewDelegate {
             view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: C.annotationViewReusableID)
             view.canShowCallout = true
             view.calloutOffset = CGPoint(x: -5, y: 5)
-            view.rightCalloutAccessoryView = UIButton(type: .custom)
+            view.rightCalloutAccessoryView = UIButton(type: .infoDark)
         }
         return view
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        
+        if !(view.annotation?.subtitle??.openInSafari() ?? false) {
+            showBodyMessage(Constants.Messages.invalidURL)
+        }
     }
 }

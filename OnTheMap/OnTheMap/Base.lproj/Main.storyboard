@@ -42,6 +42,9 @@
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="BYZ-38-t0r" id="pGO-wQ-q8n"/>
+                                                        </connections>
                                                     </textField>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="a1b-MT-xUt">
                                                         <rect key="frame" x="0.0" y="56" width="300" height="44"/>
@@ -51,6 +54,9 @@
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="BYZ-38-t0r" id="8nA-aY-mfv"/>
+                                                        </connections>
                                                     </textField>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EYl-B8-AI2">
                                                         <rect key="frame" x="0.0" y="112" width="300" height="44"/>
@@ -92,16 +98,23 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="gQV-Lo-Uui">
+                                <rect key="frame" x="217.5" y="300" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="9Ye-2L-4ak" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Jbd-5F-RMf"/>
+                            <constraint firstItem="gQV-Lo-Uui" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="40" id="cF6-WN-4Nd"/>
+                            <constraint firstItem="gQV-Lo-Uui" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="280" id="cQV-ye-OYK"/>
                             <constraint firstItem="9Ye-2L-4ak" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="28" id="rvI-SI-WoV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="gQV-Lo-Uui" id="LDv-Qw-HT6"/>
                         <outlet property="emailTextField" destination="9MR-vu-xxz" id="GTS-dD-slE"/>
+                        <outlet property="loginButton" destination="EYl-B8-AI2" id="qpn-EP-a0h"/>
                         <outlet property="passwordTextField" destination="a1b-MT-xUt" id="eT6-mE-BBv"/>
                         <segue destination="NFf-IX-1jo" kind="presentation" identifier="LoginToHome" id="xgv-OX-fXH"/>
                     </connections>
@@ -165,9 +178,14 @@
                                     <outlet property="delegate" destination="3PY-nz-tVk" id="TKy-oF-pJw"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="dIa-ay-jed">
+                                <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="dIa-ay-jed" firstAttribute="centerY" secondItem="Hse-Kd-Wr4" secondAttribute="centerY" id="1mx-G2-saA"/>
+                            <constraint firstItem="dIa-ay-jed" firstAttribute="centerX" secondItem="Hse-Kd-Wr4" secondAttribute="centerX" id="51T-UO-kuj"/>
                             <constraint firstItem="dUb-ak-SFk" firstAttribute="bottom" secondItem="5j8-t0-rFa" secondAttribute="bottom" id="R9u-jq-4GE"/>
                             <constraint firstItem="dUb-ak-SFk" firstAttribute="leading" secondItem="5j8-t0-rFa" secondAttribute="leading" id="Z7F-aq-0Gr"/>
                             <constraint firstItem="dUb-ak-SFk" firstAttribute="top" secondItem="5j8-t0-rFa" secondAttribute="top" id="jEk-ML-wmA"/>
@@ -177,6 +195,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Hpi-Kh-f6t"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="dIa-ay-jed" id="x8q-rl-e6A"/>
                         <outlet property="tableView" destination="dUb-ak-SFk" id="3Uh-hv-pyo"/>
                     </connections>
                 </viewController>
@@ -193,7 +212,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Jnp-IJ-FPa">
-                                <rect key="frame" x="38" y="64" width="300" height="247"/>
+                                <rect key="frame" x="37.5" y="44" width="300" height="247"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="icon_world" translatesAutoresizingMaskIntoConstraints="NO" id="MZr-zR-vd7">
                                         <rect key="frame" x="124" y="0.0" width="52" height="67"/>
@@ -209,6 +228,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="pnS-JI-bVf" id="SdQ-Lz-ROj"/>
+                                                </connections>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a Website" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kdw-F9-Y8e">
                                                 <rect key="frame" x="0.0" y="56" width="300" height="44"/>
@@ -218,6 +240,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="pnS-JI-bVf" id="FSW-jc-GbQ"/>
+                                                </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kW1-4p-npB">
                                                 <rect key="frame" x="0.0" y="112" width="300" height="44"/>
@@ -240,15 +265,22 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="eKM-zs-KUO">
+                                <rect key="frame" x="257.5" y="260" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Jnp-IJ-FPa" firstAttribute="centerX" secondItem="AOY-q6-sZ0" secondAttribute="centerX" id="1dp-sC-dpg"/>
-                            <constraint firstItem="Jnp-IJ-FPa" firstAttribute="top" secondItem="AOY-q6-sZ0" secondAttribute="top" constant="44" id="Vwe-ij-VWh"/>
+                            <constraint firstItem="eKM-zs-KUO" firstAttribute="top" secondItem="AOY-q6-sZ0" secondAttribute="top" constant="240" id="29K-Pz-tgM"/>
+                            <constraint firstItem="Jnp-IJ-FPa" firstAttribute="top" secondItem="AOY-q6-sZ0" secondAttribute="top" constant="24" id="Vwe-ij-VWh"/>
+                            <constraint firstItem="eKM-zs-KUO" firstAttribute="centerX" secondItem="Y3U-Ge-kNk" secondAttribute="centerX" constant="80" id="jpF-Ou-H1w"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="AOY-q6-sZ0"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="eKM-zs-KUO" id="weY-1k-CiP"/>
+                        <outlet property="findLocationButton" destination="kW1-4p-npB" id="7RA-B2-GId"/>
                         <outlet property="locationTextField" destination="rjC-DG-hu3" id="Muu-9U-Uj6"/>
                         <outlet property="websiteTextField" destination="kdw-F9-Y8e" id="mCb-Qz-3i5"/>
                         <segue destination="BD4-AB-WXR" kind="show" identifier="AddLocationToMap" id="3WR-3b-M6o"/>
@@ -285,13 +317,18 @@
                                     <action selector="onTouchFinish:" destination="BD4-AB-WXR" eventType="touchUpInside" id="Gap-Og-3VH"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="scI-m9-ygD">
+                                <rect key="frame" x="219.5" y="593" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="ACz-k2-8Yk" firstAttribute="trailing" secondItem="Fmp-rS-2bm" secondAttribute="trailing" id="3e1-y4-E0G"/>
                             <constraint firstItem="ACz-k2-8Yk" firstAttribute="top" secondItem="Fmp-rS-2bm" secondAttribute="top" id="3l6-zw-6bn"/>
                             <constraint firstItem="ACz-k2-8Yk" firstAttribute="bottom" secondItem="Fmp-rS-2bm" secondAttribute="bottom" id="7dt-nQ-ciu"/>
+                            <constraint firstItem="scI-m9-ygD" firstAttribute="centerX" secondItem="c4e-Zn-RJi" secondAttribute="centerX" constant="42" id="BmU-kL-K4n"/>
                             <constraint firstItem="cVu-Dr-wxQ" firstAttribute="leading" secondItem="Fmp-rS-2bm" secondAttribute="leading" constant="12" id="QIR-hd-CU2"/>
+                            <constraint firstItem="Fmp-rS-2bm" firstAttribute="bottom" secondItem="scI-m9-ygD" secondAttribute="bottom" constant="54" id="QsC-5h-hof"/>
                             <constraint firstItem="ACz-k2-8Yk" firstAttribute="leading" secondItem="Fmp-rS-2bm" secondAttribute="leading" id="TBr-fe-xAR"/>
                             <constraint firstItem="Fmp-rS-2bm" firstAttribute="trailing" secondItem="cVu-Dr-wxQ" secondAttribute="trailing" constant="12" id="e6J-Uw-MW9"/>
                             <constraint firstItem="Fmp-rS-2bm" firstAttribute="bottom" secondItem="cVu-Dr-wxQ" secondAttribute="bottom" constant="42" id="jcB-c1-udW"/>
@@ -299,6 +336,8 @@
                         <viewLayoutGuide key="safeArea" id="Fmp-rS-2bm"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="scI-m9-ygD" id="5Bk-IE-4ei"/>
+                        <outlet property="finishButton" destination="cVu-Dr-wxQ" id="ReT-95-vuC"/>
                         <outlet property="mapView" destination="ACz-k2-8Yk" id="dPh-CG-kZp"/>
                     </connections>
                 </viewController>
@@ -339,18 +378,24 @@
                                     <outlet property="delegate" destination="eDS-BT-xdY" id="lDS-ol-EZ6"/>
                                 </connections>
                             </mapView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ORT-UZ-Dc2">
+                                <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="3hM-Ex-Pep" firstAttribute="leading" secondItem="kES-BO-NG9" secondAttribute="leading" id="1sk-4Z-7ad"/>
                             <constraint firstItem="3hM-Ex-Pep" firstAttribute="trailing" secondItem="kES-BO-NG9" secondAttribute="trailing" id="Jo9-sQ-kiZ"/>
                             <constraint firstItem="3hM-Ex-Pep" firstAttribute="bottom" secondItem="kES-BO-NG9" secondAttribute="bottom" id="OCA-l0-bXC"/>
+                            <constraint firstItem="ORT-UZ-Dc2" firstAttribute="centerX" secondItem="zXP-PZ-q1x" secondAttribute="centerX" id="Ozw-SL-Pfo"/>
                             <constraint firstItem="3hM-Ex-Pep" firstAttribute="top" secondItem="kES-BO-NG9" secondAttribute="top" id="YYv-zh-rKf"/>
+                            <constraint firstItem="ORT-UZ-Dc2" firstAttribute="centerY" secondItem="zXP-PZ-q1x" secondAttribute="centerY" id="wK6-bS-mVp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="kES-BO-NG9"/>
                     </view>
                     <navigationItem key="navigationItem" id="DEw-jB-lKo"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="ORT-UZ-Dc2" id="7BF-9u-DRj"/>
                         <outlet property="mapView" destination="3hM-Ex-Pep" id="iqU-gl-UMo"/>
                     </connections>
                 </viewController>

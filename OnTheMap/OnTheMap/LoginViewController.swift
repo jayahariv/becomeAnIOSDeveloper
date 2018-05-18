@@ -14,6 +14,8 @@ class LoginViewController: UIViewController, Alerting {
     @IBOutlet weak var emailTextField: UITextField!
     
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var loginButton: UIButton!
     
     // MARK: Class Constants Enum
     struct C {
@@ -22,8 +24,7 @@ class LoginViewController: UIViewController, Alerting {
         static let invalidUsernamePasswordMessage = "Email or Password is incorrect. Please try again"
         static let invalidEmailAddress = "Please provide a valid email address."
         static let invalidPassword = "Minimum password length is 7, please check your password."
-        static let invalidURLErrorMessage = "Please enter a valid URL."
-        static let unknownError = "Unknown error happened. Please try again."
+        static let pageErrorTitle = "Login Error"
     }
     
     // MARK: View Lifecycle
@@ -37,8 +38,8 @@ class LoginViewController: UIViewController, Alerting {
         clearFields()
     }
     
-    func setupUI() {
-        title = C.title
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
     }
     
     // MARK: Helper methods
@@ -47,8 +48,27 @@ class LoginViewController: UIViewController, Alerting {
         passwordTextField.text = ""
     }
     
+    func setupUI() {
+        title = C.title
+    }
+    
+    func loadingUI(_ loading: Bool) {
+        DispatchQueue.main.async { [unowned self] in
+            if loading {
+                self.activityIndicator.startAnimating()
+            } else {
+                self.activityIndicator.stopAnimating()
+            }
+            
+            self.loginButton.isEnabled = !loading
+            self.emailTextField.isEnabled = !loading
+            self.passwordTextField.isEnabled = !loading
+        }
+    }
+    
     // MARK: Button Actions
     @IBAction func onLogin(_ sender: UIButton) {
+        
         
         guard let emailAddress = emailTextField.text, emailAddress.isValidEmail() else {
             showAlertMessage(C.invalidEmailAddress)
@@ -60,9 +80,10 @@ class LoginViewController: UIViewController, Alerting {
             return
         }
         
+        loadingUI(true)
         HttpClient.shared.authenticate(userName: emailTextField.text!, password: passwordTextField.text!) {[unowned self] (success, error) in
             if success {
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [unowned self] in 
                     self.performSegue(withIdentifier: C.segueToHome, sender: nil)
                 }
             } else {
@@ -72,19 +93,30 @@ class LoginViewController: UIViewController, Alerting {
                         let statusCode = error?.userInfo[HttpErrors.UserInfoKeys.statusCode] as? Int,
                         statusCode == HttpConstants.UdacityErrorCode.usernamePasswordIncorrect
                     {
-                        self.showAlertMessage(C.invalidUsernamePasswordMessage)
+                        self.show(C.pageErrorTitle, message: C.invalidUsernamePasswordMessage)
+                    } else {
+                        self.show(C.pageErrorTitle, message: Constants.Messages.serverError)
                     }
                 default:
-                    self.showError(error, message: C.unknownError)
+                    self.showError(C.pageErrorTitle, error: error)
                 }
             }
+            
+            self.loadingUI(false)
         }
     }
     
     @IBAction func onSignUp(_ sender: UIButton) {
         guard HttpConstants.UdacityConstants.signupURLString.openInSafari() else {
-            showAlertMessage(C.invalidURLErrorMessage)
+            showAlertMessage(Constants.Messages.invalidURL)
             return
         }
+    }
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

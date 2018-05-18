@@ -17,12 +17,21 @@ extension Alerting where Self: UIViewController {
         showCustomAlert(self.title, message: message, extraAction: nil)
     }
     
+    func show(_ title: String, message: String) {
+        showCustomAlert(title, message: message, extraAction: nil)
+    }
+    
     func showBodyMessage(_ message: String) {
         showCustomAlert("", message: message, extraAction: nil)
     }
     
-    func showError(_ error: NSError?, message: String) {
-        showCustomAlert(String(error?.code ?? 0), message: "\(message) \(error?.description ?? "")", extraAction: nil)
+    func showError(_ title: String, error: NSError?) {
+        var message = "Unknown error happened. Please try again."
+        if let description = error?.localizedDescription {
+          message = description
+        }
+        
+        showCustomAlert(title, message: message, extraAction: nil)
     }
     
     func showCustomAlert(_ title: String?, message: String, extraAction: UIAlertAction?) {

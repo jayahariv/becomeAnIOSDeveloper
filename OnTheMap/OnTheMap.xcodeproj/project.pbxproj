@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		08343CB120ACAC7C00D04F8A /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08343CB020ACAC7C00D04F8A /* AddLocationViewController.swift */; };
 		08343CB320ACC6A800D04F8A /* NewLocationInMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08343CB220ACC6A800D04F8A /* NewLocationInMapViewController.swift */; };
+		08343CB520AE51F700D04F8A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08343CB420AE51F700D04F8A /* Constants.swift */; };
+		08343CB720AE835600D04F8A /* KeyboardNotificationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08343CB620AE835600D04F8A /* KeyboardNotificationProtocol.swift */; };
+		08343CB920AE899A00D04F8A /* UIView+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08343CB820AE899A00D04F8A /* UIView+Utility.swift */; };
 		0856621F20A563FF004FE53C /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856621E20A563FF004FE53C /* MapViewController.swift */; };
 		0856622120A56409004FE53C /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856622020A56409004FE53C /* ListViewController.swift */; };
 		0856622520A695A1004FE53C /* String+Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0856622420A695A1004FE53C /* String+Utility.swift */; };
@@ -47,6 +50,9 @@
 /* Begin PBXFileReference section */
 		08343CB020ACAC7C00D04F8A /* AddLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLocationViewController.swift; sourceTree = "<group>"; };
 		08343CB220ACC6A800D04F8A /* NewLocationInMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLocationInMapViewController.swift; sourceTree = "<group>"; };
+		08343CB420AE51F700D04F8A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		08343CB620AE835600D04F8A /* KeyboardNotificationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardNotificationProtocol.swift; sourceTree = "<group>"; };
+		08343CB820AE899A00D04F8A /* UIView+Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Utility.swift"; sourceTree = "<group>"; };
 		0856621E20A563FF004FE53C /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		0856622020A56409004FE53C /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		0856622420A695A1004FE53C /* String+Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Utility.swift"; sourceTree = "<group>"; };
@@ -99,6 +105,7 @@
 			children = (
 				0856622620A6BAA7004FE53C /* HomeNavigationItemsProtocol.swift */,
 				0856622920A6C5F0004FE53C /* AlertingProtocol.swift */,
+				08343CB620AE835600D04F8A /* KeyboardNotificationProtocol.swift */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -164,6 +171,8 @@
 				0872D1E8209C34EE00F05639 /* OnTheMapUtils.swift */,
 				0872D1EA209C494300F05639 /* Date+Utility.swift */,
 				0856622420A695A1004FE53C /* String+Utility.swift */,
+				08343CB420AE51F700D04F8A /* Constants.swift */,
+				08343CB820AE899A00D04F8A /* UIView+Utility.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -361,11 +370,14 @@
 				085AE01C209941EA00DBA698 /* HttpClient.swift in Sources */,
 				0856622520A695A1004FE53C /* String+Utility.swift in Sources */,
 				0856622120A56409004FE53C /* ListViewController.swift in Sources */,
+				08343CB720AE835600D04F8A /* KeyboardNotificationProtocol.swift in Sources */,
+				08343CB520AE51F700D04F8A /* Constants.swift in Sources */,
 				0856621F20A563FF004FE53C /* MapViewController.swift in Sources */,
 				0856622A20A6C5F0004FE53C /* AlertingProtocol.swift in Sources */,
 				0872D1EB209C494300F05639 /* Date+Utility.swift in Sources */,
 				08F5A9E520991E660098946D /* AppDelegate.swift in Sources */,
 				085AE025209945DD00DBA698 /* HttpConstants+Parse.swift in Sources */,
+				08343CB920AE899A00D04F8A /* UIView+Utility.swift in Sources */,
 				0872D1E9209C34EE00F05639 /* OnTheMapUtils.swift in Sources */,
 				08FE27A2209B75AE0099A103 /* HttpClient+Parse.swift in Sources */,
 				08343CB120ACAC7C00D04F8A /* AddLocationViewController.swift in Sources */,
