@@ -27,6 +27,7 @@ class AddLocationViewController: UIViewController, Alerting {
         static let invalidLocationCoordinate = "Invalid 2D Coordinate. Please try again."
         static let segueToMap = "AddLocationToMap"
         static let title = "Add Location"
+        static let geocodeFetchingError = "Geocordinate Convertion Error"
     }
 
     // MARK: View Lifecycle
@@ -94,7 +95,12 @@ class AddLocationViewController: UIViewController, Alerting {
             
             self.loadingUI(false)
             guard error == nil else {
-                self.showError("Geocordinate Convertion Error", error: error)
+                switch error?.code {
+                case HttpErrors.HttpErrorCode.InvalidStatusCode:
+                    self.show(C.geocodeFetchingError, message: Constants.Messages.serverError)
+                default:
+                    self.showError(C.geocodeFetchingError, error: error)
+                }
                 return
             }
             

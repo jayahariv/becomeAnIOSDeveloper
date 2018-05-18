@@ -20,6 +20,7 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
     fileprivate struct C {
         static let annotationViewReusableID = "StudentLocationAnnotationID"
         static let title = "One the Map"
+        static let studentsLoadingError = "Students Location Loading Error"
     }
     
     // MARK: View Lifecycle
@@ -48,7 +49,13 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
             }
             
             guard error == nil && success == true else {
-                self.showError("Student Location Loading", error: error)
+                switch error?.code {
+                case HttpErrors.HttpErrorCode.InvalidStatusCode:
+                    self.show(C.studentsLoadingError, message: Constants.Messages.serverError)
+                default:
+                    self.showError(C.studentsLoadingError, error: error)
+                }
+                
                 return
             }
             

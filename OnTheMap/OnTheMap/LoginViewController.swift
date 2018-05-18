@@ -89,7 +89,9 @@ class LoginViewController: UIViewController, Alerting {
                         let statusCode = error?.userInfo[HttpErrors.UserInfoKeys.statusCode] as? Int,
                         statusCode == HttpConstants.UdacityErrorCode.usernamePasswordIncorrect
                     {
-                        self.showAlertMessage(C.invalidUsernamePasswordMessage)
+                        self.show(C.pageErrorTitle, message: C.invalidUsernamePasswordMessage)
+                    } else {
+                        self.show(C.pageErrorTitle, message: Constants.Messages.serverError)
                     }
                 default:
                     self.showError(C.pageErrorTitle, error: error)

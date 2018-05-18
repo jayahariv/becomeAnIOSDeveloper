@@ -17,6 +17,10 @@ extension Alerting where Self: UIViewController {
         showCustomAlert(self.title, message: message, extraAction: nil)
     }
     
+    func show(_ title: String, message: String) {
+        showCustomAlert(title, message: message, extraAction: nil)
+    }
+    
     func showBodyMessage(_ message: String) {
         showCustomAlert("", message: message, extraAction: nil)
     }

@@ -58,7 +58,12 @@ class NewLocationInMapViewController: UIViewController, Alerting {
                 if error == nil {
                     self.done()
                 } else {
-                    self.showError(C.UpdatingLocationError, error: error)
+                    switch error?.code {
+                    case HttpErrors.HttpErrorCode.InvalidStatusCode:
+                        self.show(C.UpdatingLocationError, message: Constants.Messages.serverError)
+                    default:
+                        self.showError(C.UpdatingLocationError, error: error)
+                    }
                 }
             }
         } else {
@@ -68,7 +73,12 @@ class NewLocationInMapViewController: UIViewController, Alerting {
                 if error == nil {
                     self.done()
                 } else {
-                    self.showError(C.AddingLocationError, error: error)
+                    switch error?.code {
+                    case HttpErrors.HttpErrorCode.InvalidStatusCode:
+                        self.show(C.AddingLocationError, message: Constants.Messages.serverError)
+                    default:
+                        self.showError(C.AddingLocationError, error: error)
+                    }
                 }
             }
         }

@@ -19,6 +19,7 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
     fileprivate struct C {
         static let title = "One the Map"
         static let tableReusableID = "listTableView"
+        static let studentsLoadingError = "Students Location loading Error"
     }
     
     // MARK: View Lifecycle
@@ -52,7 +53,12 @@ class ListViewController: UIViewController, Alerting, HomeNavigationItemsProtoco
             }
             
             guard error == nil && success == true else {
-                self.showError("Load Students Error", error: error)
+                switch error?.code {
+                case HttpErrors.HttpErrorCode.InvalidStatusCode:
+                    self.show(C.studentsLoadingError, message: Constants.Messages.serverError)
+                default:
+                    self.showError(C.studentsLoadingError, error: error)
+                }
                 return
             }
             
