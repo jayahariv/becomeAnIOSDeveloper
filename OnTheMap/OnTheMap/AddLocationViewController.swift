@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class AddLocationViewController: UIViewController, Alerting {
     
@@ -21,6 +22,7 @@ class AddLocationViewController: UIViewController, Alerting {
     struct C {
         static let invalidLocation = "Please provide a valid Location String."
         static let leftButtonTitle = "Cancel"
+        static let invalidLocationCoordinate = "Invalid 2D Coordinate. Please try again."
         static let segueToMap = "AddLocationToMap"
         static let title = "Add Location"
     }
@@ -39,9 +41,16 @@ class AddLocationViewController: UIViewController, Alerting {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == C.segueToMap {
             let newLoc = segue.destination as? NewLocationInMapViewController
+            
+            guard let coordinate = sender as? CLLocationCoordinate2D else {
+                self.showBodyMessage(C.invalidLocationCoordinate)
+                return
+            }
+            
             newLoc?.location = locationTextField.text
             newLoc?.websiteText = websiteTextField.text
             newLoc?.isUpdating = isUpdating
+            newLoc?.locationCoordinate = coordinate
         }
     }
     
@@ -53,7 +62,7 @@ class AddLocationViewController: UIViewController, Alerting {
     
     @IBAction func onFindLocation(_ sender: UIButton) {
         
-        guard locationTextField.text != nil else {
+        guard let location = locationTextField.text else {
             showAlertMessage(C.invalidLocation)
             return
         }
@@ -63,14 +72,20 @@ class AddLocationViewController: UIViewController, Alerting {
             return
         }
         
-        self.showLocationOnMap()
-    }
-    
-    // MARK: Helper functions
-    
-    func showLocationOnMap() {
-        DispatchQueue.main.async { [unowned self] in
-            self.performSegue(withIdentifier: C.segueToMap, sender: nil)
+        OnTheMapUtils.getCoordinate(addressString: location) { [unowned self] (coordinate, error) in
+            guard error == nil else {
+                self.showError("Geocordinate Convertion Error", error: error)
+                return
+            }
+            
+            guard CLLocationCoordinate2DIsValid(coordinate) else {
+                self.showBodyMessage(C.invalidLocationCoordinate)
+                return
+            }
+            
+            DispatchQueue.main.async { [unowned self] in
+                self.performSegue(withIdentifier: C.segueToMap, sender: coordinate)
+            }
         }
     }
 }

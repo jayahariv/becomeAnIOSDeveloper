@@ -17,7 +17,7 @@ class NewLocationInMapViewController: UIViewController, Alerting {
     var isUpdating: Bool = false
     var location: String!
     var websiteText: String!
-    var locationCoordinate: CLLocationCoordinate2D?
+    var locationCoordinate: CLLocationCoordinate2D!
     
     // MARK: Enums
     
@@ -28,18 +28,7 @@ class NewLocationInMapViewController: UIViewController, Alerting {
     
     // MARK: View Lifecycle
     override func viewDidLoad() {
-        OnTheMapUtils.getCoordinate(addressString: location) { [unowned self] (coordinate, error) in
-            let region = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 2.0, longitudeDelta: 2.0))
-            
-            DispatchQueue.main.async {
-                self.mapView.setRegion(region, animated: true)
-                let anotation = StudentLocationAnnotation.init(title: self.location,
-                                                               subtitle: self.websiteText,
-                                                               coordinate: coordinate)
-                self.mapView.addAnnotation(anotation)
-            }
-            
-        }
+        setupUI()
     }
     
     // MARK: Button Actions
@@ -68,6 +57,17 @@ class NewLocationInMapViewController: UIViewController, Alerting {
     }
     
     // MARK: Helper functions
+    
+    func setupUI() {
+        let region = MKCoordinateRegion(center: locationCoordinate,
+                                        span: MKCoordinateSpan(latitudeDelta: 2.0, longitudeDelta: 2.0))
+        
+        self.mapView.setRegion(region, animated: true)
+        let anotation = StudentLocationAnnotation.init(title: self.location,
+                                                       subtitle: self.websiteText,
+                                                       coordinate: locationCoordinate)
+        self.mapView.addAnnotation(anotation)
+    }
     
     func done() {
         DispatchQueue.main.async { [unowned self] in

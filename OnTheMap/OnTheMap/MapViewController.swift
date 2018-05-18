@@ -47,6 +47,7 @@ class MapViewController: UIViewController, Alerting, HomeNavigationItemsProtocol
             { [unowned self] (result, error) in
                 
                 guard error == nil else {
+                    self.showError("Fetch Student Location Error", error: error)
                     return
                 }
                 
