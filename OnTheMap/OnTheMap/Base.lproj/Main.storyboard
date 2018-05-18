@@ -42,6 +42,9 @@
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="BYZ-38-t0r" id="pGO-wQ-q8n"/>
+                                                        </connections>
                                                     </textField>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="a1b-MT-xUt">
                                                         <rect key="frame" x="0.0" y="56" width="300" height="44"/>
@@ -51,6 +54,9 @@
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="BYZ-38-t0r" id="8nA-aY-mfv"/>
+                                                        </connections>
                                                     </textField>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EYl-B8-AI2">
                                                         <rect key="frame" x="0.0" y="112" width="300" height="44"/>
@@ -206,7 +212,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Jnp-IJ-FPa">
-                                <rect key="frame" x="37.5" y="64" width="300" height="247"/>
+                                <rect key="frame" x="37.5" y="44" width="300" height="247"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="icon_world" translatesAutoresizingMaskIntoConstraints="NO" id="MZr-zR-vd7">
                                         <rect key="frame" x="124" y="0.0" width="52" height="67"/>
@@ -222,6 +228,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="pnS-JI-bVf" id="SdQ-Lz-ROj"/>
+                                                </connections>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter a Website" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kdw-F9-Y8e">
                                                 <rect key="frame" x="0.0" y="56" width="300" height="44"/>
@@ -231,6 +240,9 @@
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="pnS-JI-bVf" id="FSW-jc-GbQ"/>
+                                                </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kW1-4p-npB">
                                                 <rect key="frame" x="0.0" y="112" width="300" height="44"/>
@@ -261,7 +273,7 @@
                         <constraints>
                             <constraint firstItem="Jnp-IJ-FPa" firstAttribute="centerX" secondItem="AOY-q6-sZ0" secondAttribute="centerX" id="1dp-sC-dpg"/>
                             <constraint firstItem="eKM-zs-KUO" firstAttribute="top" secondItem="AOY-q6-sZ0" secondAttribute="top" constant="259" id="29K-Pz-tgM"/>
-                            <constraint firstItem="Jnp-IJ-FPa" firstAttribute="top" secondItem="AOY-q6-sZ0" secondAttribute="top" constant="44" id="Vwe-ij-VWh"/>
+                            <constraint firstItem="Jnp-IJ-FPa" firstAttribute="top" secondItem="AOY-q6-sZ0" secondAttribute="top" constant="24" id="Vwe-ij-VWh"/>
                             <constraint firstItem="eKM-zs-KUO" firstAttribute="centerX" secondItem="Y3U-Ge-kNk" secondAttribute="centerX" constant="80" id="jpF-Ou-H1w"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="AOY-q6-sZ0"/>

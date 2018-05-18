@@ -40,6 +40,16 @@ class AddLocationViewController: UIViewController, Alerting {
                                                            action: #selector(onCancel))
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        subscribeKeyboardNotifications()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        unsubscribeKeyboardNotifications()
+    }
+    
     // Is there any issue in taking value directy from textfield? can we pass the validated data directly to here?
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == C.segueToMap {
@@ -113,5 +123,26 @@ class AddLocationViewController: UIViewController, Alerting {
                 self.performSegue(withIdentifier: C.segueToMap, sender: coordinate)
             }
         }
+    }
+}
+
+extension AddLocationViewController: UITextFieldDelegate, KeyboardNotificationProtocol {
+    func keyboardShown(notification: Notification) {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
+        let keyboardY = keyboardSize.cgRectValue.origin.y
+        let websiteTextFieldY = view.convert(websiteTextField.bounds, from: websiteTextField).origin.y
+        if websiteTextField.isFirstResponder && keyboardY < websiteTextFieldY {
+            view.frame.origin.y = -(keyboardHeight(notification)/2)
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func keyboardHide(notification: Notification) {
+        view.frame.origin.y = 0
     }
 }

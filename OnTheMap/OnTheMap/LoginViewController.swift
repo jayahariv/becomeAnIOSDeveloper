@@ -38,6 +38,10 @@ class LoginViewController: UIViewController, Alerting {
         clearFields()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+    }
+    
     // MARK: Helper methods
     func clearFields() {
         emailTextField.text = ""
@@ -107,5 +111,12 @@ class LoginViewController: UIViewController, Alerting {
             showAlertMessage(Constants.Messages.invalidURL)
             return
         }
+    }
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
