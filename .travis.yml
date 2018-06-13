@@ -5,4 +5,4 @@ osx_image:
 install:
   - gem install xcpretty-travis-formatter
 script:
-  - xcodebuild -project PitchPerfect/PitchPerfect.xcodeproj target PitchPerfect
+  - xcodebuild -project PitchPerfect/PitchPerfect.xcodeproj -target PitchPerfect
