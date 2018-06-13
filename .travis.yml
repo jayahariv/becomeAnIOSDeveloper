@@ -2,8 +2,5 @@ language: objective-c
 osx_image: 
   - xcode9.3
   - xcode8.3
-install:
-  - gem install xcpretty-travis-formatter
 script:
-  - xcodebuild -project PitchPerfect/PitchPerfect.xcodeproj -target PitchPerfect -sdk iphonesimulator11.3 -destination 'platform=iOS Simulator,name=iPhone 6,OS=11.0.1' ONLY_ACTIVE_ARCH=NO | xcpretty -f `xcpretty-travis-formatter`
--
+  - xcodebuild -project PitchPerfect/PitchPerfect.xcodeproj -target PitchPerfect -sdk iphonesimulator
