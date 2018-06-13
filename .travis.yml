@@ -1,6 +1,10 @@
 language: objective-c
-xcode_project: PitchPerfect/PitchPerfect.xcodeproj
-xcode_scheme: PitchPerfect
+os: osx
 osx_image: 
   - xcode9.3
   - xcode8.3
+xcode_project: PitchPerfect/PitchPerfect.xcodeproj
+xcode_scheme: PitchPerfect
+before_install:
+  - brew update
+  - brew outdated xctool || brew upgrade xctool
