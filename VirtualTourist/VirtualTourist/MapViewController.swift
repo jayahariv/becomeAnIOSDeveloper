@@ -20,6 +20,8 @@ final class MapViewController: UIViewController {
     
     // MARK: Properties
     
+    @IBOutlet weak var mapView: MKMapView!
+    
     private var pins = [Pin]()
     
     /// constants for this class
@@ -44,6 +46,16 @@ final class MapViewController: UIViewController {
         // TODO: add action when editing
     }
     
+    @objc private func onAddAnnotation(_ gesture: UIGestureRecognizer) {
+        if gesture.state == .ended {
+            let point = gesture.location(in: mapView)
+            let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            mapView.addAnnotation(annotation)
+        }
+    }
+    
     
     // MARK: Convenience
     
@@ -55,6 +67,10 @@ final class MapViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
                                                             target: self,
                                                             action: #selector(onEdit))
+        // add long press gesture recognizer.
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onAddAnnotation(_:)))
+        longPressGesture.minimumPressDuration = 1.0
+        mapView.addGestureRecognizer(longPressGesture)
     }
     
     /**

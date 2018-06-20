@@ -33,6 +33,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Virtual Tourist" id="cXp-F6-DEN"/>
                     <connections>
+                        <outlet property="mapView" destination="doM-k8-1Z8" id="Hxg-ja-qwS"/>
                         <segue destination="3Eg-v3-JdM" kind="show" id="or2-J2-Lao"/>
                     </connections>
                 </viewController>
