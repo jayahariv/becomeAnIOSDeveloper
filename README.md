@@ -30,3 +30,14 @@ This app is a more API integration App which helps users to see the students loc
  * Ability to See the Newly added location on map, and if needed, correct by going back to the previous screen.
  * Ability to refresh for newly added data to appear on Map or List View.
  * Ability to logout
+
+## Virtual Tourist
+This app lets user to select any location from the map, and see the pictures of those selected areas. It will first fetch the pictures from remote and then store it locally for immediate retrieval. This app uses MapKit, CoreData, etc. 
+
+- Features include 
+ * Ability to select any location from the map.
+ * Ability to see the previous selected pins in the map. 
+ * Ability to remove the pins from map. 
+ * Ability to navigate to an photo album page, where users can see pictures of those selected area. 
+ * Ability to see new collection of images. 
+ * Ability to immeditely see photos of location user already visited without fetching from server. 
