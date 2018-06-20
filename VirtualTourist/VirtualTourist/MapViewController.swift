@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
 /**
  the main view controller, users can
@@ -28,6 +29,7 @@ final class MapViewController: UIViewController {
     
     private struct C {
         static let annotationViewReusableID = "annotationViewReusableID"
+        static let unknownLocationTitle = "Unknown location"
     }
 
     // MARK: View lifecycle
@@ -46,13 +48,11 @@ final class MapViewController: UIViewController {
         // TODO: add action when editing
     }
     
-    @objc private func onAddAnnotation(_ gesture: UIGestureRecognizer) {
+    @objc private func onLongPress(_ gesture: UIGestureRecognizer) {
         if gesture.state == .ended {
             let point = gesture.location(in: mapView)
             let coordinate = mapView.convert(point, toCoordinateFrom: mapView)
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            mapView.addAnnotation(annotation)
+            addAnnotation(coordinate)
         }
     }
     
@@ -68,7 +68,7 @@ final class MapViewController: UIViewController {
                                                             target: self,
                                                             action: #selector(onEdit))
         // add long press gesture recognizer.
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onAddAnnotation(_:)))
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress(_:)))
         longPressGesture.minimumPressDuration = 1.0
         mapView.addGestureRecognizer(longPressGesture)
     }
@@ -79,6 +79,60 @@ final class MapViewController: UIViewController {
      */
     private func loadPins() {
         // TODO: load pins from db
+    }
+    
+    /**
+     
+     add annotation to the map & verify first whether the coordinates is valid.
+     
+     - parameters:
+        - coordinate: coordinates for the annotation
+     */
+    func addAnnotation(_ coordinate: CLLocationCoordinate2D) {
+        let loc = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        CLGeocoder().reverseGeocodeLocation(loc) { [weak self] (placemarks, error) in
+            guard error == nil, let placemarks = placemarks else {
+                print("location coordinate is unable to reverse")
+                return
+            }
+            
+            let annotation = MKPointAnnotation()
+            if placemarks.count > 0 {
+                
+                // Found some place with details
+                let pm = placemarks[0] as CLPlacemark
+                annotation.title = pm.name
+                annotation.subtitle = pm.locality
+                
+            } else {
+                
+                // Placemark location is unknown
+                annotation.title = C.unknownLocationTitle
+            }
+            
+            
+            annotation.coordinate = coordinate
+            self?.mapView.addAnnotation(annotation)
+        }
+    }
+    
+    /**
+     
+     this function saves the annotation details to the core data
+     
+     - parameters:
+        - annotation: an annotation with a valid title
+     */
+    func saveAnnotation(_ annotation: MKAnnotation) {
+        
+        guard let title = annotation.title else {
+            return
+        }
+        
+        let subtitle = annotation.subtitle
+        let coordinate = annotation.coordinate
+        
+        // TODO: save it to DB.
     }
 }
 
