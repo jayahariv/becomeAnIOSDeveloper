@@ -156,11 +156,6 @@ final class MapViewController: UIViewController {
         }
         
         // save to db
-//        let entityDescription = NSEntityDescription.entity(forEntityName: "Pin", in: dataController.viewContext)
-//        guard entityDescription != nil else {
-//            return
-//        }
-        
         let pin = Pin(context: dataController.viewContext)
         pin.lattitude = annotation.coordinate.latitude
         pin.longitude = annotation.coordinate.longitude
