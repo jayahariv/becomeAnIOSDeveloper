@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import CoreData
 
 /**
  the main view controller, users can
@@ -20,6 +21,8 @@ import CoreLocation
 final class MapViewController: UIViewController {
     
     // MARK: Properties
+    
+    public var dataController: DataController!
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -78,7 +81,25 @@ final class MapViewController: UIViewController {
      
      */
     private func loadPins() {
-        // TODO: load pins from db
+        let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
+        do {
+            let result = try dataController.viewContext.fetch(fetchRequest)
+            pins = result
+            refreshMap()
+        } catch {
+            print(error)
+        }
+    }
+    
+    private func refreshMap() {
+        var annotations = [MKAnnotation]()
+        for pin in pins {
+            if let title = pin.title {
+                let coordinate = CLLocationCoordinate2D(latitude: pin.lattitude, longitude: pin.longitude)
+                annotations.append(makeAnnotation(title, subtitle: pin.subtitle, coordinate: coordinate))
+            }
+        }
+        self.mapView.addAnnotations(annotations)
     }
     
     /**
@@ -90,30 +111,35 @@ final class MapViewController: UIViewController {
      */
     func addAnnotation(_ coordinate: CLLocationCoordinate2D) {
         let loc = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        CLGeocoder().reverseGeocodeLocation(loc) { [weak self] (placemarks, error) in
+        CLGeocoder().reverseGeocodeLocation(loc) { [unowned self] (placemarks, error) in
             guard error == nil, let placemarks = placemarks else {
                 print("location coordinate is unable to reverse")
                 return
             }
             
-            let annotation = MKPointAnnotation()
-            if placemarks.count > 0 {
-                
+            let annotation: MKAnnotation!
+            
+            if placemarks.count > 0, let name = placemarks[0].name {
                 // Found some place with details
-                let pm = placemarks[0] as CLPlacemark
-                annotation.title = pm.name
-                annotation.subtitle = pm.locality
+                annotation = self.makeAnnotation(name, subtitle: placemarks[0].locality, coordinate: coordinate)
                 
             } else {
                 
                 // Placemark location is unknown
-                annotation.title = C.unknownLocationTitle
+                annotation = self.makeAnnotation(C.unknownLocationTitle, subtitle: nil, coordinate: coordinate)
             }
             
-            
-            annotation.coordinate = coordinate
-            self?.mapView.addAnnotation(annotation)
+            self.saveAnnotation(annotation)
+            self.mapView.addAnnotation(annotation)
         }
+    }
+    
+    func makeAnnotation(_ title: String, subtitle: String?, coordinate: CLLocationCoordinate2D) -> MKAnnotation {
+        let annotation = MKPointAnnotation()
+        annotation.title = title
+        annotation.subtitle = subtitle
+        annotation.coordinate = coordinate
+        return annotation
     }
     
     /**
@@ -129,10 +155,22 @@ final class MapViewController: UIViewController {
             return
         }
         
-        let subtitle = annotation.subtitle
-        let coordinate = annotation.coordinate
+        // save to db
+//        let entityDescription = NSEntityDescription.entity(forEntityName: "Pin", in: dataController.viewContext)
+//        guard entityDescription != nil else {
+//            return
+//        }
         
-        // TODO: save it to DB.
+        let pin = Pin(context: dataController.viewContext)
+        pin.lattitude = annotation.coordinate.latitude
+        pin.longitude = annotation.coordinate.longitude
+        pin.title = title
+        pin.subtitle = annotation.subtitle ?? ""
+        do {
+            try dataController.viewContext.save()
+        } catch {
+            print("Saving failed")
+        }
     }
 }
 
@@ -151,7 +189,7 @@ extension MapViewController: MKMapViewDelegate {
             view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: C.annotationViewReusableID)
             view.canShowCallout = true
             view.calloutOffset = CGPoint(x: -5, y: 5)
-            view.rightCalloutAccessoryView = UIButton(type: .infoDark)
+            view.rightCalloutAccessoryView = UIButton(type: .custom)
         }
         return view
     }

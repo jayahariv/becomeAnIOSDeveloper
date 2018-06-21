@@ -13,7 +13,7 @@
 		08CE65DC20D80EAF00C1E6D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08CE65DB20D80EAF00C1E6D8 /* Assets.xcassets */; };
 		08CE65DF20D80EAF00C1E6D8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08CE65DD20D80EAF00C1E6D8 /* LaunchScreen.storyboard */; };
 		08CE65EA20D80EAF00C1E6D8 /* VirtualTouristTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CE65E920D80EAF00C1E6D8 /* VirtualTouristTests.swift */; };
-		08CE65F720D80F0E00C1E6D8 /* virtual_tourist_1_0_0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08CE65F520D80F0E00C1E6D8 /* virtual_tourist_1_0_0.xcdatamodeld */; };
+		08CE65F720D80F0E00C1E6D8 /* virtual_tourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 08CE65F520D80F0E00C1E6D8 /* virtual_tourist.xcdatamodeld */; };
 		08CE65F920D8154600C1E6D8 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CE65F820D8154600C1E6D8 /* PhotoAlbumViewController.swift */; };
 		08CE665920DACCAA00C1E6D8 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CE665820DACCAA00C1E6D8 /* DataController.swift */; };
 /* End PBXBuildFile section */
@@ -107,7 +107,7 @@
 		08CE65F420D80ED200C1E6D8 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				08CE65F520D80F0E00C1E6D8 /* virtual_tourist_1_0_0.xcdatamodeld */,
+				08CE65F520D80F0E00C1E6D8 /* virtual_tourist.xcdatamodeld */,
 				08CE665820DACCAA00C1E6D8 /* DataController.swift */,
 			);
 			path = CoreData;
@@ -217,7 +217,7 @@
 				08CE665920DACCAA00C1E6D8 /* DataController.swift in Sources */,
 				08CE65D720D80EAD00C1E6D8 /* MapViewController.swift in Sources */,
 				08CE65D520D80EAD00C1E6D8 /* AppDelegate.swift in Sources */,
-				08CE65F720D80F0E00C1E6D8 /* virtual_tourist_1_0_0.xcdatamodeld in Sources */,
+				08CE65F720D80F0E00C1E6D8 /* virtual_tourist.xcdatamodeld in Sources */,
 				08CE65F920D8154600C1E6D8 /* PhotoAlbumViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -481,13 +481,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		08CE65F520D80F0E00C1E6D8 /* virtual_tourist_1_0_0.xcdatamodeld */ = {
+		08CE65F520D80F0E00C1E6D8 /* virtual_tourist.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				08CE65F620D80F0E00C1E6D8 /* virtual_tourist_1_0_0.xcdatamodel */,
 			);
 			currentVersion = 08CE65F620D80F0E00C1E6D8 /* virtual_tourist_1_0_0.xcdatamodel */;
-			path = virtual_tourist_1_0_0.xcdatamodeld;
+			path = virtual_tourist.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
