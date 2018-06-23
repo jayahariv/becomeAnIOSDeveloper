@@ -25,14 +25,20 @@ final class MapViewController: UIViewController {
     public var dataController: DataController!
     
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var bottomBannerHeight: NSLayoutConstraint!
     
     private var pins = [Pin]()
+    private var editButton: UIButton!
+    
     
     /// constants for this class
     
     private struct C {
-        static let annotationViewReusableID = "annotationViewReusableID"
-        static let unknownLocationTitle = "Unknown location"
+        static let annotationViewReusableID: String = "annotationViewReusableID"
+        static let unknownLocationTitle: String = "Unknown location"
+        static let bottomBannerHeight: CGFloat = 65.0
+        static let D: Double = 80 * 1.1
+        static let R: Double = 6371009 // Earth readius in meters
     }
 
     // MARK: View lifecycle
@@ -42,13 +48,16 @@ final class MapViewController: UIViewController {
         
         configureUI()
         
+        refreshUI()
+        
         loadPins()
     }
     
     // MARK: Actions
     
     @objc private func onEdit() {
-        // TODO: add action when editing
+        isEditing = !isEditing
+        refreshUI()
     }
     
     @objc private func onLongPress(_ gesture: UIGestureRecognizer) {
@@ -67,13 +76,41 @@ final class MapViewController: UIViewController {
      
      */
     private func configureUI() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit,
-                                                            target: self,
-                                                            action: #selector(onEdit))
+        
+        addEditButton()
+        
         // add long press gesture recognizer.
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress(_:)))
         longPressGesture.minimumPressDuration = 1.0
         mapView.addGestureRecognizer(longPressGesture)
+    }
+    
+    /**
+     adds an edit button in the left navigation bar
+     */
+    private func addEditButton() {
+        editButton = UIButton(type: .custom)
+        editButton.setTitle("Edit", for: .normal)
+        editButton.setTitle("Done", for: .selected)
+        editButton.setTitleColor(.blue, for: .normal)
+        editButton.setTitleColor(.blue, for: .selected)
+        editButton.addTarget(self, action: #selector(onEdit), for: .touchUpInside)
+        editButton.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: editButton)
+    }
+    
+    /**
+        with respect to the `isEditing` property, configure the UI.
+     */
+    private func refreshUI() {
+        if isEditing {
+            bottomBannerHeight.constant = C.bottomBannerHeight
+            editButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        } else {
+            bottomBannerHeight.constant = 0.0
+            editButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        }
+        editButton.isSelected = isEditing
     }
     
     /**
@@ -91,6 +128,9 @@ final class MapViewController: UIViewController {
         }
     }
     
+    /**
+     loads all pins and annotate in map. It uses the property pins to annotate.
+     */
     private func refreshMap() {
         var annotations = [MKAnnotation]()
         for pin in pins {
@@ -134,6 +174,13 @@ final class MapViewController: UIViewController {
         }
     }
     
+    /**
+     creates an annotation for the given arguments.
+     - parameters:
+        - title: annotation title
+        - subtitle: (optional) annotation subtitle
+        - coordinate: annotation coordinate
+     */
     func makeAnnotation(_ title: String, subtitle: String?, coordinate: CLLocationCoordinate2D) -> MKAnnotation {
         let annotation = MKPointAnnotation()
         annotation.title = title
@@ -193,6 +240,50 @@ extension MapViewController: MKMapViewDelegate {
                  annotationView view: MKAnnotationView,
                  calloutAccessoryControlTapped control: UIControl) {
         // TODO: go to photo album view controller.
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if isEditing {
+            view.removeFromSuperview()
+            
+            // remove from db
+            let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
+            let pointOfInterest: CLLocationCoordinate2D = (view.annotation?.coordinate)!
+
+            fetchRequest.predicate = predicateForDeltaLocation(pointOfInterest)
+            
+            do {
+                let result = try dataController.viewContext.fetch(fetchRequest)
+                if let result = result.first {
+                    dataController.viewContext.delete(result)
+                    try dataController.viewContext.save()
+                }
+                
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    /**
+     creates a predicate for fetching a Pin for the given Coordinate.
+     
+     - parameters:
+        - pointOfInterest: coordinate for which the predicate will be created
+     - returns: predicate which will return Pins which are present in the interested area
+     */
+    private func predicateForDeltaLocation(_ pointOfInterest: CLLocationCoordinate2D) -> NSPredicate {
+        let meanLatitidue = pointOfInterest.latitude * Double.pi / 180;
+        let deltaLatitude = C.D / C.R * 180 / Double.pi;
+        let deltaLongitude = C.D / (C.R * cos(meanLatitidue)) * 180 / Double.pi;
+        
+        let minLatitude = pointOfInterest.latitude - deltaLatitude;
+        let maxLatitude = pointOfInterest.latitude + deltaLatitude;
+        let minLongitude = pointOfInterest.longitude - deltaLongitude;
+        let maxLongitude = pointOfInterest.longitude + deltaLongitude;
+        
+        return NSPredicate(format: "(longitude >= \(minLongitude)) AND (longitude <= \(maxLongitude))" +
+            "AND (lattitude >= \(minLatitude)) AND (lattitude <= \(maxLatitude))")
     }
 }
 
