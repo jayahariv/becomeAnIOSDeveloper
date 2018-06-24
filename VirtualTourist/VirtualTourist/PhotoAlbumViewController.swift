@@ -12,10 +12,31 @@ import UIKit
 
 final class PhotoAlbumViewController: UIViewController {
     
+    // MARK: Properties
+    var latitude: Double!
+    var longitude: Double!
+    
+    
+    
+    
     // MARK: View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        getPhotos()
     }
     
+    // MARK: Convenience
+    
+    private func getPhotos() {
+        APIManager.shared.getImages(latitude, longitude: longitude) { (photosArray, error) in
+            guard error == nil else {
+                print(error!)
+                return
+            }
+            
+            print(photosArray?.count ?? 0)
+        }
+    }
 }

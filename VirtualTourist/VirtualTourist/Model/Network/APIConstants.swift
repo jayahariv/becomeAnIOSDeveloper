@@ -34,18 +34,20 @@ struct APIConstants {
         static let Text = "text"
         static let BoundingBox = "bbox"
         static let Page = "page"
+        static let PerPage = "per_page"
     }
     
     // MARK: Flickr Parameter Values
     struct FlickrParameterValues {
         static let SearchMethod = "flickr.photos.search"
-        static let APIKey = "YOUR_API_KEY_HERE"
+        static let APIKey = "b807e441f4de53e254a39fe8a4fba6e5"
         static let ResponseFormat = "json"
         static let DisableJSONCallback = "1"
         static let GalleryPhotosMethod = "flickr.galleries.getPhotos"
         static let GalleryID = "5704-72157622566655097"
         static let MediumURL = "url_m"
         static let UseSafeSearch = "1"
+        static let PerPageCount = "10"
     }
     
     // MARK: Flickr Response Keys
