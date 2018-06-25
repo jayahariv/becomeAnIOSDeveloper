@@ -8,46 +8,69 @@ this class will manage all the API related tasks
 
 */
 
-typealias completionHandler = ((_ photosArray: [[String: AnyObject]]?, _ error: Error?) -> Void)?
+import UIKit
 
-import Foundation
+typealias completionHandler = ((_ photosArray: [[String: AnyObject]]?, _ error: Error?) -> Void)?
+typealias fetchPhotoCompletionHandler = ((_ photo: UIImage?, _ error: Error?) -> Void)?
 
 class APIManager: NSObject {
     
-    public func getImages(_ latitude: String, longitude: String, completion: completionHandler = nil) {
+    public static let shared = APIManager()
+    
+    /**
+     fetched the images for the given latitude and longitude, and completion handler will have the photos or error details.
+     - parameters:
+         - latitude: self descriptive
+         - longitude: self descriptive
+         - completion: (optional) completion handler with fetched images or error with details.
+     */
+    public func getImages(_ latitude: Double, longitude: Double, completion: completionHandler = nil) {
         onSearch(latitude, longitude: longitude, completion: completion)
+    }
+    
+    /**
+     this will return a vaild photo if it already fetched and saved in core data.
+     - parameters:
+        - photoURL: medium URL of the image.
+     */
+    public func fetchedPhoto(_ photoURL: URL) -> UIImage? {
+        return nil
+    }
+    
+    /**
+     fetch, save the binary data and return the image to the caller
+     - parameters:
+        - photoURL: self descriptive.
+     */
+    public func fetchAndSaveImage(_ photoURL: URL, completion: fetchPhotoCompletionHandler = nil){
+        // TODO: fetch and save the image
     }
 }
 
 private extension APIManager {
     // MARK: Convenience
     
-    func onSearch(_ latitude: String, longitude: String, completion: completionHandler) {
+    func onSearch(_ latitude: Double, longitude: Double, completion: completionHandler) {
         let methodsParameters: [String:AnyObject] = [
             APIConstants.FlickrParameterKeys.Method: APIConstants.FlickrParameterValues.SearchMethod,
             APIConstants.FlickrParameterKeys.APIKey: APIConstants.FlickrParameterValues.APIKey,
-            APIConstants.FlickrParameterKeys.BoundingBox: bboxString(latitude, longitude: latitude),
+            APIConstants.FlickrParameterKeys.BoundingBox: bboxString(latitude: latitude, longitude: latitude),
             APIConstants.FlickrParameterKeys.SafeSearch: APIConstants.FlickrParameterValues.UseSafeSearch,
             APIConstants.FlickrParameterKeys.Extras: APIConstants.FlickrParameterValues.MediumURL,
             APIConstants.FlickrParameterKeys.Format: APIConstants.FlickrParameterValues.ResponseFormat,
-            APIConstants.FlickrParameterKeys.NoJSONCallback: APIConstants.FlickrParameterValues.DisableJSONCallback
+            APIConstants.FlickrParameterKeys.NoJSONCallback: APIConstants.FlickrParameterValues.DisableJSONCallback,
+            APIConstants.FlickrParameterKeys.PerPage: APIConstants.FlickrParameterValues.PerPageCount
             ] as [String:AnyObject]
         
         getImageFromFlickrBySearch(methodsParameters, completion: completion)
     }
     
-    func bboxString(_ latitude: String, longitude: String) -> String {
-        if let latitude = Double(latitude), let longitude = Double(longitude) {
-            // ensure bbox is bounded by minimum and maximums
-            let minimumLon = max(longitude - APIConstants.Flickr.SearchBBoxHalfWidth, APIConstants.Flickr.SearchLonRange.0)
-            let minimumLat = max(latitude - APIConstants.Flickr.SearchBBoxHalfHeight, APIConstants.Flickr.SearchLatRange.0)
-            let maximumLon = min(longitude + APIConstants.Flickr.SearchBBoxHalfWidth, APIConstants.Flickr.SearchLonRange.1)
-            let maximumLat = min(latitude + APIConstants.Flickr.SearchBBoxHalfHeight, APIConstants.Flickr.SearchLatRange.1)
-            return "\(minimumLon),\(minimumLat),\(maximumLon),\(maximumLat)"
-        } else {
-            return "0,0,0,0"
-        }
-        
+    func bboxString(latitude: Double, longitude: Double) -> String {
+        let minimumLon = max(longitude - APIConstants.Flickr.SearchBBoxHalfWidth, APIConstants.Flickr.SearchLonRange.0)
+        let minimumLat = max(latitude - APIConstants.Flickr.SearchBBoxHalfHeight, APIConstants.Flickr.SearchLatRange.0)
+        let maximumLon = min(longitude + APIConstants.Flickr.SearchBBoxHalfWidth, APIConstants.Flickr.SearchLonRange.1)
+        let maximumLat = min(latitude + APIConstants.Flickr.SearchBBoxHalfHeight, APIConstants.Flickr.SearchLatRange.1)
+        return "\(minimumLon),\(minimumLat),\(maximumLon),\(maximumLat)"
     }
     
     // Creating a URL from Parameters
@@ -69,7 +92,6 @@ private extension APIManager {
     }
     
     func getImageFromFlickrBySearch(_ methodParameters: [String: AnyObject], completion: completionHandler) {
-        
         // create session and request
         let session = URLSession.shared
         let request = URLRequest(url: flickrURLFromParameters(methodParameters))

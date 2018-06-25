@@ -39,6 +39,7 @@ final class MapViewController: UIViewController {
         static let bottomBannerHeight: CGFloat = 65.0
         static let D: Double = 80 * 1.1
         static let R: Double = 6371009 // Earth readius in meters
+        static let segueToPhotoAlbum = "HomeToPhotoAlbum"
     }
 
     // MARK: View lifecycle
@@ -214,6 +215,20 @@ final class MapViewController: UIViewController {
             print("Saving failed")
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == C.segueToPhotoAlbum {
+            guard
+                let photoAlbum = segue.destination as? PhotoAlbumViewController,
+                let coordinate = (sender as? MKAnnotation)?.coordinate
+            else {
+                return
+            }
+            photoAlbum.latitude = coordinate.latitude
+            photoAlbum.longitude = coordinate.longitude
+            photoAlbum.dataController = dataController
+        }
+    }
 }
 
 // MARK: MapViewController -> MKMapViewDelegate
@@ -262,6 +277,8 @@ extension MapViewController: MKMapViewDelegate {
             } catch {
                 print(error)
             }
+        } else {
+            performSegue(withIdentifier: C.segueToPhotoAlbum, sender: view.annotation)
         }
     }
     
@@ -272,7 +289,7 @@ extension MapViewController: MKMapViewDelegate {
         - pointOfInterest: coordinate for which the predicate will be created
      - returns: predicate which will return Pins which are present in the interested area
      */
-    private func predicateForDeltaLocation(_ pointOfInterest: CLLocationCoordinate2D) -> NSPredicate {
+    func predicateForDeltaLocation(_ pointOfInterest: CLLocationCoordinate2D) -> NSPredicate {
         let meanLatitidue = pointOfInterest.latitude * Double.pi / 180;
         let deltaLatitude = C.D / C.R * 180 / Double.pi;
         let deltaLongitude = C.D / (C.R * cos(meanLatitidue)) * 180 / Double.pi;
