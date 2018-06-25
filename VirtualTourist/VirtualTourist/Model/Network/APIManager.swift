@@ -8,16 +8,42 @@ this class will manage all the API related tasks
 
 */
 
-typealias completionHandler = ((_ photosArray: [[String: AnyObject]]?, _ error: Error?) -> Void)?
+import UIKit
 
-import Foundation
+typealias completionHandler = ((_ photosArray: [[String: AnyObject]]?, _ error: Error?) -> Void)?
+typealias fetchPhotoCompletionHandler = ((_ photo: UIImage?, _ error: Error?) -> Void)?
 
 class APIManager: NSObject {
     
     public static let shared = APIManager()
     
+    /**
+     fetched the images for the given latitude and longitude, and completion handler will have the photos or error details.
+     - parameters:
+         - latitude: self descriptive
+         - longitude: self descriptive
+         - completion: (optional) completion handler with fetched images or error with details.
+     */
     public func getImages(_ latitude: Double, longitude: Double, completion: completionHandler = nil) {
         onSearch(latitude, longitude: longitude, completion: completion)
+    }
+    
+    /**
+     this will return a vaild photo if it already fetched and saved in core data.
+     - parameters:
+        - photoURL: medium URL of the image.
+     */
+    public func fetchedPhoto(_ photoURL: URL) -> UIImage? {
+        return nil
+    }
+    
+    /**
+     fetch, save the binary data and return the image to the caller
+     - parameters:
+        - photoURL: self descriptive.
+     */
+    public func fetchAndSaveImage(_ photoURL: URL, completion: fetchPhotoCompletionHandler = nil){
+        // TODO: fetch and save the image
     }
 }
 

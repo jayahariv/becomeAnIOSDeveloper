@@ -226,6 +226,7 @@ final class MapViewController: UIViewController {
             }
             photoAlbum.latitude = coordinate.latitude
             photoAlbum.longitude = coordinate.longitude
+            photoAlbum.dataController = dataController
         }
     }
 }
