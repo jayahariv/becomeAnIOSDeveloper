@@ -25,6 +25,7 @@ final class PhotoAlbumViewController: UIViewController {
     // IBOutlet
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var newCollectionButton: UIButton!
     
     // private
     
@@ -32,6 +33,7 @@ final class PhotoAlbumViewController: UIViewController {
     private struct C {
         static let photoCellReusableID = "photoCell"
     }
+    private var selectedIndexPath: IndexPath? = nil
     
     // MARK: View Lifecycle
 
@@ -42,10 +44,25 @@ final class PhotoAlbumViewController: UIViewController {
     }
     
     @IBAction func onTouchNewCollection(_ sender: UIButton) {
-        pin.photos = nil
-        photos = []
-        collectionView.reloadData()
-        fetchNewCollection()
+        if let indexPath = selectedIndexPath {
+            do {
+                let photo = photos[indexPath.row]
+                dataController.viewContext.delete(photo)
+                try dataController.viewContext.save()
+                photos.remove(at: indexPath.row)
+                collectionView.deleteItems(at: [indexPath])
+                selectedIndexPath = nil
+                
+            } catch {
+                print("Error removing image")
+            }
+            
+        } else {
+            pin.photos = nil
+            photos = []
+            collectionView.reloadData()
+            fetchNewCollection()
+        }
     }
     
     // MARK: Convenience
@@ -89,9 +106,9 @@ final class PhotoAlbumViewController: UIViewController {
     }
 }
 
-extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
+extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return photos.count == 0 ? 10 : photos.count
     }
     
     
@@ -104,36 +121,31 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
         else {
             fatalError("Wrong PhotoCollectionViewCell type")
         }
-        if photos.count > indexPath.row, let data = photos[indexPath.row].image, let image = UIImage(data: data) {
-            cell.activityIndicator.stopAnimating()
-            cell.activityIndicator.isHidden = true
-            cell.imageView.image = image
+        if
+            photos.count > indexPath.row,
+            let data = photos[indexPath.row].image,
+            let image = UIImage(data: data) {
+            
+            cell.setImage(image)
+        
         } else {
-            cell.imageView.image = nil
-            cell.activityIndicator.startAnimating()
-            cell.activityIndicator.isHidden = false
+            
+            cell.loading()
         }
         
         return cell
     }
     
-    // MARK: UICollectionViewDataSourcePrefetching
-    
-    /// - Tag: Prefetching
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        // Begin asynchronously fetching data for the requested index paths.
-        for indexPath in indexPaths {
-            let model = photos[indexPath.row]
-//            asyncFetcher.fetchAsync(model.id)
-        }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! PhotoCollectionViewCell
+        cell.refresh()
+        
+        selectedIndexPath = indexPath
+        newCollectionButton.titleLabel?.text = "Remove Image"
     }
-
-    /// - Tag: CancelPrefetching
-    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-        // Cancel any in-flight requests for data for the specified index paths.
-        for indexPath in indexPaths {
-            let model = photos[indexPath.row]
-//            asyncFetcher.cancelFetch(model.id)
-        }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! PhotoCollectionViewCell
+        cell.refresh()
     }
 }

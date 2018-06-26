@@ -147,6 +147,7 @@
                     <connections>
                         <outlet property="collectionView" destination="0GC-sL-mjo" id="uN2-l6-0TW"/>
                         <outlet property="mapView" destination="BMu-xa-mfd" id="Ehv-7M-ggq"/>
+                        <outlet property="newCollectionButton" destination="AIM-3v-opJ" id="M6P-hT-AQg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="K3a-lg-VD7" userLabel="First Responder" sceneMemberID="firstResponder"/>
