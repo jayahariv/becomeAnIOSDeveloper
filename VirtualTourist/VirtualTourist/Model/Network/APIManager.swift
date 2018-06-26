@@ -231,6 +231,13 @@ private extension APIManager {
         task.resume()
     }
     
+    /**
+     fetches all the images for the given list of photo dictionary
+     - parameters:
+         - pin: details of the parent pin, it will map it inversely with this pin.
+         - photos: dictionary of images.
+         - completeion: handler which will send the callback.
+     */
     private func fetchAllImages(_ pin: Pin, photos: [[String: AnyObject]], completion: completionHandler) {
         
         // fetch all images from the medium URL.
@@ -269,16 +276,18 @@ private extension APIManager {
         
         group.notify(queue: DispatchQueue.global(qos: .userInitiated), execute: { [weak self] in
             
-            // all images fetched successfully
+            // all images fetched successfully, and save it. 
             do {
                 try self?.dataController.viewContext.save()
+                
+                let array = Array.init(pin.photos!) as! [Photo]
+                
+                completion?(array, nil)
+                
             } catch {
                 print("Image Saving failed!!")
             }
             
-            // TODO: get all images from core data and return photo list
-            let array = Array.init(pin.photos!) as! [Photo]
-            completion?(array, nil)
         })
     }
     

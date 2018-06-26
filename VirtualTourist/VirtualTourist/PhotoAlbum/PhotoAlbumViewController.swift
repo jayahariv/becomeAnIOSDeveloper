@@ -67,6 +67,9 @@ final class PhotoAlbumViewController: UIViewController {
     
     // MARK: Convenience
     
+    /**
+     add an annotation on the map for the given PIN property
+     */
     private func markInMap() {
         
         let center = CLLocationCoordinate2D(latitude: pin.lattitude, longitude: pin.longitude)
@@ -81,7 +84,10 @@ final class PhotoAlbumViewController: UIViewController {
         mapView.addAnnotation(annotation)
         mapView.setRegion(region, animated: true)
     }
-    
+    /**
+     fetch the photos from the flickr if pin is not having any photos and save the response to core data.
+     if pin having any photos, return and show it in the UI.
+     */
     private func getPhotos() {
         if let photos = pin.photos, photos.count > 0, let photosArray = Array(photos) as? [Photo] {
             self.photos = photosArray
@@ -89,7 +95,9 @@ final class PhotoAlbumViewController: UIViewController {
             fetchNewCollection()
         }
     }
-    
+    /**
+     fetch a new collection of images from the UI and save it to the core data.
+     */
     private func fetchNewCollection() {
         APIManager.shared.getImages(pin) { [unowned self] (photos, error) in
             guard error == nil, let photos = photos else {

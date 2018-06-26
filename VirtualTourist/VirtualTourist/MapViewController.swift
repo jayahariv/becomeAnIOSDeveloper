@@ -54,7 +54,7 @@ final class MapViewController: UIViewController {
         loadPins()
     }
     
-    // MARK: Actions
+    // MARK: Button Actions
     
     @objc private func onEdit() {
         isEditing = !isEditing
