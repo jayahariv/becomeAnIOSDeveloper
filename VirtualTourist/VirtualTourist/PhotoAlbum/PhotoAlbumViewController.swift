@@ -14,22 +14,24 @@ Abstract:
 
 import UIKit
 import CoreData
+import MapKit
 
 final class PhotoAlbumViewController: UIViewController {
     
     // MARK: Properties
-    @IBOutlet weak var collectionView: UICollectionView!
-    
     public var pin: Pin!
-
-    var dataController: DataController!
+    public var dataController: DataController!
+    
+    // IBOutlet
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var mapView: MKMapView!
+    
+    // private
     
     private var photos = [Photo]()
-    
-    struct C {
+    private struct C {
         static let photoCellReusableID = "photoCell"
     }
-    
     
     // MARK: View Lifecycle
 
@@ -39,23 +41,34 @@ final class PhotoAlbumViewController: UIViewController {
         getPhotos()
     }
     
+    @IBAction func onTouchNewCollection(_ sender: UIButton) {
+        pin.photos = nil
+        photos = []
+        collectionView.reloadData()
+        fetchNewCollection()
+    }
+    
     // MARK: Convenience
     
     private func getPhotos() {
         if let photos = pin.photos, photos.count > 0, let photosArray = Array(photos) as? [Photo] {
             self.photos = photosArray
         } else {
-            APIManager.shared.getImages(pin) { [unowned self] (photos, error) in
-                guard error == nil, let photos = photos else {
-                    print(error!)
-                    return
-                }
+            fetchNewCollection()
+        }
+    }
+    
+    private func fetchNewCollection() {
+        APIManager.shared.getImages(pin) { [unowned self] (photos, error) in
+            guard error == nil, let photos = photos else {
+                print(error!)
+                return
+            }
+            
+            DispatchQueue.main.async {
                 
-                DispatchQueue.main.async {
-                    
-                    self.photos = photos
-                    self.collectionView.reloadData()
-                }
+                self.photos = photos
+                self.collectionView.reloadData()
             }
         }
     }
@@ -63,23 +76,27 @@ final class PhotoAlbumViewController: UIViewController {
 
 extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
+        return 10
     }
     
     
     /// - Tag: CellForItemAt
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let photo = photos[indexPath.row]
         guard
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: C.photoCellReusableID,
                                                           for: indexPath) as? PhotoCollectionViewCell
         else {
             fatalError("Wrong PhotoCollectionViewCell type")
         }
-        
-        if let data = photo.image, let image = UIImage(data: data) {
+        if photos.count > indexPath.row, let data = photos[indexPath.row].image, let image = UIImage(data: data) {
+            cell.activityIndicator.stopAnimating()
+            cell.activityIndicator.isHidden = true
             cell.imageView.image = image
+        } else {
+            cell.imageView.image = nil
+            cell.activityIndicator.startAnimating()
+            cell.activityIndicator.isHidden = false
         }
         
         return cell

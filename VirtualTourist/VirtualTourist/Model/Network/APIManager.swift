@@ -161,7 +161,8 @@ private extension APIManager {
         
         // create session and request
         let session = URLSession.shared
-        let request = URLRequest(url: flickrURLFromParameters(params))
+        print(flickrURLFromParameters(methodParametersWithPageNumber))
+        let request = URLRequest(url: flickrURLFromParameters(methodParametersWithPageNumber))
         
         // create network request
         let task = session.dataTask(with: request) { [unowned self] (data, response, error) in
