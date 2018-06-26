@@ -37,8 +37,8 @@ final class PhotoAlbumViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         getPhotos()
+        markInMap()
     }
     
     @IBAction func onTouchNewCollection(_ sender: UIButton) {
@@ -49,6 +49,21 @@ final class PhotoAlbumViewController: UIViewController {
     }
     
     // MARK: Convenience
+    
+    private func markInMap() {
+        
+        let center = CLLocationCoordinate2D(latitude: pin.lattitude, longitude: pin.longitude)
+        let region = MKCoordinateRegion(center: center,
+                                        span: MKCoordinateSpan(latitudeDelta: 2.0, longitudeDelta: 2.0))
+        
+        let annotation = MKPointAnnotation()
+        annotation.title = pin.title
+        annotation.subtitle = pin.subtitle
+        annotation.coordinate = center
+        
+        mapView.addAnnotation(annotation)
+        mapView.setRegion(region, animated: true)
+    }
     
     private func getPhotos() {
         if let photos = pin.photos, photos.count > 0, let photosArray = Array(photos) as? [Photo] {
