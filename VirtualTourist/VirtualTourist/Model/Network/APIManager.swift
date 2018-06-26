@@ -9,13 +9,17 @@ this class will manage all the API related tasks
 */
 
 import UIKit
+import CoreData
 
-typealias completionHandler = ((_ photosArray: [[String: AnyObject]]?, _ error: Error?) -> Void)?
+typealias completionHandler = ((_ photos: [Photo]?, _ error: Error?) -> Void)?
 typealias fetchPhotoCompletionHandler = ((_ photo: UIImage?, _ error: Error?) -> Void)?
 
 class APIManager: NSObject {
     
     public static let shared = APIManager()
+    
+    private var dataController: DataController = (UIApplication.shared.delegate as! AppDelegate).dataController
+    private var queue = OperationQueue()
     
     /**
      fetched the images for the given latitude and longitude, and completion handler will have the photos or error details.
@@ -24,37 +28,20 @@ class APIManager: NSObject {
          - longitude: self descriptive
          - completion: (optional) completion handler with fetched images or error with details.
      */
-    public func getImages(_ latitude: Double, longitude: Double, completion: completionHandler = nil) {
-        onSearch(latitude, longitude: longitude, completion: completion)
-    }
-    
-    /**
-     this will return a vaild photo if it already fetched and saved in core data.
-     - parameters:
-        - photoURL: medium URL of the image.
-     */
-    public func fetchedPhoto(_ photoURL: URL) -> UIImage? {
-        return nil
-    }
-    
-    /**
-     fetch, save the binary data and return the image to the caller
-     - parameters:
-        - photoURL: self descriptive.
-     */
-    public func fetchAndSaveImage(_ photoURL: URL, completion: fetchPhotoCompletionHandler = nil){
-        // TODO: fetch and save the image
+    public func getImages(_ pin: Pin, completion: completionHandler = nil) {
+        onSearch(pin, completion: completion)
     }
 }
 
+// MARK: Convenience
+
 private extension APIManager {
-    // MARK: Convenience
     
-    func onSearch(_ latitude: Double, longitude: Double, completion: completionHandler) {
+    func onSearch(_ pin: Pin, completion: completionHandler) {
         let methodsParameters: [String:AnyObject] = [
             APIConstants.FlickrParameterKeys.Method: APIConstants.FlickrParameterValues.SearchMethod,
             APIConstants.FlickrParameterKeys.APIKey: APIConstants.FlickrParameterValues.APIKey,
-            APIConstants.FlickrParameterKeys.BoundingBox: bboxString(latitude: latitude, longitude: latitude),
+            APIConstants.FlickrParameterKeys.BoundingBox: bboxString(latitude: pin.lattitude, longitude: pin.longitude),
             APIConstants.FlickrParameterKeys.SafeSearch: APIConstants.FlickrParameterValues.UseSafeSearch,
             APIConstants.FlickrParameterKeys.Extras: APIConstants.FlickrParameterValues.MediumURL,
             APIConstants.FlickrParameterKeys.Format: APIConstants.FlickrParameterValues.ResponseFormat,
@@ -62,7 +49,7 @@ private extension APIManager {
             APIConstants.FlickrParameterKeys.PerPage: APIConstants.FlickrParameterValues.PerPageCount
             ] as [String:AnyObject]
         
-        getImageFromFlickrBySearch(methodsParameters, completion: completion)
+        getImageFromFlickrBySearch(pin, params: methodsParameters, completion: completion)
     }
     
     func bboxString(latitude: Double, longitude: Double) -> String {
@@ -91,10 +78,10 @@ private extension APIManager {
         return components.url!
     }
     
-    func getImageFromFlickrBySearch(_ methodParameters: [String: AnyObject], completion: completionHandler) {
+    func getImageFromFlickrBySearch(_ pin: Pin, params: [String: AnyObject], completion: completionHandler) {
         // create session and request
         let session = URLSession.shared
-        let request = URLRequest(url: flickrURLFromParameters(methodParameters))
+        let request = URLRequest(url: flickrURLFromParameters(params))
         
         // create network request
         let task = session.dataTask(with: request) { (data, response, error) in
@@ -153,25 +140,31 @@ private extension APIManager {
             // pick a random page!
             let pageLimit = min(totalPages, 40)
             let randomPage = Int(arc4random_uniform(UInt32(pageLimit))) + 1
-            self.getImageFromFlickrBySearch(methodParameters, withPageNumber: randomPage, completion: completion)
+            self.getImageFromFlickrBySearch(pin,
+                                            params: params,
+                                            withPageNumber: randomPage,
+                                            completion: completion)
         }
         
         // start the task!
         task.resume()
     }
     
-    func getImageFromFlickrBySearch(_ methodParameters: [String: AnyObject], withPageNumber: Int, completion: completionHandler) {
+    func getImageFromFlickrBySearch(_ pin: Pin,
+                                    params: [String: AnyObject],
+                                    withPageNumber: Int,
+                                    completion: completionHandler) {
         
         // add the page to the method's parameters
-        var methodParametersWithPageNumber = methodParameters
+        var methodParametersWithPageNumber = params
         methodParametersWithPageNumber[APIConstants.FlickrParameterKeys.Page] = withPageNumber as AnyObject?
         
         // create session and request
         let session = URLSession.shared
-        let request = URLRequest(url: flickrURLFromParameters(methodParameters))
+        let request = URLRequest(url: flickrURLFromParameters(params))
         
         // create network request
-        let task = session.dataTask(with: request) { (data, response, error) in
+        let task = session.dataTask(with: request) { [unowned self] (data, response, error) in
             
             // if an error occurs, print it and re-enable the UI
             func displayError(_ error: String) {
@@ -228,11 +221,64 @@ private extension APIManager {
                 displayError("No Photos Found. Search Again.")
                 return
             } else {
-                completion?(photosArray, nil)
+                
+                self.fetchAllImages(pin, photos: photosArray, completion: completion)
             }
         }
         
         // start the task!
         task.resume()
     }
+    
+    private func fetchAllImages(_ pin: Pin, photos: [[String: AnyObject]], completion: completionHandler) {
+        
+        // fetch all images from the medium URL.
+        let group = DispatchGroup()
+        
+        for item in photos {
+            
+            /* GUARD: Medium URL is valid */
+            guard
+                let urlString = item[APIConstants.FlickrResponseKeys.MediumURL] as? String,
+                let url = URL(string: urlString)
+                else {
+                    continue
+            }
+            
+            // fetch image
+            DispatchQueue.global(qos: .userInitiated).async {
+                
+                group.enter()
+                
+                URLSession.shared.dataTask(with: url, completionHandler: { [unowned self] (data, response, error) in
+                    
+                    if error == nil, let data = data {
+                        
+                        let photo = Photo(context: self.dataController.viewContext)
+                        photo.url = url
+                        photo.image = data
+                        photo.pin = pin
+                    }
+                    
+                    group.leave()
+                    
+                }).resume()
+            }
+        }
+        
+        group.notify(queue: DispatchQueue.global(qos: .userInitiated), execute: { [weak self] in
+            
+            // all images fetched successfully
+            do {
+                try self?.dataController.viewContext.save()
+            } catch {
+                print("Image Saving failed!!")
+            }
+            
+            // TODO: get all images from core data and return photo list
+            let array = Array.init(pin.photos!) as! [Photo]
+            completion?(array, nil)
+        })
+    }
+    
 }
