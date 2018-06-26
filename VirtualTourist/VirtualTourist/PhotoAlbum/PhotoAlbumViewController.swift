@@ -6,119 +6,154 @@ Created on: 6/23/18
 Abstract:
  this class will show collection of images for a given latitude and longitude. As well as option to get new set of collection.
  - note: pass in latitude and longitude information as well as dataController for saving the images to core data
+ 
+ getPhotos -> list of image URLs
+ from ImageURLs -> get all images
+ 
 */
 
 import UIKit
+import CoreData
+import MapKit
 
 final class PhotoAlbumViewController: UIViewController {
     
     // MARK: Properties
-    var latitude: Double!
-    var longitude: Double!
-    var dataController: DataController!
+    public var pin: Pin!
+    public var dataController: DataController!
+    
+    // IBOutlet
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var newCollectionButton: UIButton!
+    
+    // private
     
     private var photos = [Photo]()
-    
-    struct C {
+    private struct C {
         static let photoCellReusableID = "photoCell"
     }
-    
+    private var selectedIndexPath: IndexPath? = nil
     
     // MARK: View Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         getPhotos()
+        markInMap()
+    }
+    
+    @IBAction func onTouchNewCollection(_ sender: UIButton) {
+        if let indexPath = selectedIndexPath {
+            do {
+                let photo = photos[indexPath.row]
+                dataController.viewContext.delete(photo)
+                try dataController.viewContext.save()
+                photos.remove(at: indexPath.row)
+                collectionView.deleteItems(at: [indexPath])
+                selectedIndexPath = nil
+                
+            } catch {
+                print("Error removing image")
+            }
+            
+        } else {
+            pin.photos = nil
+            photos = []
+            collectionView.reloadData()
+            fetchNewCollection()
+        }
     }
     
     // MARK: Convenience
     
+    /**
+     add an annotation on the map for the given PIN property
+     */
+    private func markInMap() {
+        
+        let center = CLLocationCoordinate2D(latitude: pin.lattitude, longitude: pin.longitude)
+        let region = MKCoordinateRegion(center: center,
+                                        span: MKCoordinateSpan(latitudeDelta: 2.0, longitudeDelta: 2.0))
+        
+        let annotation = MKPointAnnotation()
+        annotation.title = pin.title
+        annotation.subtitle = pin.subtitle
+        annotation.coordinate = center
+        
+        mapView.addAnnotation(annotation)
+        mapView.setRegion(region, animated: true)
+    }
+    /**
+     fetch the photos from the flickr if pin is not having any photos and save the response to core data.
+     if pin having any photos, return and show it in the UI.
+     */
     private func getPhotos() {
-        APIManager.shared.getImages(latitude, longitude: longitude) { [unowned self] (photosArray, error) in
-            guard error == nil, let photosArray = photosArray else {
+        if let photos = pin.photos, photos.count > 0, let photosArray = Array(photos) as? [Photo] {
+            self.photos = photosArray
+        } else {
+            fetchNewCollection()
+        }
+    }
+    /**
+     fetch a new collection of images from the UI and save it to the core data.
+     */
+    private func fetchNewCollection() {
+        APIManager.shared.getImages(pin) { [unowned self] (photos, error) in
+            guard error == nil, let photos = photos else {
                 print(error!)
                 return
             }
             
-            // TODO: Save to db and populate `photos` property.
-            for photo in photosArray {
+            DispatchQueue.main.async {
                 
-                if
-                    let mediumURLString = photo[APIConstants.FlickrResponseKeys.MediumURL] as? String,
-                    let mediumURL = URL(string: mediumURLString)
-                {
-                    let photoModel = Photo(context: self.dataController.viewContext)
-                    photoModel.url = mediumURL
-                }
-            }
-            do {
-                try self.dataController.viewContext.save()
-            } catch {
-                print("Saving photo URLs failed \(error.localizedDescription)")
+                self.photos = photos
+                self.collectionView.reloadData()
             }
         }
     }
 }
 
-extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
+extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photos.count
+        return photos.count == 0 ? 10 : photos.count
     }
     
     
     /// - Tag: CellForItemAt
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let photo = photos[indexPath.row]
         guard
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: C.photoCellReusableID,
-                                                          for: indexPath) as? PhotoCollectionViewCell,
-            let url = photo.url
+                                                          for: indexPath) as? PhotoCollectionViewCell
         else {
             fatalError("Wrong PhotoCollectionViewCell type")
         }
+        if
+            photos.count > indexPath.row,
+            let data = photos[indexPath.row].image,
+            let image = UIImage(data: data) {
+            
+            cell.setImage(image)
         
-        // if already fetched.
-        if let image = APIManager.shared.fetchedPhoto(url) {
-            
-            // set the image.
-            cell.imageView.image = image
-            
         } else {
-           
-            // TODO: fetch the image from server and display it on UI.
-            APIManager.shared.fetchAndSaveImage(url) { (image, error) in
-                guard error == nil, image != nil else {
-                    fatalError("error")
-                }
-                
-                DispatchQueue.main.async {
-                    cell.imageView.image = image!
-                }
-            }
+            
+            cell.loading()
         }
         
         return cell
     }
     
-    // MARK: UICollectionViewDataSourcePrefetching
-    
-    /// - Tag: Prefetching
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        // Begin asynchronously fetching data for the requested index paths.
-        for indexPath in indexPaths {
-            let model = photos[indexPath.row]
-//            asyncFetcher.fetchAsync(model.id)
-        }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! PhotoCollectionViewCell
+        cell.refresh()
+        
+        selectedIndexPath = indexPath
+        newCollectionButton.titleLabel?.text = "Remove Image"
     }
     
-    /// - Tag: CancelPrefetching
-    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-        // Cancel any in-flight requests for data for the specified index paths.
-        for indexPath in indexPaths {
-            let model = photos[indexPath.row]
-//            asyncFetcher.cancelFetch(model.id)
-        }
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! PhotoCollectionViewCell
+        cell.refresh()
     }
 }

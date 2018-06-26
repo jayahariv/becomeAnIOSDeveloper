@@ -54,7 +54,7 @@ final class MapViewController: UIViewController {
         loadPins()
     }
     
-    // MARK: Actions
+    // MARK: Button Actions
     
     @objc private func onEdit() {
         isEditing = !isEditing
@@ -220,12 +220,11 @@ final class MapViewController: UIViewController {
         if segue.identifier == C.segueToPhotoAlbum {
             guard
                 let photoAlbum = segue.destination as? PhotoAlbumViewController,
-                let coordinate = (sender as? MKAnnotation)?.coordinate
+                let pin = (sender as? Pin)
             else {
                 return
             }
-            photoAlbum.latitude = coordinate.latitude
-            photoAlbum.longitude = coordinate.longitude
+            photoAlbum.pin = pin
             photoAlbum.dataController = dataController
         }
     }
@@ -251,34 +250,32 @@ extension MapViewController: MKMapViewDelegate {
         return view
     }
     
-    func mapView(_ mapView: MKMapView,
-                 annotationView view: MKAnnotationView,
-                 calloutAccessoryControlTapped control: UIControl) {
-        // TODO: go to photo album view controller.
-    }
-    
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
+        // remove from db
+        let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
+        let pointOfInterest: CLLocationCoordinate2D = (view.annotation?.coordinate)!
+        
+        fetchRequest.predicate = predicateForDeltaLocation(pointOfInterest)
+        guard let pin = (try? dataController.viewContext.fetch(fetchRequest).first) as? Pin else {
+            return
+        }
+        
         if isEditing {
+            
             view.removeFromSuperview()
-            
-            // remove from db
-            let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
-            let pointOfInterest: CLLocationCoordinate2D = (view.annotation?.coordinate)!
-
-            fetchRequest.predicate = predicateForDeltaLocation(pointOfInterest)
-            
             do {
-                let result = try dataController.viewContext.fetch(fetchRequest)
-                if let result = result.first {
-                    dataController.viewContext.delete(result)
-                    try dataController.viewContext.save()
-                }
+                dataController.viewContext.delete(pin)
+                
+                try dataController.viewContext.save()
                 
             } catch {
                 print(error)
             }
+            
         } else {
-            performSegue(withIdentifier: C.segueToPhotoAlbum, sender: view.annotation)
+            
+            performSegue(withIdentifier: C.segueToPhotoAlbum, sender: pin)
         }
     }
     
