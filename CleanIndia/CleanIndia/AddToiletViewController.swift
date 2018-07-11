@@ -25,7 +25,7 @@ class AddToiletViewController: UIViewController {
 }
 
 extension AddToiletViewController: CIAddressTypeaheadProtocol {
-    func didSelectAddress(localSearch: MKLocalSearchCompletion) {
-        print(localSearch)
+    func didSelectAddress(placemark: MKPlacemark) {
+        print(placemark)
     }
 }

@@ -44,7 +44,7 @@ class MapViewController: UIViewController {
 }
 
 extension MapViewController: CIAddressTypeaheadProtocol {
-    func didSelectAddress(localSearch: MKLocalSearchCompletion) {
-        print(localSearch)
+    func didSelectAddress(placemark: MKPlacemark) {
+        print(placemark)
     }
 }
