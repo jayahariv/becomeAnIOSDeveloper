@@ -4,15 +4,16 @@ CIAddressTypeahead.swift
 Created on: 7/5/18
 
 Abstract:
- address typeahead.
-
+ - user can type in any string, which will show the matching addresses in a tableview
+ - opt for the typeaheadDelegate, which will give the selected localSearchCompletion object
+ 
 */
 
 import UIKit
 import MapKit
 
 /**
- delegate to receive the results array when address typeahead is populated
+ delegate to receive the selected address
  */
 @objc protocol CIAddressTypeaheadProtocol {
     func didSelectAddress(localSearch: MKLocalSearchCompletion)
@@ -22,10 +23,13 @@ final class CIAddressTypeahead: UITextField {
     
     // MARK: Properties
     
-    /// set this to receive the new results of array when user types in the textfield.
+    /// set this to receive the selected address
     @IBOutlet var typeaheadDelegate: CIAddressTypeaheadProtocol?
+    
+    /// set this to show the results tableview on top of the textfield.
     @IBInspectable public var displayTop: Bool = false
     
+    // MARK: Private properties
     private var searchCompleter = MKLocalSearchCompleter()
     private var resultsTable: UITableView!
     private var results = [MKLocalSearchCompletion]()
@@ -34,8 +38,8 @@ final class CIAddressTypeahead: UITextField {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        resultsTable = UITableView(coder: aDecoder)
         delegate = self
+        resultsTable = UITableView(coder: aDecoder)
         searchCompleter.delegate = self
         addResultsTable()
     }
@@ -63,10 +67,11 @@ final class CIAddressTypeahead: UITextField {
                            attribute: NSLayoutAttribute.notAnAttribute,
                            multiplier: 1,
                            constant: 176).isActive = true
+        
         if displayTop {
-            toTop()
+            addConstraintToShowResultsTableInTop()
         } else {
-            toBottom()
+            addConstraintToShowResultsTableInBottom()
         }
     }
     
@@ -92,6 +97,9 @@ final class CIAddressTypeahead: UITextField {
     
     // MARK: Helper methods
     
+    /**
+     adds the tableview as a subview to the textfield
+     */
     func addResultsTable() {
         addSubview(resultsTable)
         resultsTable.dataSource = self
@@ -99,7 +107,10 @@ final class CIAddressTypeahead: UITextField {
         resultsTable.isHidden = true
     }
     
-    func toBottom() {
+    /**
+     adds the constraints to show the results table below the textfield.
+     */
+    func addConstraintToShowResultsTableInBottom() {
         NSLayoutConstraint(item: resultsTable,
                            attribute: NSLayoutAttribute.top,
                            relatedBy: NSLayoutRelation.equal,
@@ -109,7 +120,10 @@ final class CIAddressTypeahead: UITextField {
                            constant: 12).isActive = true
     }
     
-    func toTop() {
+    /**
+     adds the constraints to show the results table above the textfield.
+     */
+    func addConstraintToShowResultsTableInTop() {
         NSLayoutConstraint(item: resultsTable,
                            attribute: NSLayoutAttribute.bottom,
                            relatedBy: NSLayoutRelation.equal,
@@ -169,6 +183,8 @@ extension CIAddressTypeahead: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        text = results[indexPath.row].title
         typeaheadDelegate?.didSelectAddress(localSearch: results[indexPath.row])
+        tableView.isHidden = true
     }
 }
