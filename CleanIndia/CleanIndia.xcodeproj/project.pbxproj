@@ -13,7 +13,8 @@
 		08ABDC0420EBD7F000343AAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08ABDC0320EBD7F000343AAA /* Assets.xcassets */; };
 		08ABDC0720EBD7F000343AAA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08ABDC0520EBD7F000343AAA /* LaunchScreen.storyboard */; };
 		08ABDC1220EBD7F000343AAA /* CleanIndiaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ABDC1120EBD7F000343AAA /* CleanIndiaTests.swift */; };
-		08ABDC1D20EE8BA400343AAA /* AddressDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ABDC1C20EE8BA400343AAA /* AddressDatasource.swift */; };
+		08ABDC1F20EF1BA300343AAA /* AddToiletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ABDC1E20EF1BA300343AAA /* AddToiletViewController.swift */; };
+		08ABDC2720EF254D00343AAA /* CIAddressTypeahead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ABDC2620EF254D00343AAA /* CIAddressTypeahead.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +38,8 @@
 		08ABDC0D20EBD7F000343AAA /* CleanIndiaTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CleanIndiaTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		08ABDC1120EBD7F000343AAA /* CleanIndiaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanIndiaTests.swift; sourceTree = "<group>"; };
 		08ABDC1320EBD7F000343AAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		08ABDC1C20EE8BA400343AAA /* AddressDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressDatasource.swift; sourceTree = "<group>"; };
+		08ABDC1E20EF1BA300343AAA /* AddToiletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToiletViewController.swift; sourceTree = "<group>"; };
+		08ABDC2620EF254D00343AAA /* CIAddressTypeahead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CIAddressTypeahead.swift; path = CleanIndia/View/CIAddressTypeahead.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,9 +81,10 @@
 		08ABDBFB20EBD7EE00343AAA /* CleanIndia */ = {
 			isa = PBXGroup;
 			children = (
+				08ABDC2520EF211500343AAA /* View */,
 				08ABDBFC20EBD7EE00343AAA /* AppDelegate.swift */,
 				08ABDBFE20EBD7EE00343AAA /* MapViewController.swift */,
-				08ABDC1C20EE8BA400343AAA /* AddressDatasource.swift */,
+				08ABDC1E20EF1BA300343AAA /* AddToiletViewController.swift */,
 				08ABDC0020EBD7EE00343AAA /* Main.storyboard */,
 				08ABDC0320EBD7F000343AAA /* Assets.xcassets */,
 				08ABDC0520EBD7F000343AAA /* LaunchScreen.storyboard */,
@@ -97,6 +100,15 @@
 				08ABDC1320EBD7F000343AAA /* Info.plist */,
 			);
 			path = CleanIndiaTests;
+			sourceTree = "<group>";
+		};
+		08ABDC2520EF211500343AAA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				08ABDC2620EF254D00343AAA /* CIAddressTypeahead.swift */,
+			);
+			name = View;
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -201,8 +213,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				08ABDBFF20EBD7EE00343AAA /* MapViewController.swift in Sources */,
+				08ABDC1F20EF1BA300343AAA /* AddToiletViewController.swift in Sources */,
 				08ABDBFD20EBD7EE00343AAA /* AppDelegate.swift in Sources */,
-				08ABDC1D20EE8BA400343AAA /* AddressDatasource.swift in Sources */,
+				08ABDC2720EF254D00343AAA /* CIAddressTypeahead.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

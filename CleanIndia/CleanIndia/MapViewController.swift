@@ -13,13 +13,13 @@ this class will show the map with toilet annotations. Also includes the capabili
 */
 
 import UIKit
+import MapKit
 
 class MapViewController: UIViewController {
     
     // MARK: Properties
 
     @IBOutlet weak var addressTextField: UITextField!
-    let searchResultsDatasource: AddressDatasource = AddressDatasource()
 
     // MARK: View Lifecycle
     
@@ -41,4 +41,10 @@ class MapViewController: UIViewController {
     @IBAction func onTouchUpAdd(_ sender: UIButton) {
     }
     
+}
+
+extension MapViewController: CIAddressTypeaheadProtocol {
+    func didSelectAddress(localSearch: MKLocalSearchCompletion) {
+        print(localSearch)
+    }
 }
