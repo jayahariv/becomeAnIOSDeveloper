@@ -46,9 +46,9 @@ This app lets user to select any location from the map, and see the pictures of 
 Its an app to show all the toilets near by you. You can add reviews about the toilet, add new toilets. Also this app will include the statistics of the District level data on how many household toilets etc. 
 
 - Features include
- * Ability to see nearby toilets in the map as well as a list.
- * Ability to search with address.
- * Ability to add a toilet
+    * Ability to see nearby toilets in the map as well as a list.
+    * Ability to search with address.
+    * Ability to add a toilet
  
 ### Progress
  * [x] Ability to enter the string, that should list all addresses starting with the string. 
