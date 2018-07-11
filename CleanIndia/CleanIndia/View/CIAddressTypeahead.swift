@@ -24,6 +24,7 @@ final class CIAddressTypeahead: UITextField {
     
     /// set this to receive the new results of array when user types in the textfield.
     @IBOutlet var typeaheadDelegate: CIAddressTypeaheadProtocol?
+    @IBInspectable public var displayTop: Bool = false
     
     private var searchCompleter = MKLocalSearchCompleter()
     private var resultsTable: UITableView!
@@ -49,13 +50,6 @@ final class CIAddressTypeahead: UITextField {
                            multiplier: 1,
                            constant: 0).isActive = true
         NSLayoutConstraint(item: resultsTable,
-                           attribute: NSLayoutAttribute.top,
-                           relatedBy: NSLayoutRelation.equal,
-                           toItem: self,
-                           attribute: NSLayoutAttribute.bottom,
-                           multiplier: 1,
-                           constant: 12).isActive = true
-        NSLayoutConstraint(item: resultsTable,
                            attribute: NSLayoutAttribute.width,
                            relatedBy: NSLayoutRelation.equal,
                            toItem: nil,
@@ -69,15 +63,11 @@ final class CIAddressTypeahead: UITextField {
                            attribute: NSLayoutAttribute.notAnAttribute,
                            multiplier: 1,
                            constant: 176).isActive = true
-    }
-    
-    // MARK: Helper methods
-    
-    func addResultsTable() {
-        addSubview(resultsTable)
-        resultsTable.dataSource = self
-        resultsTable.delegate = self
-        resultsTable.isHidden = true
+        if displayTop {
+            toTop()
+        } else {
+            toBottom()
+        }
     }
     
     /**
@@ -96,7 +86,37 @@ final class CIAddressTypeahead: UITextField {
             }
         }
         
-        return self
+        return super.hitTest(point, with: event)
+    }
+    
+    
+    // MARK: Helper methods
+    
+    func addResultsTable() {
+        addSubview(resultsTable)
+        resultsTable.dataSource = self
+        resultsTable.delegate = self
+        resultsTable.isHidden = true
+    }
+    
+    func toBottom() {
+        NSLayoutConstraint(item: resultsTable,
+                           attribute: NSLayoutAttribute.top,
+                           relatedBy: NSLayoutRelation.equal,
+                           toItem: self,
+                           attribute: NSLayoutAttribute.bottom,
+                           multiplier: 1,
+                           constant: 12).isActive = true
+    }
+    
+    func toTop() {
+        NSLayoutConstraint(item: resultsTable,
+                           attribute: NSLayoutAttribute.bottom,
+                           relatedBy: NSLayoutRelation.equal,
+                           toItem: self,
+                           attribute: NSLayoutAttribute.top,
+                           multiplier: 1,
+                           constant: -12).isActive = true
     }
 }
 
