@@ -16,7 +16,7 @@ import MapKit
  delegate to receive the selected address
  */
 @objc protocol CIAddressTypeaheadProtocol {
-    func didSelectAddress(localSearch: MKLocalSearchCompletion)
+    func didSelectAddress(placemark: MKPlacemark)
 }
 
 final class CIAddressTypeahead: UITextField {
@@ -39,6 +39,8 @@ final class CIAddressTypeahead: UITextField {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         delegate = self
+        text = nil
+        placeholder = "Please search for an address"
         resultsTable = UITableView(coder: aDecoder)
         searchCompleter.delegate = self
         addResultsTable()
@@ -175,16 +177,27 @@ extension CIAddressTypeahead: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "cell")
         if cell == nil {
-            cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+            cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         }
         let result = results[indexPath.row]
         cell?.textLabel?.text = result.title
+        cell?.detailTextLabel?.text = result.subtitle
         return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         text = results[indexPath.row].title
-        typeaheadDelegate?.didSelectAddress(localSearch: results[indexPath.row])
-        tableView.isHidden = true
+        let completion = results[indexPath.row]
+        let searchRequest = MKLocalSearchRequest(completion: completion)
+        let search = MKLocalSearch(request: searchRequest)
+        search.start { [unowned self] (response, error) in
+            let placemark = response?.mapItems[0].placemark
+            if let placemark = placemark {
+                self.typeaheadDelegate?.didSelectAddress(placemark: placemark)
+                tableView.isHidden = true
+            }
+        }
+        
+        
     }
 }
