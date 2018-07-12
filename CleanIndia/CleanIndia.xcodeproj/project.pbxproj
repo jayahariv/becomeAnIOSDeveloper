@@ -16,6 +16,7 @@
 		08ABDC1F20EF1BA300343AAA /* AddToiletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ABDC1E20EF1BA300343AAA /* AddToiletViewController.swift */; };
 		08ABDC2720EF254D00343AAA /* CIAddressTypeahead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ABDC2620EF254D00343AAA /* CIAddressTypeahead.swift */; };
 		08BD2C3320F6D9EF00E2A1E6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 08BD2C3220F6D9EF00E2A1E6 /* GoogleService-Info.plist */; };
+		08BD2C3520F7131600E2A1E6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BD2C3420F7131600E2A1E6 /* Constants.swift */; };
 		F3C4CBC0A23F656C8FAB1AF0 /* Pods_CleanIndia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FB85B22C7E8A3A263AAA2DB /* Pods_CleanIndia.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		08ABDC1E20EF1BA300343AAA /* AddToiletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToiletViewController.swift; sourceTree = "<group>"; };
 		08ABDC2620EF254D00343AAA /* CIAddressTypeahead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CIAddressTypeahead.swift; path = CleanIndia/View/CIAddressTypeahead.swift; sourceTree = SOURCE_ROOT; };
 		08BD2C3220F6D9EF00E2A1E6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		08BD2C3420F7131600E2A1E6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		161F08BE16C44A6CB6D74589 /* Pods-CleanIndia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CleanIndia.release.xcconfig"; path = "Pods/Target Support Files/Pods-CleanIndia/Pods-CleanIndia.release.xcconfig"; sourceTree = "<group>"; };
 		7FB85B22C7E8A3A263AAA2DB /* Pods_CleanIndia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CleanIndia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CC1FE38A5E34FA078425DFF /* Pods-CleanIndia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CleanIndia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CleanIndia/Pods-CleanIndia.debug.xcconfig"; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				08ABDC0520EBD7F000343AAA /* LaunchScreen.storyboard */,
 				08BD2C3220F6D9EF00E2A1E6 /* GoogleService-Info.plist */,
 				08ABDC0820EBD7F000343AAA /* Info.plist */,
+				08BD2C3420F7131600E2A1E6 /* Constants.swift */,
 			);
 			path = CleanIndia;
 			sourceTree = "<group>";
@@ -263,13 +266,27 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-CleanIndia/Pods-CleanIndia-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -285,6 +302,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08BD2C3520F7131600E2A1E6 /* Constants.swift in Sources */,
 				08ABDBFF20EBD7EE00343AAA /* MapViewController.swift in Sources */,
 				08ABDC1F20EF1BA300343AAA /* AddToiletViewController.swift in Sources */,
 				08ABDBFD20EBD7EE00343AAA /* AppDelegate.swift in Sources */,
