@@ -14,6 +14,7 @@ this class will show the map with toilet annotations. Also includes the capabili
 
 import UIKit
 import MapKit
+import FirebaseAuth
 
 class MapViewController: UIViewController {
     
@@ -24,7 +25,10 @@ class MapViewController: UIViewController {
     // MARK: View Lifecycle
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
+        disableUIWithAuthentication()
     }
     
     // MARK: Button Actions
@@ -39,6 +43,19 @@ class MapViewController: UIViewController {
     }
     
     @IBAction func onTouchUpAdd(_ sender: UIButton) {
+    }
+    
+    // MARK: Helper
+    
+    func disableUIWithAuthentication() {
+        let email = "validemailaddress"
+        let password = "validpassword"
+        Auth.auth().signIn(withEmail: email, password: password) { [unowned self] (result, error) in
+            guard error == nil else {
+                self.view.isUserInteractionEnabled = false
+                return
+            }
+        }
     }
     
 }
