@@ -48,8 +48,8 @@ class MapViewController: UIViewController {
     // MARK: Helper
     
     func disableUIWithAuthentication() {
-        let email = "validemailaddress"
-        let password = "validpassword"
+        let email = "enterValidEmailAddress"
+        let password = "enterValidPassword"
         Auth.auth().signIn(withEmail: email, password: password) { [unowned self] (result, error) in
             guard error == nil else {
                 self.view.isUserInteractionEnabled = false
