@@ -97,6 +97,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="addToiletButton" destination="QIu-fP-SyU" id="PxM-jY-Qsh"/>
                         <outlet property="searchDisplayController" destination="BMg-ak-B6V" id="6qj-ns-nKv"/>
                     </connections>
                 </viewController>
@@ -223,7 +224,7 @@
                                                 <action selector="onCancel:" destination="iYl-OM-hNI" id="gEV-ub-Bgf"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="add" id="YUs-c1-Us9">
+                                        <barButtonItem key="rightBarButtonItem" title="Save" style="done" id="YUs-c1-Us9">
                                             <connections>
                                                 <action selector="onAdd:" destination="iYl-OM-hNI" id="QUz-Ju-gba"/>
                                             </connections>

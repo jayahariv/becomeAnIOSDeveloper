@@ -10,7 +10,7 @@ this class will manage all tasks related with adding the toilet.
 
 import UIKit
 import MapKit
-import FirebaseDatabase
+import Firebase
 
 final class AddToiletViewController: UIViewController {
     
@@ -29,7 +29,8 @@ final class AddToiletViewController: UIViewController {
     
     // private vars
     private var rate: UInt8 = 5
-    private var ref: DatabaseReference!
+    private let db = (UIApplication.shared.delegate as! AppDelegate).db
+    private var placemark: MKPlacemark?
 
     
     // MARK: View Lifecycle
@@ -86,26 +87,55 @@ final class AddToiletViewController: UIViewController {
     }
     
     @IBAction func onAdd(_ sender: UIBarButtonItem) {
-        onSave() {
-            dismiss(animated: true, completion: nil)
+        guard let name = self.name.text else {
+            return
+        }
+        
+        guard let coordinate = placemark?.coordinate else {
+            return
+        }
+        
+        guard let address = placemark?.title else {
+            return
+        }
+        
+        onSave(name,
+               rating: rate,
+               address: address,
+               coordinate: GeoPoint(latitude: coordinate.latitude,
+                                    longitude: coordinate.longitude)
+        ) {[unowned self] in
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
     // MARK: Helper functions
     
-    func onSave(completion: () -> Void) {
+    func onSave(_ name: String,
+                rating: UInt8,
+                address: String,
+                coordinate: GeoPoint,
+                completion: @escaping () -> Void) {
         
-        // todo: save the details && decide on structure of the data
-//        let autoID = ref.child("toilets").childByAutoId().key
-//        ref.child("toilets").child(autoID).setValue(["username": username])
-        
-        // after finish call this
-        completion()
+        var ref: DocumentReference? = nil
+        ref = db?.collection(Constants.Firestore.Keys.TOILETS).addDocument(data: [
+            Constants.Firestore.Keys.NAME: name,
+            Constants.Firestore.Keys.RATING: rating,
+            Constants.Firestore.Keys.ADDRESS: address,
+            Constants.Firestore.Keys.COORDINATE: coordinate
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+                completion()
+            }
+        }
     }
 }
 
 extension AddToiletViewController: CIAddressTypeaheadProtocol {
     func didSelectAddress(placemark: MKPlacemark) {
-        print(placemark)
+        self.placemark = placemark
     }
 }

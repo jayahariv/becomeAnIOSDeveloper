@@ -7,21 +7,21 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>409903179197-73qcqiupq4lvbs41s4pligfom5o3fave.apps.googleusercontent.com</string>
+	<string>1000086158031-em66c6qsi1mm93f604c0j5pddrnn7njq.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.409903179197-73qcqiupq4lvbs41s4pligfom5o3fave</string>
+	<string>com.googleusercontent.apps.1000086158031-em66c6qsi1mm93f604c0j5pddrnn7njq</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBCKbDN94J0tIAp08emKZ5QhSlWVLhEXmo</string>
+	<string>AIzaSyD1KJsLLwbFjR9a1E4XMEWXQxstzBEbTDQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>409903179197</string>
+	<string>1000086158031</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.jayahariv.CleanIndia</string>
 	<key>PROJECT_ID</key>
-	<string>cleanindia-9e65d</string>
+	<string>cleanindia-a409a</string>
 	<key>STORAGE_BUCKET</key>
-	<string>cleanindia-9e65d.appspot.com</string>
+	<string>cleanindia-a409a.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -33,8 +33,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:409903179197:ios:6b32f06eba32f399</string>
+	<string>1:1000086158031:ios:6b32f06eba32f399</string>
 	<key>DATABASE_URL</key>
-	<string>https://cleanindia-9e65d.firebaseio.com</string>
+	<string>https://cleanindia-a409a.firebaseio.com</string>
 </dict>
 </plist>

@@ -21,6 +21,7 @@ class MapViewController: UIViewController {
     // MARK: Properties
 
     @IBOutlet weak var addressTextField: UITextField!
+    @IBOutlet weak var addToiletButton: UIButton!
 
     // MARK: View Lifecycle
     
@@ -52,7 +53,7 @@ class MapViewController: UIViewController {
         let password = "enterValidPassword"
         Auth.auth().signIn(withEmail: email, password: password) { [unowned self] (result, error) in
             guard error == nil else {
-                self.view.isUserInteractionEnabled = false
+//                self.addToiletButton.isEnabled = false
                 return
             }
         }
