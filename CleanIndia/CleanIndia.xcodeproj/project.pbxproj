@@ -15,6 +15,8 @@
 		08ABDC1220EBD7F000343AAA /* CleanIndiaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ABDC1120EBD7F000343AAA /* CleanIndiaTests.swift */; };
 		08ABDC1F20EF1BA300343AAA /* AddToiletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ABDC1E20EF1BA300343AAA /* AddToiletViewController.swift */; };
 		08ABDC2720EF254D00343AAA /* CIAddressTypeahead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08ABDC2620EF254D00343AAA /* CIAddressTypeahead.swift */; };
+		08BD2C3320F6D9EF00E2A1E6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 08BD2C3220F6D9EF00E2A1E6 /* GoogleService-Info.plist */; };
+		F3C4CBC0A23F656C8FAB1AF0 /* Pods_CleanIndia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FB85B22C7E8A3A263AAA2DB /* Pods_CleanIndia.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,10 @@
 		08ABDC1320EBD7F000343AAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08ABDC1E20EF1BA300343AAA /* AddToiletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToiletViewController.swift; sourceTree = "<group>"; };
 		08ABDC2620EF254D00343AAA /* CIAddressTypeahead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CIAddressTypeahead.swift; path = CleanIndia/View/CIAddressTypeahead.swift; sourceTree = SOURCE_ROOT; };
+		08BD2C3220F6D9EF00E2A1E6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		161F08BE16C44A6CB6D74589 /* Pods-CleanIndia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CleanIndia.release.xcconfig"; path = "Pods/Target Support Files/Pods-CleanIndia/Pods-CleanIndia.release.xcconfig"; sourceTree = "<group>"; };
+		7FB85B22C7E8A3A263AAA2DB /* Pods_CleanIndia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CleanIndia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CC1FE38A5E34FA078425DFF /* Pods-CleanIndia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CleanIndia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CleanIndia/Pods-CleanIndia.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3C4CBC0A23F656C8FAB1AF0 /* Pods_CleanIndia.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,12 +67,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		03DB4482A04221FF482111D3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9CC1FE38A5E34FA078425DFF /* Pods-CleanIndia.debug.xcconfig */,
+				161F08BE16C44A6CB6D74589 /* Pods-CleanIndia.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		08ABDBF020EBD7EE00343AAA = {
 			isa = PBXGroup;
 			children = (
 				08ABDBFB20EBD7EE00343AAA /* CleanIndia */,
 				08ABDC1020EBD7F000343AAA /* CleanIndiaTests */,
 				08ABDBFA20EBD7EE00343AAA /* Products */,
+				03DB4482A04221FF482111D3 /* Pods */,
+				EB40CC51B466CE96B9D723FE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -88,6 +106,7 @@
 				08ABDC0020EBD7EE00343AAA /* Main.storyboard */,
 				08ABDC0320EBD7F000343AAA /* Assets.xcassets */,
 				08ABDC0520EBD7F000343AAA /* LaunchScreen.storyboard */,
+				08BD2C3220F6D9EF00E2A1E6 /* GoogleService-Info.plist */,
 				08ABDC0820EBD7F000343AAA /* Info.plist */,
 			);
 			path = CleanIndia;
@@ -111,6 +130,14 @@
 			path = "New Group";
 			sourceTree = "<group>";
 		};
+		EB40CC51B466CE96B9D723FE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7FB85B22C7E8A3A263AAA2DB /* Pods_CleanIndia.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -118,9 +145,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 08ABDC1620EBD7F000343AAA /* Build configuration list for PBXNativeTarget "CleanIndia" */;
 			buildPhases = (
+				7456C8334B22C5C9FC61FBF0 /* [CP] Check Pods Manifest.lock */,
 				08ABDBF520EBD7EE00343AAA /* Sources */,
 				08ABDBF620EBD7EE00343AAA /* Frameworks */,
 				08ABDBF720EBD7EE00343AAA /* Resources */,
+				9AC1F41E2141CEC951F2F5D6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -193,6 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08ABDC0720EBD7F000343AAA /* LaunchScreen.storyboard in Resources */,
+				08BD2C3320F6D9EF00E2A1E6 /* GoogleService-Info.plist in Resources */,
 				08ABDC0420EBD7F000343AAA /* Assets.xcassets in Resources */,
 				08ABDC0220EBD7EE00343AAA /* Main.storyboard in Resources */,
 			);
@@ -206,6 +236,49 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7456C8334B22C5C9FC61FBF0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CleanIndia-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9AC1F41E2141CEC951F2F5D6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-CleanIndia/Pods-CleanIndia-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CleanIndia/Pods-CleanIndia-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		08ABDBF520EBD7EE00343AAA /* Sources */ = {
@@ -373,6 +446,7 @@
 		};
 		08ABDC1720EBD7F000343AAA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9CC1FE38A5E34FA078425DFF /* Pods-CleanIndia.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -390,6 +464,7 @@
 		};
 		08ABDC1820EBD7F000343AAA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 161F08BE16C44A6CB6D74589 /* Pods-CleanIndia.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

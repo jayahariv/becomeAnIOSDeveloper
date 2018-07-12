@@ -10,6 +10,7 @@ this class will manage all tasks related with adding the toilet.
 
 import UIKit
 import MapKit
+import FirebaseDatabase
 
 final class AddToiletViewController: UIViewController {
     
@@ -26,7 +27,10 @@ final class AddToiletViewController: UIViewController {
     @IBOutlet weak var rate4: UIButton!
     @IBOutlet weak var rate5: UIButton!
     
+    // private vars
     private var rate: UInt8 = 5
+    private var ref: DatabaseReference!
+
     
     // MARK: View Lifecycle
     
@@ -82,7 +86,21 @@ final class AddToiletViewController: UIViewController {
     }
     
     @IBAction func onAdd(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        onSave() {
+            dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    // MARK: Helper functions
+    
+    func onSave(completion: () -> Void) {
+        
+        // todo: save the details && decide on structure of the data
+//        let autoID = ref.child("toilets").childByAutoId().key
+//        ref.child("toilets").child(autoID).setValue(["username": username])
+        
+        // after finish call this
+        completion()
     }
 }
 
