@@ -50,6 +50,9 @@ Its an app to show all the toilets near by you. You can add reviews about the to
 * Ability to search with address.
 * Ability to add a toilet
 
+### Useful Links
+* [how data is designed in Firebase](https://gist.github.com/jayahariv/afe7bad2368bf831ff22f658124fa0d5)
+
 ### Progress
 * [x] Ability to enter the string, that should list all addresses starting with the string. 
 * [ ] Ability to enter the details of the toilet.
