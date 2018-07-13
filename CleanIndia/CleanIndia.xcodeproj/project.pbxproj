@@ -105,6 +105,7 @@
 		08ABDBFB20EBD7EE00343AAA /* CleanIndia */ = {
 			isa = PBXGroup;
 			children = (
+				08BD2C3A20F83BD700E2A1E6 /* Utilities */,
 				08ABDC2520EF211500343AAA /* View */,
 				08ABDBFC20EBD7EE00343AAA /* AppDelegate.swift */,
 				08ABDBFE20EBD7EE00343AAA /* MapViewController.swift */,
@@ -115,7 +116,6 @@
 				08ABDC0520EBD7F000343AAA /* LaunchScreen.storyboard */,
 				08BD2C3220F6D9EF00E2A1E6 /* GoogleService-Info.plist */,
 				08ABDC0820EBD7F000343AAA /* Info.plist */,
-				08BD2C3420F7131600E2A1E6 /* Constants.swift */,
 			);
 			path = CleanIndia;
 			sourceTree = "<group>";
@@ -137,6 +137,14 @@
 			);
 			name = View;
 			path = "New Group";
+			sourceTree = "<group>";
+		};
+		08BD2C3A20F83BD700E2A1E6 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				08BD2C3420F7131600E2A1E6 /* Constants.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		EB40CC51B466CE96B9D723FE /* Frameworks */ = {

@@ -21,11 +21,15 @@ final class MapViewController: UIViewController {
     
     // MARK: Properties
 
-    @IBOutlet weak var addressTextField: UITextField!
-    @IBOutlet weak var addToiletButton: UIButton!
+    /// PRIVATE
+    
+    @IBOutlet weak private var addressTextField: CIAddressTypeahead!
+    @IBOutlet weak private var addToiletButton: UIButton!
+    @IBOutlet weak private var mapView: MKMapView!
     
     private var db: Firestore!
 
+    
     // MARK: View Lifecycle
     
     override func viewDidLoad() {
@@ -34,7 +38,9 @@ final class MapViewController: UIViewController {
         
         disableUIWithAuthentication()
         
-        fetchToilets() 
+        fetchToilets()
+        
+        configureUI()
     }
     
     // MARK: Button Actions
@@ -50,9 +56,15 @@ final class MapViewController: UIViewController {
     
     @IBAction func onTouchUpAdd(_ sender: UIButton) {
     }
+}
+
+// MARK: Private Helper methods
+
+private extension MapViewController {
     
-    // MARK: Helper
-    
+    /**
+     authenticate and enable/disables the ` add-toilet ` button.
+     */
     func disableUIWithAuthentication() {
         let email = "enterValidEmailAddress"
         let password = "enterValidPassword"
@@ -64,9 +76,12 @@ final class MapViewController: UIViewController {
         }
     }
     
+    /**
+     fetch all toilets from firestore and mark them as annotations in map
+     */
     func fetchToilets() {
         db = Firestore.firestore()
-        db.collection("toilets").getDocuments() { (querySnapshot, err) in
+        db.collection(Constants.Firestore.Keys.TOILETS).getDocuments() { (querySnapshot, err) in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
@@ -77,7 +92,22 @@ final class MapViewController: UIViewController {
         }
     }
     
+    /**
+     sets up the whole UI configurations in this function
+        - focus the map to India
+     */
+    func configureUI() {
+        let span = MKCoordinateSpan(latitudeDelta: Constants.India.FullViewCoordinates.delta,
+                                    longitudeDelta: Constants.India.FullViewCoordinates.delta)
+        let center = CLLocationCoordinate2D(latitude: Constants.India.FullViewCoordinates.latitude,
+                                            longitude: Constants.India.FullViewCoordinates.longitude)
+        let region = MKCoordinateRegion(center: center, span: span)
+        
+        mapView.setRegion(region, animated: true)
+    }
 }
+
+//MARK: MapViewController -> CIAddressTypeaheadProtocol
 
 extension MapViewController: CIAddressTypeaheadProtocol {
     func didSelectAddress(placemark: MKPlacemark) {

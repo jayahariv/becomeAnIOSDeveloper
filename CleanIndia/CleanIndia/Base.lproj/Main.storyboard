@@ -99,6 +99,8 @@
                     </view>
                     <connections>
                         <outlet property="addToiletButton" destination="QIu-fP-SyU" id="PxM-jY-Qsh"/>
+                        <outlet property="addressTextField" destination="pa1-Pe-Gmu" id="wPi-3h-y1y"/>
+                        <outlet property="mapView" destination="VCx-Ht-c0U" id="17t-ns-paJ"/>
                         <outlet property="searchDisplayController" destination="BMg-ak-B6V" id="6qj-ns-nKv"/>
                     </connections>
                 </viewController>

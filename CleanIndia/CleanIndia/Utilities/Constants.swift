@@ -4,7 +4,7 @@ Constants.swift
 Created on: 7/11/18
 
 Abstract:
- all constants are added inside this file
+ self descriptive
 
 */
 
@@ -18,6 +18,14 @@ struct Constants {
             static let RATING = "rating"
             static let ADDRESS = "address"
             static let COORDINATE = "coordinate"
+        }
+    }
+    
+    struct India {
+        struct FullViewCoordinates {
+            static let latitude: Double = 23.5000941
+            static let longitude: Double = 83.3512675
+            static let delta: Double  = 30.0
         }
     }
 }
