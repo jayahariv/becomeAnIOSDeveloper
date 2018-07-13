@@ -15,13 +15,16 @@ this class will show the map with toilet annotations. Also includes the capabili
 import UIKit
 import MapKit
 import FirebaseAuth
+import Firebase
 
-class MapViewController: UIViewController {
+final class MapViewController: UIViewController {
     
     // MARK: Properties
 
     @IBOutlet weak var addressTextField: UITextField!
     @IBOutlet weak var addToiletButton: UIButton!
+    
+    private var db: Firestore!
 
     // MARK: View Lifecycle
     
@@ -30,6 +33,8 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         
         disableUIWithAuthentication()
+        
+        fetchToilets() 
     }
     
     // MARK: Button Actions
@@ -53,8 +58,21 @@ class MapViewController: UIViewController {
         let password = "enterValidPassword"
         Auth.auth().signIn(withEmail: email, password: password) { [unowned self] (result, error) in
             guard error == nil else {
-//                self.addToiletButton.isEnabled = false
+                self.addToiletButton.isEnabled = false
                 return
+            }
+        }
+    }
+    
+    func fetchToilets() {
+        db = Firestore.firestore()
+        db.collection("toilets").getDocuments() { (querySnapshot, err) in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                for document in querySnapshot!.documents {
+                    print("\(document.documentID) => \(document.data())")
+                }
             }
         }
     }

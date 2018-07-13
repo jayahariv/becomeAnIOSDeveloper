@@ -4,23 +4,16 @@ CIToiletTableViewCell.swift
 Created on: 7/12/18
 
 Abstract:
-TODO: Purpose of file
+Custom cell for the toilet details in toilet-list tableview
 
 */
 
 import UIKit
 
-class CIToiletTableViewCell: UITableViewCell {
+final class CIToiletTableViewCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var cleanIndicator: UISwitch!
+    
 }

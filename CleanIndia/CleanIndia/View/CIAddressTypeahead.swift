@@ -157,6 +157,8 @@ extension CIAddressTypeahead: UITextFieldDelegate {
     }
 }
 
+// MARK: CIAddressTypeahead -> MKLocalSearchCompleterDelegate
+
 extension CIAddressTypeahead: MKLocalSearchCompleterDelegate {
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         results = completer.results
@@ -168,6 +170,8 @@ extension CIAddressTypeahead: MKLocalSearchCompleterDelegate {
         // handle error
     }
 }
+
+// MARK: CIAddressTypeahead -> UITableViewDataSource, UITableViewDelegate
 
 extension CIAddressTypeahead: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -185,6 +189,9 @@ extension CIAddressTypeahead: UITableViewDataSource, UITableViewDelegate {
         return cell!
     }
     
+    /**
+     on select, calls the protocol method (`didSelectAddress`) with placemark of the selected address
+     */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         text = results[indexPath.row].title
         let completion = results[indexPath.row]
