@@ -120,16 +120,22 @@ private extension MapViewController {
     
     /**
      sets up the whole UI configurations in this function
-        - focus the map to India
+        - focus the map to Kerala
      - todo:
         - check if we can gray out the outside area.
         - auto zoom to the user location when he enabled the location.
      */
     func configureUI() {
-        let span = MKCoordinateSpan(latitudeDelta: Constants.India.FullViewCoordinates.delta,
-                                    longitudeDelta: Constants.India.FullViewCoordinates.delta)
-        let center = CLLocationCoordinate2D(latitude: Constants.India.FullViewCoordinates.latitude,
-                                            longitude: Constants.India.FullViewCoordinates.longitude)
+        setRegion(Constants.Kerala.FullViewCoordinates.latitude,
+                  longitude: Constants.Kerala.FullViewCoordinates.longitude,
+                  delta: Constants.Kerala.FullViewCoordinates.delta)
+    }
+    
+    func setRegion(_ latitude: Double, longitude: Double, delta: Double) {
+        let span = MKCoordinateSpan(latitudeDelta: delta,
+                                    longitudeDelta: delta)
+        let center = CLLocationCoordinate2D(latitude: latitude,
+                                            longitude: longitude)
         let region = MKCoordinateRegion(center: center, span: span)
         
         mapView.setRegion(region, animated: true)
@@ -140,6 +146,16 @@ private extension MapViewController {
 
 extension MapViewController: CIAddressTypeaheadProtocol {
     func didSelectAddress(placemark: MKPlacemark) {
-        print(placemark)
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = CLLocationCoordinate2DMake(placemark.coordinate.latitude,
+                                                           placemark.coordinate.longitude)
+        annotation.title = placemark.title
+        annotation.subtitle = placemark.subLocality
+        
+        mapView.addAnnotation(annotation)
+        
+        setRegion(placemark.coordinate.latitude,
+                  longitude: placemark.coordinate.longitude,
+                  delta: 0.02)
     }
 }

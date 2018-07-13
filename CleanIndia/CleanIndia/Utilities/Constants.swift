@@ -28,4 +28,12 @@ struct Constants {
             static let delta: Double  = 30.0
         }
     }
+    
+    struct Kerala {
+        struct FullViewCoordinates {
+            static let latitude: Double = 10.6515143
+            static let longitude: Double = 76.5534489
+            static let delta: Double = 4.0
+        }
+    }
 }
