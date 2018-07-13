@@ -31,12 +31,15 @@ final class AddToiletViewController: UIViewController {
     private var rate: UInt8 = 5
     private let db = (UIApplication.shared.delegate as! AppDelegate).db
     private var placemark: MKPlacemark?
+    private let locationManager = CLLocationManager()
 
     
     // MARK: View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
     }
     
     // MARK: Button Actions
@@ -132,10 +135,45 @@ final class AddToiletViewController: UIViewController {
             }
         }
     }
+    
+    @IBAction func onMyLocation(_ sender: UIButton) {
+        getCurrentLocation()
+    }
+}
+
+private extension AddToiletViewController {
+    /**
+     gets current location.
+     */
+    func getCurrentLocation() {
+        locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
 }
 
 extension AddToiletViewController: CIAddressTypeaheadProtocol {
     func didSelectAddress(placemark: MKPlacemark) {
         self.placemark = placemark
+    }
+}
+
+extension AddToiletViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        locationManager.stopUpdatingLocation()
+        if let location = manager.location {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = location.coordinate
+            mapView.addAnnotation(annotation)
+            let region = MKCoordinateRegion(center: location.coordinate,
+                                            span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
+            mapView.setRegion(region, animated: true)
+        }
+        
     }
 }
