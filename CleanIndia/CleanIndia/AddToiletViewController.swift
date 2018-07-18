@@ -39,7 +39,7 @@ final class AddToiletViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        configureUI()
     }
     
     // MARK: Button Actions
@@ -153,6 +153,32 @@ private extension AddToiletViewController {
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
         }
+    }
+    
+    /**
+     sets up the whole UI configurations in this function
+     - focus the map to Kerala
+     - todo:
+     - check if we can gray out the outside area.
+     - auto zoom to the user location when he enabled the location.
+     */
+    func configureUI() {
+        setRegion(Constants.Kerala.FullViewCoordinates.latitude,
+                  longitude: Constants.Kerala.FullViewCoordinates.longitude,
+                  delta: Constants.Kerala.FullViewCoordinates.delta)
+    }
+    
+    /**
+     sets the region on the map
+     */
+    func setRegion(_ latitude: Double, longitude: Double, delta: Double) {
+        let span = MKCoordinateSpan(latitudeDelta: delta,
+                                    longitudeDelta: delta)
+        let center = CLLocationCoordinate2D(latitude: latitude,
+                                            longitude: longitude)
+        let region = MKCoordinateRegion(center: center, span: span)
+        
+        mapView.setRegion(region, animated: true)
     }
     
 }
