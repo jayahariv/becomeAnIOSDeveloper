@@ -43,6 +43,12 @@ final class MapViewController: UIViewController {
         configureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     // MARK: Button Actions
     
     @IBAction func onTouchUpMenu(_ sender: UIButton) {
@@ -121,9 +127,6 @@ private extension MapViewController {
     /**
      sets up the whole UI configurations in this function
         - focus the map to Kerala
-     - todo:
-        - check if we can gray out the outside area.
-        - auto zoom to the user location when he enabled the location.
      */
     func configureUI() {
         setRegion(Constants.Kerala.FullViewCoordinates.latitude,
