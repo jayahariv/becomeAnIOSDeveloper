@@ -43,6 +43,12 @@ final class MapViewController: UIViewController {
         configureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     // MARK: Button Actions
     
     @IBAction func onTouchUpMenu(_ sender: UIButton) {
