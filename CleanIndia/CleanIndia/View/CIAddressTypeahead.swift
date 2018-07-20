@@ -39,11 +39,12 @@ final class CIAddressTypeahead: UITextField {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         delegate = self
-        text = nil
+        text = ""
         placeholder = "Please search for an address"
         resultsTable = UITableView(coder: aDecoder)
         searchCompleter.delegate = self
         addResultsTable()
+
     }
     
     override func layoutSubviews() {

@@ -130,6 +130,13 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="hDJ-Ej-GJm"/>
                                 </connections>
                             </mapView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Uj-TD-6Gh">
+                                <rect key="frame" x="16" y="80" width="343" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="CX9-Ws-YD1"/>
+                                </constraints>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="700" verticalCompressionResistancePriority="700" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="31q-uP-gbM">
                                 <rect key="frame" x="16" y="80" width="44" height="44"/>
                                 <constraints>
@@ -177,8 +184,8 @@
                                     <segue destination="iYl-OM-hNI" kind="presentation" id="0Wr-ww-t0S"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please search for an address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pa1-Pe-Gmu" customClass="CIAddressTypeahead" customModule="CleanIndia" customModuleProvider="target">
-                                <rect key="frame" x="68" y="87" width="239" height="30"/>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Please search for an address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pa1-Pe-Gmu" customClass="CIAddressTypeahead" customModule="CleanIndia" customModuleProvider="target">
+                                <rect key="frame" x="59" y="85" width="253" height="33"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -189,21 +196,25 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="pa1-Pe-Gmu" firstAttribute="leading" secondItem="31q-uP-gbM" secondAttribute="trailing" constant="8" id="0gD-7k-RAg"/>
                             <constraint firstItem="VCx-Ht-c0U" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="0nE-DG-u7l"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="QIu-fP-SyU" secondAttribute="bottom" constant="20" id="7le-VS-Yom"/>
                             <constraint firstItem="31q-uP-gbM" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="BXU-ev-2d1"/>
+                            <constraint firstItem="pa1-Pe-Gmu" firstAttribute="centerY" secondItem="31q-uP-gbM" secondAttribute="centerY" id="Iys-Yx-jWS"/>
                             <constraint firstItem="VCx-Ht-c0U" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="KRa-1Q-h5F"/>
+                            <constraint firstItem="4Uj-TD-6Gh" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="Kpc-3u-LEN"/>
                             <constraint firstItem="VCx-Ht-c0U" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="PDL-b9-AMa"/>
+                            <constraint firstItem="pa1-Pe-Gmu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="59" id="PGC-cz-BCS"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Edi-IO-T2h" secondAttribute="bottom" constant="20" id="PeV-2W-eak"/>
+                            <constraint firstItem="4Uj-TD-6Gh" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="Tf7-Aj-ACe"/>
                             <constraint firstItem="xfx-2t-R0H" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="Z2Q-fn-968"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="xfx-2t-R0H" secondAttribute="trailing" constant="16" id="Zvo-Lw-MJf"/>
                             <constraint firstItem="VCx-Ht-c0U" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="apB-Id-Wed"/>
                             <constraint firstItem="Edi-IO-T2h" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="asc-2i-Tdt"/>
-                            <constraint firstItem="pa1-Pe-Gmu" firstAttribute="centerY" secondItem="31q-uP-gbM" secondAttribute="centerY" id="bgn-9Q-5mW"/>
-                            <constraint firstItem="xfx-2t-R0H" firstAttribute="leading" secondItem="pa1-Pe-Gmu" secondAttribute="trailing" constant="8" id="fzt-ZW-1id"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="4Uj-TD-6Gh" secondAttribute="trailing" constant="16" id="dTA-ls-QtJ"/>
                             <constraint firstItem="31q-uP-gbM" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="gdT-bn-knE"/>
+                            <constraint firstItem="pa1-Pe-Gmu" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="21" id="nuF-rk-J4c"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="QIu-fP-SyU" secondAttribute="trailing" constant="16" id="qbl-n9-WOM"/>
+                            <constraint firstItem="xfx-2t-R0H" firstAttribute="leading" secondItem="pa1-Pe-Gmu" secondAttribute="trailing" constant="3" id="zKB-mU-Nf0"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -531,6 +542,6 @@
         <image name="cover_pic" width="640" height="425"/>
         <image name="gps" width="48" height="48"/>
         <image name="home" width="48" height="48"/>
-        <image name="list" width="48" height="48"/>
+        <image name="list" width="64" height="64"/>
     </resources>
 </document>
