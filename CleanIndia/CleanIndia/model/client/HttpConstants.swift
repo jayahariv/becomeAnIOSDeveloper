@@ -22,6 +22,7 @@ struct HttpConstants {
             static let query = "query"
             static let apiKey = "key"
             static let location = "location"
+            static let radius = "radius"
         }
     }
 }

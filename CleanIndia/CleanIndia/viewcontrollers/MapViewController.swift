@@ -28,6 +28,7 @@ final class MapViewController: UIViewController {
     @IBOutlet weak private var mapView: MKMapView!
     
     private var db: Firestore!
+    private var toilets = [Toilet]()
 
     
     // MARK: View Lifecycle
@@ -37,10 +38,7 @@ final class MapViewController: UIViewController {
         super.viewDidLoad()
         
         disableUIWithAuthentication()
-        
         fetchToilets()
-        
-        fetchToiletsFromGoogle()
         
         configureUI()
     }
@@ -93,7 +91,6 @@ private extension MapViewController {
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
-                var annotations = [MKPointAnnotation]()
                 for document in querySnapshot!.documents {
                     let data = document.data()
                     
@@ -102,34 +99,32 @@ private extension MapViewController {
                         continue
                     }
                     
-                    // GUARD: valid name is present
-                    guard let title = data[Constants.Firestore.Keys.NAME] as? String else {
-                        continue
-                    }
+                    let location = Location(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                    let geometry = Geometry(location: location)
+                    let toilet = Toilet()
+                    toilet.address = data[Constants.Firestore.Keys.ADDRESS] as? String
+                    toilet.name = data[Constants.Firestore.Keys.NAME] as? String
+                    toilet.geometry = geometry
                     
-                    // GUARD: valid address is present
-                    guard let subtitle = data[Constants.Firestore.Keys.ADDRESS] as? String else {
-                        continue
-                    }
-                    
-                    
-                    let annotation = MKPointAnnotation()
-                    annotation.coordinate = CLLocationCoordinate2DMake(coordinate.latitude, coordinate.longitude)
-                    annotation.title = title
-                    annotation.subtitle = subtitle
-                    
-                    annotations.append(annotation)
+                    self.toilets.append(toilet)
                 }
                 
-                self.mapView.addAnnotations(annotations)
+                self.fetchToiletsFromGoogle(Constants.Kerala.FullViewCoordinates.latitude,
+                                            longitude: Constants.Kerala.FullViewCoordinates.longitude,
+                                            delta: 1000.0)
+                
             }
         }
     }
     
-    func fetchToiletsFromGoogle() {
-        HttpClient.shared.getToilets(latitude: 10.5963883, longitude: 75.0924377) { (results: [Toilet], error: Error?) in
-            self.mapView.addAnnotations(results)
-
+    func fetchToiletsFromGoogle(_ latitude: Double, longitude: Double, delta: Double) {
+        HttpClient.shared.getToilets(latitude: latitude, longitude: longitude, radius: delta) { [unowned self] (results: [Toilet], error: Error?) in
+            
+            self.toilets = results
+            
+            DispatchQueue.main.async { [unowned self] in
+                self.updateMap()
+            }
         }
     }
     
@@ -152,6 +147,10 @@ private extension MapViewController {
         
         mapView.setRegion(region, animated: true)
     }
+    
+    func updateMap() {
+        mapView.addAnnotations(toilets)
+    }
 }
 
 //MARK: MapViewController -> CIAddressTypeaheadProtocol
@@ -169,5 +168,37 @@ extension MapViewController: CIAddressTypeaheadProtocol {
         setRegion(placemark.coordinate.latitude,
                   longitude: placemark.coordinate.longitude,
                   delta: 0.02)
+    }
+}
+
+// MARK: MapViewController -> MKMapViewDelegate
+
+extension MapViewController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        guard let annotation = annotation as? Toilet else { return nil }
+        
+        let identifier = "marker"
+        var view: MKMarkerAnnotationView
+        
+        if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+            as? MKMarkerAnnotationView {
+            dequeuedView.annotation = annotation
+            view = dequeuedView
+        } else {
+            
+            view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            view.canShowCallout = true
+            view.calloutOffset = CGPoint(x: -5, y: 5)
+            view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        }
+        return view
+    }
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        fetchToiletsFromGoogle(mapView.region.center.latitude,
+                               longitude: mapView.region.center.longitude,
+                               delta: mapView.region.span.latitudeDelta)
     }
 }

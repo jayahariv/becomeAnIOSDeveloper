@@ -27,9 +27,15 @@ final class HttpClient: NSObject {
         return HttpClient()
     }
     
-    public func getToilets(latitude: Double, longitude: Double, completion: @escaping toiletCompletionHandler) {
+    public func getToilets(latitude: Double,
+                           longitude: Double,
+                           radius: Double,
+                           completion: @escaping toiletCompletionHandler) {
         
-        let url = placesURL(HttpConstants.TextSearch.queryValue, latitude: latitude, longitude: longitude)
+        let url = placesURL(HttpConstants.TextSearch.queryValue,
+                            latitude: latitude,
+                            longitude: longitude,
+                            radius: radius)
         guard url != nil else {
             return
         }
@@ -63,11 +69,12 @@ private extension HttpClient {
         }.resume()
     }
     
-    func placesURL(_ query: String, latitude: Double, longitude: Double) -> URL? {
+    func placesURL(_ query: String, latitude: Double, longitude: Double, radius: Double) -> URL? {
         let uri = "\(HttpConstants.baseURL)\(HttpConstants.TextSearch.method)\(HttpConstants.outputFormat)?"
         let query = "\(HttpConstants.TextSearch.ParameterKey.query)=\(query)&" +
             "\(HttpConstants.TextSearch.ParameterKey.apiKey)=\(HttpConstants.API_KEY)&" +
-            "\(HttpConstants.TextSearch.ParameterKey.location)=\(latitude),\(longitude)"
+            "\(HttpConstants.TextSearch.ParameterKey.location)=\(latitude),\(longitude)&" +
+            "\(HttpConstants.TextSearch.ParameterKey.radius)=\(radius)"
         let url = uri + query
         return URL(string: url)
     }
