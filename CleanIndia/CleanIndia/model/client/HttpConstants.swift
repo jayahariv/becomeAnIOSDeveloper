@@ -17,6 +17,7 @@ struct HttpConstants {
     
     struct TextSearch {
         static let method = "place/textsearch/"
+        static let queryValue = "toilet+kerala"
         struct ParameterKey {
             static let query = "query"
             static let apiKey = "key"

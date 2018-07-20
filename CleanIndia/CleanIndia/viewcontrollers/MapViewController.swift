@@ -40,6 +40,8 @@ final class MapViewController: UIViewController {
         
         fetchToilets()
         
+        fetchToiletsFromGoogle()
+        
         configureUI()
     }
     
@@ -121,6 +123,13 @@ private extension MapViewController {
                 
                 self.mapView.addAnnotations(annotations)
             }
+        }
+    }
+    
+    func fetchToiletsFromGoogle() {
+        HttpClient.shared.getToilets(latitude: 10.5963883, longitude: 75.0924377) { (results: [Toilet], error: Error?) in
+            self.mapView.addAnnotations(results)
+
         }
     }
     
