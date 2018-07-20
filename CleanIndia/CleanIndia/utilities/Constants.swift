@@ -30,6 +30,7 @@ struct Constants {
     }
     
     struct Kerala {
+        static let fullRadius: Double = 1000.0
         struct FullViewCoordinates {
             static let latitude: Double = 10.6515143
             static let longitude: Double = 76.5534489
