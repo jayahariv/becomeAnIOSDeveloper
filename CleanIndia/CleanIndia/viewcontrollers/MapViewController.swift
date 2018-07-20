@@ -29,6 +29,7 @@ final class MapViewController: UIViewController {
     
     private var db: Firestore!
     private var toilets = [Toilet]()
+    private let locationManager = CLLocationManager()
 
     
     // MARK: View Lifecycle
@@ -38,7 +39,10 @@ final class MapViewController: UIViewController {
         super.viewDidLoad()
         
         disableUIWithAuthentication()
-        fetchToilets()
+        
+        fetchToiletsFromGoogle(Constants.Kerala.FullViewCoordinates.latitude,
+                               longitude: Constants.Kerala.FullViewCoordinates.longitude,
+                               delta: Constants.Kerala.fullRadius)
         
         configureUI()
     }
@@ -55,6 +59,7 @@ final class MapViewController: UIViewController {
     }
     
     @IBAction func onTouchMyLocation(_ sender: UIButton) {
+        getCurrentLocation()
     }
     
     @IBAction func onTouchUpList(_ sender: UIButton) {
@@ -85,7 +90,7 @@ private extension MapViewController {
     /**
      fetch all toilets from firestore and mark them as annotations in map
      */
-    func fetchToilets() {
+    func fetchFirebaseToilets() {
         db = Firestore.firestore()
         db.collection(Constants.Firestore.Keys.TOILETS).getDocuments() { [unowned self] (querySnapshot, err) in
             if let err = err {
@@ -109,10 +114,9 @@ private extension MapViewController {
                     self.toilets.append(toilet)
                 }
                 
-                self.fetchToiletsFromGoogle(Constants.Kerala.FullViewCoordinates.latitude,
-                                            longitude: Constants.Kerala.FullViewCoordinates.longitude,
-                                            delta: 1000.0)
-                
+                DispatchQueue.main.async { [unowned self] in
+                    self.updateMap()
+                }
             }
         }
     }
@@ -120,11 +124,10 @@ private extension MapViewController {
     func fetchToiletsFromGoogle(_ latitude: Double, longitude: Double, delta: Double) {
         HttpClient.shared.getToilets(latitude: latitude, longitude: longitude, radius: delta) { [unowned self] (results: [Toilet], error: Error?) in
             
+            print(results.count)
             self.toilets = results
             
-            DispatchQueue.main.async { [unowned self] in
-                self.updateMap()
-            }
+            self.fetchFirebaseToilets()
         }
     }
     
@@ -150,6 +153,19 @@ private extension MapViewController {
     
     func updateMap() {
         mapView.addAnnotations(toilets)
+    }
+    
+    /**
+     gets current location.
+     */
+    func getCurrentLocation() {
+        locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
     }
 }
 
@@ -200,5 +216,22 @@ extension MapViewController: MKMapViewDelegate {
         fetchToiletsFromGoogle(mapView.region.center.latitude,
                                longitude: mapView.region.center.longitude,
                                delta: mapView.region.span.latitudeDelta)
+    }
+}
+
+// MARK: AddToiletViewController -> CLLocationManagerDelegate
+
+extension MapViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        locationManager.stopUpdatingLocation()
+        if let location = manager.location {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = location.coordinate
+            mapView.addAnnotation(annotation)
+            let region = MKCoordinateRegion(center: location.coordinate,
+                                            span: MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02))
+            mapView.setRegion(region, animated: true)
+        }
+        
     }
 }
