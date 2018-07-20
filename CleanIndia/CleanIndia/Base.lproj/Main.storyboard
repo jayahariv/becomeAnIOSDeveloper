@@ -130,48 +130,48 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="hDJ-Ej-GJm"/>
                                 </connections>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="700" verticalCompressionResistancePriority="700" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="31q-uP-gbM">
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="700" verticalCompressionResistancePriority="700" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="31q-uP-gbM">
                                 <rect key="frame" x="16" y="80" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="a3F-b7-c9H"/>
                                     <constraint firstAttribute="width" constant="44" id="wcI-kq-WgP"/>
                                 </constraints>
-                                <state key="normal" title="Menu"/>
+                                <state key="normal" image="home"/>
                                 <connections>
                                     <action selector="onTouchUpMenu:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5lM-lm-g7I"/>
                                     <segue destination="iOz-yr-U2N" kind="presentation" id="OER-77-u8t"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="700" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xfx-2t-R0H">
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="700" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xfx-2t-R0H">
                                 <rect key="frame" x="315" y="80" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="2p7-CH-a2u"/>
                                     <constraint firstAttribute="height" constant="44" id="cmj-0X-byJ"/>
                                 </constraints>
-                                <state key="normal" title="LOC"/>
+                                <state key="normal" image="gps"/>
                                 <connections>
                                     <action selector="onTouchMyLocation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TMm-c6-yu3"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Edi-IO-T2h">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Edi-IO-T2h">
                                 <rect key="frame" x="16" y="603" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="9p7-Eo-rDT"/>
                                     <constraint firstAttribute="width" constant="44" id="Eby-gB-0Ug"/>
                                 </constraints>
-                                <state key="normal" title="LIST"/>
+                                <state key="normal" image="list"/>
                                 <connections>
                                     <action selector="onTouchUpList:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BOE-78-z3y"/>
                                     <segue destination="Va0-4v-vjP" kind="presentation" id="hmm-Gy-v9A"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QIu-fP-SyU">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QIu-fP-SyU">
                                 <rect key="frame" x="315" y="603" width="44" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Y6e-TR-hTT"/>
                                     <constraint firstAttribute="width" constant="44" id="yho-sS-mhf"/>
                                 </constraints>
-                                <state key="normal" title="ADD"/>
+                                <state key="normal" image="add"/>
                                 <connections>
                                     <action selector="onTouchUpAdd:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6Y9-ey-SDY"/>
                                     <segue destination="iYl-OM-hNI" kind="presentation" id="0Wr-ww-t0S"/>
@@ -527,6 +527,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="add" width="48" height="48"/>
         <image name="cover_pic" width="640" height="425"/>
+        <image name="gps" width="48" height="48"/>
+        <image name="home" width="48" height="48"/>
+        <image name="list" width="48" height="48"/>
     </resources>
 </document>
