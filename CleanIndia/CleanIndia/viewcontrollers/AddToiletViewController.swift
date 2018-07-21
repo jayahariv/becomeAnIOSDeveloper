@@ -85,11 +85,11 @@ final class AddToiletViewController: UIViewController {
         rate = UInt8(sender.tag)
     }
     
-    @IBAction func onCancel(_ sender: UIBarButtonItem) {
+    @IBAction func onCancel(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func onAdd(_ sender: UIBarButtonItem) {
+    @IBAction func onAdd(_ sender: UIButton) {
         guard let name = self.name.text else {
             return
         }

@@ -36,8 +36,13 @@ final class ToiletListViewController: UIViewController {
     
     // MARK: Button Actions
     
-    @IBAction func onMap(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+    @IBAction func onMap(_ sender: UIButton) {
+        UIView.beginAnimations("View Flip", context: nil)
+        UIView.setAnimationDuration(1.0)
+        UIView.setAnimationCurve(.easeInOut)
+        UIView.setAnimationTransition(.flipFromRight, for: (navigationController?.view)!, cache: false)
+        navigationController?.popViewController(animated: false)
+        UIView.commitAnimations()
     }
 }
 

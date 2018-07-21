@@ -26,6 +26,10 @@ class LoginViewController: UIViewController {
         
         updateUI()
     }
+    
+    @IBAction func onCancel(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 // MARK: Private helper functions
