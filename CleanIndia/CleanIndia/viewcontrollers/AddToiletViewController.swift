@@ -162,6 +162,14 @@ private extension AddToiletViewController {
         setRegion(Constants.Kerala.FullViewCoordinates.latitude,
                   longitude: Constants.Kerala.FullViewCoordinates.longitude,
                   delta: Constants.Kerala.FullViewCoordinates.delta)
+        
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress))
+        longPressGesture.minimumPressDuration = 0.5
+        mapView.addGestureRecognizer(longPressGesture)
+    }
+    
+    @objc func onLongPress(_ event: UILongPressGestureRecognizer) {
+        
     }
     
     /**
@@ -192,8 +200,7 @@ private extension AddToiletViewController {
                 coordinate: GeoPoint,
                 completion: @escaping () -> Void) {
         
-        var ref: DocumentReference? = nil
-        ref = db?.collection(Constants.Firestore.Keys.TOILETS).addDocument(data: [
+        db?.collection(Constants.Firestore.Keys.TOILETS).addDocument(data: [
             Constants.Firestore.Keys.NAME: name,
             Constants.Firestore.Keys.RATING: rating,
             Constants.Firestore.Keys.ADDRESS: address,
@@ -202,7 +209,6 @@ private extension AddToiletViewController {
             if let err = err {
                 print("Error adding document: \(err)")
             } else {
-                print("Document added with ID: \(ref!.documentID)")
                 completion()
             }
         }

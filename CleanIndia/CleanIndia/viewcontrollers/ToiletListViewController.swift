@@ -64,7 +64,6 @@ private extension ToiletListViewController {
                 
                 var data = [[String: Any]]()
                 for document in querySnapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
                     data.append(document.data())
                 }
                 self.toilets = data

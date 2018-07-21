@@ -19,6 +19,17 @@ final class LoginViewController: UIViewController {
     /// PRIVATE
     @IBOutlet weak private var emailAddress: UITextField!
     @IBOutlet weak private var password: UITextField!
+    @IBOutlet weak private var loginButton: UIButton!
+    @IBOutlet weak private var logoutButton: UIButton!
+    private struct C {
+        struct Alert {
+            static let title = "Authentication"
+            static let successLoginMessage = "You have successfully logged in."
+            static let successLogoutMessage = "You have successfully logged out."
+            static let okayTitle = "Okay"
+        }
+        static let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+    }
     
     // MARK: View Lifecycle
 
@@ -54,6 +65,18 @@ final class LoginViewController: UIViewController {
         
         login(email, password: pass)
     }
+    
+    @IBAction func onLogout(_ sender: UIButton) {
+        do {
+            try Auth.auth().signOut()
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
+        
+        presentAlert(C.Alert.successLogoutMessage, completion: { [unowned self] (_) in
+            self.dismiss(animated: true, completion: nil)
+        })
+    }
 }
 
 // MARK: Private helper functions
@@ -64,7 +87,14 @@ private extension LoginViewController {
      one time UI setup is done inside this function. it gets called when view is finished loading.
      */
     func configureUI() {
-        // configure here..
+        let loggedIn = Auth.auth().currentUser != nil
+        loginButton.isEnabled = !loggedIn
+        logoutButton.isEnabled = loggedIn
+        
+        // if logged in, users should mainly see logout.
+        // when they are logged out, they should see login.
+        loginButton.alpha = loggedIn ? 0.5 : 1.0
+        logoutButton.alpha = loggedIn ? 1.0: 0.5
     }
     
     
@@ -87,14 +117,9 @@ private extension LoginViewController {
                 return
             }
             
-            let alertvc = UIAlertController(title: "Authentication",
-                                            message: "You have successfully logged in.",
-                                            preferredStyle: .alert)
-            let okay = UIAlertAction(title: "Okay", style: .default, handler: { [unowned self] (_) in
+            self.presentAlert(C.Alert.successLoginMessage, completion: { [unowned self] (_) in
                 self.dismiss(animated: true, completion: nil)
             })
-            alertvc.addAction(okay)
-            self.present(alertvc, animated: true, completion: nil)
         }
     }
     
@@ -103,11 +128,21 @@ private extension LoginViewController {
      nil.
      */
     func validateEmailAddress(_ email: String) -> String? {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", C.emailRegex)
         if emailTest.evaluate(with: email) {
             return email
         }
         return nil
+    }
+    
+    func presentAlert(_ message: String, completion: @escaping ((UIAlertAction) -> Swift.Void)) {
+        let alertvc = UIAlertController(title: C.Alert.title,
+                                        message: message,
+                                        preferredStyle: .alert)
+        let okay = UIAlertAction(title: C.Alert.okayTitle,
+                                 style: .default,
+                                 handler: completion)
+        alertvc.addAction(okay)
+        self.present(alertvc, animated: true, completion: nil)
     }
 }
