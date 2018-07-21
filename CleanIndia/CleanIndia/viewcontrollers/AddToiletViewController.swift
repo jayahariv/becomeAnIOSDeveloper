@@ -32,6 +32,14 @@ final class AddToiletViewController: UIViewController {
     private let db = (UIApplication.shared.delegate as! AppDelegate).db
     private var placemark: MKPlacemark?
     private let locationManager = CLLocationManager()
+    
+    private struct C {
+        static let star1Comment = "Never coming back again."
+        static let star2Comment = "Managed it, but not coming back."
+        static let star3Comment = "Its okay, but they should have cleaned it."
+        static let star4Comment = "Its was fine, thank God."
+        static let star5Comment = "Thank God, it was Heaven."
+    }
 
     
     // MARK: View Lifecycle
@@ -55,30 +63,35 @@ final class AddToiletViewController: UIViewController {
             rate3.isSelected = false
             rate4.isSelected = false
             rate5.isSelected = false
+            reviewDescription.text = C.star1Comment
         case 2:
             rate1.isSelected = true
             rate2.isSelected = true
             rate3.isSelected = false
             rate4.isSelected = false
             rate5.isSelected = false
+            reviewDescription.text = C.star2Comment
         case 3:
             rate1.isSelected = true
             rate2.isSelected = true
             rate3.isSelected = true
             rate4.isSelected = false
             rate5.isSelected = false
+            reviewDescription.text = C.star3Comment
         case 4:
             rate1.isSelected = true
             rate2.isSelected = true
             rate3.isSelected = true
             rate4.isSelected = true
             rate5.isSelected = false
+            reviewDescription.text = C.star4Comment
         case 5:
             rate1.isSelected = true
             rate2.isSelected = true
             rate3.isSelected = true
             rate4.isSelected = true
             rate5.isSelected = true
+            reviewDescription.text = C.star5Comment
         default:
             print("Review Selection Invalid")
         }
