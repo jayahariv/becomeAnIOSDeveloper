@@ -55,23 +55,25 @@ final class MapViewController: UIViewController {
     
     // MARK: Button Actions
     
-    @IBAction func onTouchUpMenu(_ sender: UIButton) {
-    }
-    
     @IBAction func onTouchMyLocation(_ sender: UIButton) {
         getCurrentLocation()
     }
     
     @IBAction func onTouchUpList(_ sender: UIButton) {
-    }
-    
-    @IBAction func onTouchUpAdd(_ sender: UIButton) {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "ToiletListViewController")
+        UIView.beginAnimations("View Flip", context: nil)
+        UIView.setAnimationDuration(1.0)
+        UIView.setAnimationCurve(.easeInOut)
+        UIView.setAnimationTransition(.flipFromRight, for: (navigationController?.view)!, cache: false)
+        navigationController?.pushViewController(vc!, animated: true)
+        UIView.commitAnimations()
     }
 }
 
 // MARK: Private Helper methods
 
 private extension MapViewController {
+    
     
     /**
      authenticate and enable/disables the ` add-toilet ` button.
@@ -81,7 +83,7 @@ private extension MapViewController {
         let password = "enterValidPassword"
         Auth.auth().signIn(withEmail: email, password: password) { [unowned self] (result, error) in
             guard error == nil else {
-                self.addToiletButton.isEnabled = false
+//                self.addToiletButton.isEnabled = false
                 return
             }
         }

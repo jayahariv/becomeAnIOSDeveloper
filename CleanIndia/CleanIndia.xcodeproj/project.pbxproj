@@ -19,8 +19,6 @@
 		08BD2C3520F7131600E2A1E6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BD2C3420F7131600E2A1E6 /* Constants.swift */; };
 		08BD2C3720F8249C00E2A1E6 /* ToiletListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BD2C3620F8249C00E2A1E6 /* ToiletListViewController.swift */; };
 		08BD2C3920F8281600E2A1E6 /* CIToiletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BD2C3820F8281600E2A1E6 /* CIToiletTableViewCell.swift */; };
-		08BD2C3C20FFB4E400E2A1E6 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BD2C3B20FFB4E400E2A1E6 /* MenuViewController.swift */; };
-		08BD2C3F20FFC5E200E2A1E6 /* GovernmentDataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BD2C3E20FFC5E200E2A1E6 /* GovernmentDataViewController.swift */; };
 		08BD2C4120FFC60300E2A1E6 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BD2C4020FFC60300E2A1E6 /* LoginViewController.swift */; };
 		08BD2C452100066900E2A1E6 /* HttpConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BD2C442100066900E2A1E6 /* HttpConstants.swift */; };
 		08BD2C472100069800E2A1E6 /* HttpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BD2C462100069800E2A1E6 /* HttpClient.swift */; };
@@ -56,8 +54,6 @@
 		08BD2C3420F7131600E2A1E6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		08BD2C3620F8249C00E2A1E6 /* ToiletListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToiletListViewController.swift; sourceTree = "<group>"; };
 		08BD2C3820F8281600E2A1E6 /* CIToiletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CIToiletTableViewCell.swift; path = CleanIndia/View/CIToiletTableViewCell.swift; sourceTree = SOURCE_ROOT; };
-		08BD2C3B20FFB4E400E2A1E6 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
-		08BD2C3E20FFC5E200E2A1E6 /* GovernmentDataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GovernmentDataViewController.swift; sourceTree = "<group>"; };
 		08BD2C4020FFC60300E2A1E6 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		08BD2C442100066900E2A1E6 /* HttpConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpConstants.swift; sourceTree = "<group>"; };
 		08BD2C462100069800E2A1E6 /* HttpClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpClient.swift; sourceTree = "<group>"; };
@@ -165,9 +161,7 @@
 			children = (
 				08ABDBFE20EBD7EE00343AAA /* MapViewController.swift */,
 				08BD2C3620F8249C00E2A1E6 /* ToiletListViewController.swift */,
-				08BD2C3B20FFB4E400E2A1E6 /* MenuViewController.swift */,
 				08ABDC1E20EF1BA300343AAA /* AddToiletViewController.swift */,
-				08BD2C3E20FFC5E200E2A1E6 /* GovernmentDataViewController.swift */,
 				08BD2C4020FFC60300E2A1E6 /* LoginViewController.swift */,
 			);
 			path = viewcontrollers;
@@ -329,7 +323,6 @@
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
-				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
@@ -343,7 +336,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
@@ -369,8 +361,6 @@
 				08ABDC1F20EF1BA300343AAA /* AddToiletViewController.swift in Sources */,
 				08ABDBFD20EBD7EE00343AAA /* AppDelegate.swift in Sources */,
 				08BD2C492100F22700E2A1E6 /* Toilet.swift in Sources */,
-				08BD2C3F20FFC5E200E2A1E6 /* GovernmentDataViewController.swift in Sources */,
-				08BD2C3C20FFB4E400E2A1E6 /* MenuViewController.swift in Sources */,
 				08ABDC2720EF254D00343AAA /* CIAddressTypeahead.swift in Sources */,
 				08BD2C4120FFC60300E2A1E6 /* LoginViewController.swift in Sources */,
 				08BD2C452100066900E2A1E6 /* HttpConstants.swift in Sources */,
