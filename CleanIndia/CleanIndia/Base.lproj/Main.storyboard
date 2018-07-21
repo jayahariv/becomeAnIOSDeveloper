@@ -77,15 +77,28 @@
                                     <constraint firstAttribute="height" constant="48" id="bkk-Rh-sIW"/>
                                 </constraints>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K6X-s0-4qU">
+                                <rect key="frame" x="16" y="300" width="343" height="38"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="38" id="HBC-HZ-rCu"/>
+                                </constraints>
+                                <state key="normal" title="Login"/>
+                                <connections>
+                                    <action selector="onLogin:" destination="n1F-Zf-pKK" eventType="touchUpInside" id="zeC-DM-IFd"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="K6X-s0-4qU" firstAttribute="top" secondItem="P7E-eb-2b7" secondAttribute="bottom" constant="30" id="0mI-UQ-fxB"/>
                             <constraint firstItem="P7E-eb-2b7" firstAttribute="centerX" secondItem="j6c-oy-hvZ" secondAttribute="centerX" id="3X4-b9-h2t"/>
                             <constraint firstItem="j4i-TE-M72" firstAttribute="centerX" secondItem="j6c-oy-hvZ" secondAttribute="centerX" id="5ed-R4-Ygh"/>
                             <constraint firstItem="VZn-ld-DFK" firstAttribute="top" secondItem="0xs-9Z-41A" secondAttribute="top" id="6Af-bl-lfr"/>
                             <constraint firstItem="SV9-zt-wWy" firstAttribute="centerX" secondItem="j6c-oy-hvZ" secondAttribute="centerX" id="AWu-Ry-XZe"/>
                             <constraint firstItem="VZn-ld-DFK" firstAttribute="leading" secondItem="0xs-9Z-41A" secondAttribute="leading" id="Cpu-NQ-XZD"/>
                             <constraint firstItem="VZn-ld-DFK" firstAttribute="trailing" secondItem="0xs-9Z-41A" secondAttribute="trailing" id="GH3-Ls-dZx"/>
+                            <constraint firstItem="0xs-9Z-41A" firstAttribute="trailing" secondItem="K6X-s0-4qU" secondAttribute="trailing" constant="16" id="PCu-Ca-jKF"/>
+                            <constraint firstItem="K6X-s0-4qU" firstAttribute="leading" secondItem="0xs-9Z-41A" secondAttribute="leading" constant="16" id="TKq-el-ofj"/>
                             <constraint firstItem="P7E-eb-2b7" firstAttribute="top" secondItem="j4i-TE-M72" secondAttribute="bottom" constant="24" id="cfU-Tg-hDF"/>
                             <constraint firstItem="j4i-TE-M72" firstAttribute="top" secondItem="SV9-zt-wWy" secondAttribute="bottom" constant="24" id="s9E-AU-I9W"/>
                             <constraint firstItem="j4i-TE-M72" firstAttribute="centerX" secondItem="j6c-oy-hvZ" secondAttribute="centerX" id="tGR-wf-LiB"/>
@@ -93,6 +106,10 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="0xs-9Z-41A"/>
                     </view>
+                    <connections>
+                        <outlet property="emailAddress" destination="j4i-TE-M72" id="5AT-jQ-Ri8"/>
+                        <outlet property="password" destination="P7E-eb-2b7" id="dTT-Rl-LWQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ngl-cI-1rb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -131,7 +148,7 @@
                                 </constraints>
                                 <state key="normal" image="add"/>
                                 <connections>
-                                    <segue destination="iYl-OM-hNI" kind="presentation" id="NcT-F3-bd2"/>
+                                    <action selector="onAddToilets:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6wY-GY-LyC"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Edi-IO-T2h" userLabel="login-button">
@@ -189,10 +206,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="foz-pf-zOj"/>
                     <connections>
-                        <outlet property="addToiletButton" destination="xfx-2t-R0H" id="jbE-Av-8dm"/>
                         <outlet property="addressTextField" destination="pa1-Pe-Gmu" id="wPi-3h-y1y"/>
                         <outlet property="mapView" destination="VCx-Ht-c0U" id="17t-ns-paJ"/>
                         <outlet property="searchDisplayController" destination="BMg-ak-B6V" id="6qj-ns-nKv"/>
+                        <segue destination="iYl-OM-hNI" kind="presentation" identifier="segueToAddToilet" id="vxs-0R-Bda"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

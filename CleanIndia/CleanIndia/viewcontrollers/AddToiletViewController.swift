@@ -15,24 +15,25 @@ import Firebase
 final class AddToiletViewController: UIViewController {
     
     // MARK: Properties
-
-    @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var reviewDescription: UILabel!
-    @IBOutlet weak var name: UITextField!
+    /// PRIVATE
+    
+    @IBOutlet weak private var mapView: MKMapView!
+    @IBOutlet weak private var reviewDescription: UILabel!
+    @IBOutlet weak private var name: UITextField!
     
     /// ratings buttons
-    @IBOutlet weak var rate1: UIButton!
-    @IBOutlet weak var rate2: UIButton!
-    @IBOutlet weak var rate3: UIButton!
-    @IBOutlet weak var rate4: UIButton!
-    @IBOutlet weak var rate5: UIButton!
+    @IBOutlet weak private var rate1: UIButton!
+    @IBOutlet weak private var rate2: UIButton!
+    @IBOutlet weak private var rate3: UIButton!
+    @IBOutlet weak private var rate4: UIButton!
+    @IBOutlet weak private var rate5: UIButton!
     
-    // private vars
     private var rate: UInt8 = 5
     private let db = (UIApplication.shared.delegate as! AppDelegate).db
     private var placemark: MKPlacemark?
     private let locationManager = CLLocationManager()
     
+    // file constants
     private struct C {
         static let star1Comment = "Never coming back again."
         static let star2Comment = "Managed it, but not coming back."
@@ -103,14 +104,18 @@ final class AddToiletViewController: UIViewController {
     }
     
     @IBAction func onAdd(_ sender: UIButton) {
+        
+        // GUARD: valid name
         guard let name = self.name.text else {
             return
         }
         
+        // GUARD: valid coordinate
         guard let coordinate = placemark?.coordinate else {
             return
         }
         
+        // GUARD: valid address
         guard let address = placemark?.title else {
             return
         }
@@ -125,34 +130,12 @@ final class AddToiletViewController: UIViewController {
         }
     }
     
-    // MARK: Helper functions
-    
-    func onSave(_ name: String,
-                rating: UInt8,
-                address: String,
-                coordinate: GeoPoint,
-                completion: @escaping () -> Void) {
-        
-        var ref: DocumentReference? = nil
-        ref = db?.collection(Constants.Firestore.Keys.TOILETS).addDocument(data: [
-            Constants.Firestore.Keys.NAME: name,
-            Constants.Firestore.Keys.RATING: rating,
-            Constants.Firestore.Keys.ADDRESS: address,
-            Constants.Firestore.Keys.COORDINATE: coordinate
-        ]) { err in
-            if let err = err {
-                print("Error adding document: \(err)")
-            } else {
-                print("Document added with ID: \(ref!.documentID)")
-                completion()
-            }
-        }
-    }
-    
     @IBAction func onMyLocation(_ sender: UIButton) {
         getCurrentLocation()
     }
 }
+
+// MARK: Private helper functions
 
 private extension AddToiletViewController {
     /**
@@ -194,13 +177,47 @@ private extension AddToiletViewController {
         mapView.setRegion(region, animated: true)
     }
     
+    /**
+     saves the information to Firebase realtime database
+     - parameters:
+        - name: name of the toilet
+        - rating: rating from the user
+        - address: address of the toilet
+        - coordinate: coordinates of the toilet
+        - completion: self descriptive
+     */
+    func onSave(_ name: String,
+                rating: UInt8,
+                address: String,
+                coordinate: GeoPoint,
+                completion: @escaping () -> Void) {
+        
+        var ref: DocumentReference? = nil
+        ref = db?.collection(Constants.Firestore.Keys.TOILETS).addDocument(data: [
+            Constants.Firestore.Keys.NAME: name,
+            Constants.Firestore.Keys.RATING: rating,
+            Constants.Firestore.Keys.ADDRESS: address,
+            Constants.Firestore.Keys.COORDINATE: coordinate
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            } else {
+                print("Document added with ID: \(ref!.documentID)")
+                completion()
+            }
+        }
+    }
 }
+
+// MARK: AddToiletViewController -> CIAddressTypeaheadProtocol
 
 extension AddToiletViewController: CIAddressTypeaheadProtocol {
     func didSelectAddress(placemark: MKPlacemark) {
         self.placemark = placemark
     }
 }
+
+// MARK: AddToiletViewController -> CLLocationManagerDelegate
 
 extension AddToiletViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

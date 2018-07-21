@@ -15,7 +15,8 @@ final class ToiletListViewController: UIViewController {
     
     // MARK: Properties
     
-    @IBOutlet weak var tableView: UITableView!
+    /// PRIVATE
+    @IBOutlet weak private var tableView: UITableView!
     
     private var db: Firestore!
     private var toilets = [[String: Any]]()
