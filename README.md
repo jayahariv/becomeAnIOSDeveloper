@@ -60,14 +60,14 @@ Its an app to show all the toilets near by you. You can add reviews about the to
 * [x] Ability to see all the saved toilets in map as annotation.
 * [x] Ability to see all the saved toilets as a table.
 * [x] Ability to see the current location in Add Toilet MapView
-* [ ] Ability to see the current location in Home MapView
+* [x] Ability to see the current location in Home MapView
 * [ ] Ability to add toilet location by long press on MapView
-* [ ] Ability to see the statistics of the district level data from Government of India.
-* [ ] Show Meaningful messages when selecting each ratings in Add-Toilet-Page
-* [ ] Add Menu with Login/Logout option
+* [x] Ability to see toilets data from Google in MapView
+* [ ] Ability to see toilets data from Google in ListView
+* [x] Show Meaningful messages when selecting each ratings in Add-Toilet-Page
 * [ ] Add Login/Logout feature
-* [ ] Colorful AppIcon
-* [ ] Colorful Icons inside the app
-* [ ] Colorful Icons for ratings
+* [x] Colorful AppIcon
+* [x] Colorful Icons inside the app
+* [x] Colorful Icons for ratings
 * [ ] Custom Annotation in Map
-* [ ] Show animation when switching between MapView & TableView
+* [x] Show animation when switching between MapView & TableView
