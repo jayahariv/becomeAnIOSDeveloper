@@ -15,7 +15,8 @@ final class ToiletListViewController: UIViewController {
     
     // MARK: Properties
     
-    @IBOutlet weak var tableView: UITableView!
+    /// PRIVATE
+    @IBOutlet weak private var tableView: UITableView!
     
     private var db: Firestore!
     private var toilets = [[String: Any]]()
@@ -63,7 +64,6 @@ private extension ToiletListViewController {
                 
                 var data = [[String: Any]]()
                 for document in querySnapshot!.documents {
-                    print("\(document.documentID) => \(document.data())")
                     data.append(document.data())
                 }
                 self.toilets = data

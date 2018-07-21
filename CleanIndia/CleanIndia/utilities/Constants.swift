@@ -11,6 +11,9 @@ Abstract:
 import Foundation
 
 struct Constants {
+    /**
+     firestore constants are defined here
+     */
     struct Firestore {
         struct Keys {
             static let TOILETS = "toilets"
@@ -21,6 +24,9 @@ struct Constants {
         }
     }
     
+    /**
+     India infos
+     */
     struct India {
         struct FullViewCoordinates {
             static let latitude: Double = 23.5000941
@@ -29,6 +35,9 @@ struct Constants {
         }
     }
     
+    /**
+     Kerala infos
+     */
     struct Kerala {
         static let fullRadius: Double = 1000.0
         struct FullViewCoordinates {

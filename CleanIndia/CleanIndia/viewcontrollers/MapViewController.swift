@@ -14,7 +14,6 @@ this class will show the map with toilet annotations. Also includes the capabili
 
 import UIKit
 import MapKit
-import FirebaseAuth
 import Firebase
 
 final class MapViewController: UIViewController {
@@ -24,12 +23,24 @@ final class MapViewController: UIViewController {
     /// PRIVATE
     
     @IBOutlet weak private var addressTextField: CIAddressTypeahead!
-    @IBOutlet weak private var addToiletButton: UIButton!
     @IBOutlet weak private var mapView: MKMapView!
     
     private var db: Firestore!
     private var toilets = [Toilet]()
     private let locationManager = CLLocationManager()
+    
+    // MARK: File constants
+    private struct C {
+        static let segueToAddToilets = "segueToAddToilet"
+        struct AddToiletAlert {
+            static let title = "Authenticate"
+            static let message = "Please login before adding any toilets."
+            static let buttonTitle = "Okay"
+        }
+        static let toiletListIdentifier = "ToiletListViewController"
+        static let animationIdentifier = "ToiletListViewControllerFlip"
+        static let mapAnnotationIdentifier = "mapAnnotationIdentifier"
+    }
 
     
     // MARK: View Lifecycle
@@ -37,8 +48,6 @@ final class MapViewController: UIViewController {
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        
-        disableUIWithAuthentication()
         
         fetchToiletsFromGoogle(Constants.Kerala.FullViewCoordinates.latitude,
                                longitude: Constants.Kerala.FullViewCoordinates.longitude,
@@ -60,34 +69,34 @@ final class MapViewController: UIViewController {
     }
     
     @IBAction func onTouchUpList(_ sender: UIButton) {
-        let vc = storyboard?.instantiateViewController(withIdentifier: "ToiletListViewController")
-        UIView.beginAnimations("View Flip", context: nil)
+        let vc = storyboard?.instantiateViewController(withIdentifier: C.toiletListIdentifier)
+        UIView.beginAnimations(C.animationIdentifier, context: nil)
         UIView.setAnimationDuration(1.0)
         UIView.setAnimationCurve(.easeInOut)
         UIView.setAnimationTransition(.flipFromRight, for: (navigationController?.view)!, cache: false)
         navigationController?.pushViewController(vc!, animated: true)
         UIView.commitAnimations()
     }
+    
+    @IBAction func onAddToilets(_ sender: UIButton) {
+        if Auth.auth().currentUser != nil {
+            performSegue(withIdentifier: C.segueToAddToilets, sender: nil)
+        } else {
+            let alertvc = UIAlertController(title: C.AddToiletAlert.title,
+                                            message: C.AddToiletAlert.message,
+                                            preferredStyle: .alert)
+            let okay = UIAlertAction(title: C.AddToiletAlert.buttonTitle,
+                                     style: .default,
+                                     handler: nil)
+            alertvc.addAction(okay)
+            present(alertvc, animated: true, completion: nil)
+        }
+    }
 }
 
 // MARK: Private Helper methods
 
 private extension MapViewController {
-    
-    
-    /**
-     authenticate and enable/disables the ` add-toilet ` button.
-     */
-    func disableUIWithAuthentication() {
-        let email = "enterValidEmailAddress"
-        let password = "enterValidPassword"
-        Auth.auth().signIn(withEmail: email, password: password) { [unowned self] (result, error) in
-            guard error == nil else {
-//                self.addToiletButton.isEnabled = false
-                return
-            }
-        }
-    }
     
     /**
      fetch all toilets from firestore and mark them as annotations in map
@@ -123,10 +132,12 @@ private extension MapViewController {
         }
     }
     
+    /**
+     fetches toilets from google and later fetches the firebase toilets
+     */
     func fetchToiletsFromGoogle(_ latitude: Double, longitude: Double, delta: Double) {
         HttpClient.shared.getToilets(latitude: latitude, longitude: longitude, radius: delta) { [unowned self] (results: [Toilet], error: Error?) in
             
-            print(results.count)
             self.toilets = results
             
             self.fetchFirebaseToilets()
@@ -143,6 +154,13 @@ private extension MapViewController {
                   delta: Constants.Kerala.FullViewCoordinates.delta)
     }
     
+    /**
+     sets the region of the map with given latitide, longitude and delta(for both latitude and longitude)
+     - parameters:
+        - latitude: self descriptive
+        - longitude: self descriptive
+        - delta: this delta will be used for both latitude and longitude delta values
+     */
     func setRegion(_ latitude: Double, longitude: Double, delta: Double) {
         let span = MKCoordinateSpan(latitudeDelta: delta,
                                     longitudeDelta: delta)
@@ -153,6 +171,9 @@ private extension MapViewController {
         mapView.setRegion(region, animated: true)
     }
     
+    /**
+     updates the iVar property `toilets`  on MapView
+     */
     func updateMap() {
         mapView.addAnnotations(toilets)
     }
@@ -197,16 +218,15 @@ extension MapViewController: MKMapViewDelegate {
         
         guard let annotation = annotation as? Toilet else { return nil }
         
-        let identifier = "marker"
         var view: MKMarkerAnnotationView
         
-        if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: C.mapAnnotationIdentifier)
             as? MKMarkerAnnotationView {
             dequeuedView.annotation = annotation
             view = dequeuedView
         } else {
             
-            view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            view = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: C.mapAnnotationIdentifier)
             view.canShowCallout = true
             view.calloutOffset = CGPoint(x: -5, y: 5)
             view.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)

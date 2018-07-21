@@ -11,7 +11,7 @@ Abstract:
 import Foundation
 import MapKit
 
-class Toilet: NSObject, Codable, MKAnnotation {
+final class Toilet: NSObject, Codable, MKAnnotation {
     var address: String?
     var geometry: Geometry? = nil
     var name: String?

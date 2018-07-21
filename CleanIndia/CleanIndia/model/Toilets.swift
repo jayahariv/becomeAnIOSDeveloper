@@ -10,6 +10,6 @@ Abstract:
 
 import Foundation
 
-class Toilets: NSObject, Codable {
+final class Toilets: NSObject, Codable {
     var results = [Toilet]()
 }
