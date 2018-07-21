@@ -514,6 +514,7 @@
                         <viewLayoutGuide key="safeArea" id="6xx-qJ-H0f"/>
                     </view>
                     <connections>
+                        <outlet property="addressTypeahead" destination="reH-Yh-1p3" id="uzw-Ky-oHw"/>
                         <outlet property="mapView" destination="77h-eM-aUI" id="lrf-e4-sTo"/>
                         <outlet property="name" destination="Znk-YF-kwl" id="cR8-sf-KUr"/>
                         <outlet property="rate1" destination="Tyu-yv-cgx" id="hKX-fx-Z0g"/>

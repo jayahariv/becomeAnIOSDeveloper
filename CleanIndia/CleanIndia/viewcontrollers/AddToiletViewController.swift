@@ -20,6 +20,7 @@ final class AddToiletViewController: UIViewController {
     @IBOutlet weak private var mapView: MKMapView!
     @IBOutlet weak private var reviewDescription: UILabel!
     @IBOutlet weak private var name: UITextField!
+    @IBOutlet weak private var addressTypeahead: CIAddressTypeahead!
     
     /// ratings buttons
     @IBOutlet weak private var rate1: UIButton!
@@ -104,30 +105,7 @@ final class AddToiletViewController: UIViewController {
     }
     
     @IBAction func onAdd(_ sender: UIButton) {
-        
-        // GUARD: valid name
-        guard let name = self.name.text else {
-            return
-        }
-        
-        // GUARD: valid coordinate
-        guard let coordinate = placemark?.coordinate else {
-            return
-        }
-        
-        // GUARD: valid address
-        guard let address = placemark?.title else {
-            return
-        }
-        
-        onSave(name,
-               rating: rate,
-               address: address,
-               coordinate: GeoPoint(latitude: coordinate.latitude,
-                                    longitude: coordinate.longitude)
-        ) {[unowned self] in
-            self.dismiss(animated: true, completion: nil)
-        }
+        onAdd()
     }
     
     @IBAction func onMyLocation(_ sender: UIButton) {
@@ -168,8 +146,44 @@ private extension AddToiletViewController {
         mapView.addGestureRecognizer(longPressGesture)
     }
     
-    @objc func onLongPress(_ event: UILongPressGestureRecognizer) {
-        
+    @objc func onLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state == UIGestureRecognizerState.began {
+            let touchPoint = gestureRecognizer.location(in: mapView)
+            let newCoordinates = mapView.convert(touchPoint, toCoordinateFrom: mapView)
+            let toilet = Toilet()
+            let location: Location = Location(latitude: newCoordinates.latitude, longitude: newCoordinates.longitude)
+            let geometry: Geometry = Geometry(location: location)
+            toilet.geometry = geometry
+            let loc = CLLocation(latitude: newCoordinates.latitude, longitude: newCoordinates.longitude)
+            CLGeocoder().reverseGeocodeLocation(loc, completionHandler: { [unowned self] (placemarks, error) -> Void in
+                if error != nil {
+                    print("Reverse geocoder failed with error \(error!.localizedDescription)")
+                    return
+                }
+
+                if (placemarks?.count ?? 0) > 0 {
+                    let pm: CLPlacemark = placemarks![0]
+                    self.placemark = MKPlacemark(placemark: pm)
+                    var name = ""
+                    if let sublocality = pm.subLocality {
+                        name += sublocality
+                    }
+                    
+                    if let subAdministrativeArea = pm.subAdministrativeArea {
+                        name += ", \(subAdministrativeArea)"
+                    }
+                    
+                    if let administrativeArea = pm.administrativeArea, let postalCode = pm.postalCode {
+                        name += ", \(administrativeArea) \(postalCode)"
+                    }
+                    
+                    toilet.name = name
+                    toilet.address = pm.postalCode
+                    self.addressTypeahead.text = name
+                    self.mapView.addAnnotation(toilet)
+                }
+            })
+        }
     }
     
     /**
@@ -183,6 +197,32 @@ private extension AddToiletViewController {
         let region = MKCoordinateRegion(center: center, span: span)
         
         mapView.setRegion(region, animated: true)
+    }
+    
+    func onAdd() {
+        // GUARD: valid name
+        guard let name = self.name.text else {
+            return
+        }
+        
+        // GUARD: valid coordinate
+        guard let coordinate = placemark?.coordinate else {
+            return
+        }
+        
+        // GUARD: valid address
+        guard let address = placemark?.title else {
+            return
+        }
+        
+        onSave(name,
+               rating: rate,
+               address: address,
+               coordinate: GeoPoint(latitude: coordinate.latitude,
+                                    longitude: coordinate.longitude)
+        ) {[unowned self] in
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     /**
