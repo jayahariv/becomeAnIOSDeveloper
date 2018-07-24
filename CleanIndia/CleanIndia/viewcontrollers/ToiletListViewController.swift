@@ -19,7 +19,6 @@ final class ToiletListViewController: UIViewController {
     @IBOutlet weak private var tableView: UITableView!
     
     private var db: Firestore!
-    private var toilets = [[String: Any]]()
     
     /// File Constants are declared inside this struct
     private struct C {
@@ -30,9 +29,6 @@ final class ToiletListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        fetchToilets()
-        
     }
     
     // MARK: Button Actions
@@ -47,37 +43,11 @@ final class ToiletListViewController: UIViewController {
     }
 }
 
-// MARK: Private Helper methods
-
-private extension ToiletListViewController {
-    
-    /**
-     fetches all the toilets from firestore, populates the iVar `toilets`, and reloads the `tableView`
-     - note: If fails, prints the error details in console.
-     */
-    func fetchToilets() {
-        db = Firestore.firestore()
-        db.collection(Constants.Firestore.Keys.TOILETS).getDocuments() { [unowned self] (querySnapshot, err) in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                
-                var data = [[String: Any]]()
-                for document in querySnapshot!.documents {
-                    data.append(document.data())
-                }
-                self.toilets = data
-                self.tableView.reloadData()
-            }
-        }
-    }
-}
-
 // MARK: ToiletListViewController -> UITableViewDataSource
 
 extension ToiletListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return toilets.count
+        return Store.shared.toilets.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -86,17 +56,14 @@ extension ToiletListViewController: UITableViewDataSource {
             cell = UITableViewCell(style: .default, reuseIdentifier: C.cell) as? CIToiletTableViewCell
         }
         
-        let toilet = toilets[indexPath.row]
-        if let name = toilet[Constants.Firestore.Keys.NAME] as? String {
-            cell?.titleLabel.text = name
-        }
-        
-        if let address = toilet[Constants.Firestore.Keys.ADDRESS] as? String {
-            cell?.subtitleLabel.text = address
-        }
-        
-        if let rating = toilet[Constants.Firestore.Keys.RATING] as? Int {
-            cell?.cleanIndicator.isOn = rating >= 3
+        let toilet = Store.shared.toilets[indexPath.row]
+        cell?.titleLabel.text = toilet.name
+        cell?.subtitleLabel.text = toilet.address
+        let ratingUnAvailable = toilet.rating == nil
+        cell?.cleanIndicator.isHidden = ratingUnAvailable
+        cell?.cleanLabel.isHidden = ratingUnAvailable
+        if !ratingUnAvailable {
+            cell?.cleanIndicator.isOn = (toilet.rating ?? 0) >= 3
         }
         
         return cell!

@@ -121,6 +121,7 @@ private extension MapViewController {
                     toilet.address = data[Constants.Firestore.Keys.ADDRESS] as? String
                     toilet.name = data[Constants.Firestore.Keys.NAME] as? String
                     toilet.geometry = geometry
+                    toilet.rating = data[Constants.Firestore.Keys.RATING] as? Int
                     
                     self.toilets.append(toilet)
                 }
@@ -175,6 +176,9 @@ private extension MapViewController {
      updates the iVar property `toilets`  on MapView
      */
     func updateMap() {
+        Store.shared.toilets = toilets
+        let allAnnotations = mapView.annotations
+        mapView.removeAnnotations(allAnnotations)
         mapView.addAnnotations(toilets)
     }
     

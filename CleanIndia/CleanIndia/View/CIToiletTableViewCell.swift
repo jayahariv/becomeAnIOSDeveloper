@@ -15,5 +15,5 @@ final class CIToiletTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var cleanIndicator: UISwitch!
-    
+    @IBOutlet weak var cleanLabel: UILabel!
 }
