@@ -29,6 +29,16 @@ final class CIAddressTypeahead: UITextField {
     /// set this to show the results tableview on top of the textfield.
     @IBInspectable public var displayTop: Bool = false
     
+    public var title: String? {
+        set(value) {
+            text = value
+        }
+        
+        get {
+            return text
+        }
+    }
+    
     // MARK: Private properties
     private var searchCompleter = MKLocalSearchCompleter()
     private var resultsTable: UITableView!
@@ -43,7 +53,6 @@ final class CIAddressTypeahead: UITextField {
         resultsTable = UITableView(coder: aDecoder)
         searchCompleter.delegate = self
         addResultsTable()
-
     }
     
     override func layoutSubviews() {
@@ -95,8 +104,9 @@ final class CIAddressTypeahead: UITextField {
         
         return super.hitTest(point, with: event)
     }
-    
-    
+}
+
+private extension CIAddressTypeahead {
     // MARK: Helper methods
     
     /**
@@ -155,6 +165,11 @@ extension CIAddressTypeahead: UITextFieldDelegate {
         
         return true
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.resignFirstResponder()
+        return true
+    }
 }
 
 // MARK: CIAddressTypeahead -> MKLocalSearchCompleterDelegate
@@ -204,7 +219,5 @@ extension CIAddressTypeahead: UITableViewDataSource, UITableViewDelegate {
                 tableView.isHidden = true
             }
         }
-        
-        
     }
 }

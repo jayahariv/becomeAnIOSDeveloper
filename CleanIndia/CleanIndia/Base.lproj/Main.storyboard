@@ -193,11 +193,11 @@
                                     <action selector="onTouchMyLocation:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jwm-b0-UIG"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Please search for an address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pa1-Pe-Gmu" customClass="CIAddressTypeahead" customModule="CleanIndia" customModuleProvider="target">
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please search for an address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pa1-Pe-Gmu" customClass="CIAddressTypeahead" customModule="CleanIndia" customModuleProvider="target">
                                 <rect key="frame" x="68" y="78" width="239" height="33"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" textContentType="location"/>
                                 <connections>
                                     <outlet property="typeaheadDelegate" destination="BYZ-38-t0r" id="Hk5-C3-5qo"/>
                                 </connections>
@@ -399,6 +399,9 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="iYl-OM-hNI" id="Nf7-W5-9I4"/>
+                                        </connections>
                                     </textField>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DCc-mp-49E">
                                         <rect key="frame" x="0.0" y="50.5" width="343" height="39"/>
@@ -473,7 +476,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="showTopResults" value="YES"/>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="displayTop" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
