@@ -68,6 +68,6 @@ Its an app to show all the toilets near by you. You can add reviews about the to
 * [x] Colorful Icons inside the app
 * [x] Colorful Icons for ratings
 * [x] Show animation when switching between MapView & TableView
-* [ ] Ability to add toilet location by long press on MapView
-* [ ] Ability to see toilets data from Google in ListView
+* [x] Ability to add toilet location by long press on MapView
+* [x] Ability to see toilets data from Google in ListView
 * [ ] Custom Annotation in Map
