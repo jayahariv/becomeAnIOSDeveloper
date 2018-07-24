@@ -15,6 +15,7 @@ final class Toilet: NSObject, Codable, MKAnnotation {
     var address: String?
     var geometry: Geometry? = nil
     var name: String?
+    var rating: Int? = nil
     
     enum CodingKeys: String, CodingKey {
         case address = "formatted_address"

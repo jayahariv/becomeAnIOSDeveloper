@@ -52,6 +52,17 @@ final class AddToiletViewController: UIViewController {
         configureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        subscribeKeyboardNotifications()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unsubscriberKeyboardNotifications()
+    }
+    
+    
     // MARK: Button Actions
     
     @IBAction func onTouchReviewStar(_ sender: UIButton) {
@@ -180,6 +191,7 @@ private extension AddToiletViewController {
                     toilet.name = name
                     toilet.address = pm.postalCode
                     self.addressTypeahead.text = name
+                    self.addressTypeahead.becomeFirstResponder()
                     self.mapView.addAnnotation(toilet)
                 }
             })
@@ -279,3 +291,37 @@ extension AddToiletViewController: CLLocationManagerDelegate {
         
     }
 }
+
+extension AddToiletViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+extension AddToiletViewController {
+    func subscribeKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShown), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func unsubscriberKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
+    }
+    
+    @objc func keyboardShown(notification: Notification) {
+        view.frame.origin.y = -getKeyboardHeight(notification)
+    }
+    
+    @objc func keyboardHide(notification: Notification) {
+        view.frame.origin.y = 0.0
+    }
+    
+    func getKeyboardHeight(_ notification: Notification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue
+        return keyboardSize.cgRectValue.height
+    }
+}
+
