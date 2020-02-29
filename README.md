@@ -1,5 +1,5 @@
-# Udacity
-This repository helps me with udacity course projects.
+# Become An iOS Developer
+This repository helps me with the course projects.
 
 # Projects includes
 ## Pitch Perfect
